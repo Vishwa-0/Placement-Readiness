@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Assessment Result</h2>
+
+<div class="card">
+    <p>Status:
+        <strong>{{ "Placement Ready" if ready == 1 else "Not Ready Yet" }}</strong>
+    </p>
+    <p>Confidence: {{ confidence }}%</p>
+</div>
+
+<div class="card">
+    <h3>Recommended Projects</h3>
+    <ul>
+        {% for p in projects %}
+        <li>{{ p }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Skills to Learn Next</h3>
+    <ul>
+        {% for s in skills %}
+        <li>{{ s }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
