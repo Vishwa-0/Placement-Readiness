@@ -16,14 +16,8 @@ try:
     print("✓ ML model loaded successfully")
 except Exception as e:
     print(f"⚠ Warning: Could not load PRS.pkl: {e}")
-    print("⚠ Using dummy model for testing")
-    # Create a simple dummy model
-    from sklearn.linear_model import LogisticRegression
-    model = LogisticRegression(random_state=42)
-    # Train on minimal dummy data
-    X_dummy = np.array([[5, 50, 3, 5, 1] for _ in range(10)])
-    y_dummy = np.array([0, 1, 0, 1, 0, 1, 0, 1, 0, 1])
-    model.fit(X_dummy, y_dummy)
+    print("⚠ Using overall score calculation instead")
+    model = None
 
 # Domain information - Using numerical keys as your model expects
 DOMAINS = {
@@ -79,13 +73,13 @@ DOMAINS = {
 
 # Project suggestions based on readiness level - SIMPLIFIED
 PROJECT_SUGGESTIONS = {
-    '0': {  # Not Ready
+    '0': {  # Not Ready (Overall Score < 60%)
         '1': 'Personal Portfolio Website, To-Do List App, Weather App, Calculator, Blog Website',
         '2': 'Titanic Data Analysis, House Price Prediction, Iris Classification, Sales Dashboard',
         '3': 'BMI Calculator, Notes App, Currency Converter, Flashlight App, Quiz App',
         '4': 'Password Checker, Network Scanner, File Integrity Checker, Encryption Tool'
     },
-    '1': {  # Ready
+    '1': {  # Ready (Overall Score >= 60%)
         '1': 'E-commerce Platform, Chat App, Project Management Tool, Social Media Dashboard',
         '2': 'Sentiment Analysis, Recommendation Engine, Stock Prediction, Customer Churn Prediction',
         '3': 'Food Delivery App, Fitness Tracker, E-commerce Mobile App, Social Media App',
@@ -111,19 +105,9 @@ COMPANY_INFO = {
     'address': 'Tech Innovation Hub, Bangalore, India'
 }
 
-def get_level_description(prediction):
-    """Get level description based on prediction"""
-    if prediction == 0:
-        return {
-            'level': 'Beginner',
-            'description': 'You need to focus on building foundational skills. Start with basic projects and gradually increase complexity.',
-            'color': 'warning',
-            'bg_color': '#f59e0b',
-            'readiness': 'Not Placement Ready',
-            'icon': 'fas fa-seedling',
-            'advice': 'Focus on completing at least 100 coding problems and 2-3 basic projects in your chosen domain.'
-        }
-    else:
+def get_level_description(overall_score):
+    """Get level description based on overall score (0-100%)"""
+    if overall_score >= 60:
         return {
             'level': 'Advanced',
             'description': 'You have strong technical skills. Focus on advanced projects and interview preparation.',
@@ -133,6 +117,50 @@ def get_level_description(prediction):
             'icon': 'fas fa-trophy',
             'advice': 'Prepare for technical interviews and work on complex projects to showcase your expertise.'
         }
+    elif overall_score >= 40:
+        return {
+            'level': 'Intermediate',
+            'description': 'You have good foundational skills. Focus on building intermediate projects and solving more problems.',
+            'color': 'info',
+            'bg_color': '#3b82f6',
+            'readiness': 'Getting There',
+            'icon': 'fas fa-chart-line',
+            'advice': 'Build 2-3 intermediate projects and solve 100+ coding problems.'
+        }
+    else:
+        return {
+            'level': 'Beginner',
+            'description': 'You need to focus on building foundational skills. Start with basic projects.',
+            'color': 'warning',
+            'bg_color': '#f59e0b',
+            'readiness': 'Needs Improvement',
+            'icon': 'fas fa-seedling',
+            'advice': 'Focus on completing basic projects and solving fundamental coding problems.'
+        }
+
+def calculate_overall_score(dsa_level, problem_count, project_count, github_quality):
+    """Calculate overall readiness score based on all factors"""
+    # Define realistic maximums
+    max_dsa = 10
+    max_problems = 200  # Realistic target for placement
+    max_projects = 10   # Realistic target for placement
+    max_github = 10
+    
+    # Calculate percentages
+    dsa_percentage = (dsa_level / max_dsa) * 100
+    problems_percentage = min(100, (problem_count / max_problems) * 100)
+    projects_percentage = min(100, (project_count / max_projects) * 100)
+    github_percentage = (github_quality / max_github) * 100
+    
+    # Weighted scoring (more weight to DSA and Projects)
+    overall_score = (
+        dsa_percentage * 0.35 +      # DSA is most important (35%)
+        problems_percentage * 0.25 +  # Problem solving (25%)
+        projects_percentage * 0.25 +  # Project experience (25%)
+        github_percentage * 0.15      # GitHub profile (15%)
+    )
+    
+    return min(100, round(overall_score, 1))
 
 @app.route('/')
 def home():
@@ -196,23 +224,18 @@ def assessment():
             if domain_focus not in DOMAINS:
                 domain_focus = '1'
             
-            print(f"Making prediction with: {dsa_level}, {problem_count}, {project_count}, {github_quality}, {domain_focus}")
+            print(f"Assessment inputs: DSA={dsa_level}, Problems={problem_count}, Projects={project_count}, GitHub={github_quality}, Domain={domain_focus}")
             
-            # Prepare input for prediction
-            input_data = [[
-                dsa_level, 
-                problem_count, 
-                project_count, 
-                github_quality, 
-                int(domain_focus)
-            ]]
+            # Calculate overall readiness score (our primary metric)
+            overall_score = calculate_overall_score(dsa_level, problem_count, project_count, github_quality)
+            print(f"Calculated Overall Score: {overall_score}%")
             
-            # Make prediction
-            prediction = model.predict(input_data)[0]
-            print(f"Prediction result: {prediction}")
+            # Determine readiness based on overall score (60% threshold)
+            is_ready = 1 if overall_score >= 60 else 0
+            print(f"Readiness Decision: {'READY' if is_ready == 1 else 'NOT READY'} (Threshold: 60%)")
             
-            # Get level info
-            level_info = get_level_description(prediction)
+            # Get level info based on overall score
+            level_info = get_level_description(overall_score)
             
             # Store in session
             session['assessment_data'] = {
@@ -221,7 +244,8 @@ def assessment():
                 'project_count': project_count,
                 'github_quality': github_quality,
                 'domain_focus': domain_focus,
-                'prediction': int(prediction),
+                'prediction': is_ready,  # 1 if ready, 0 if not ready
+                'overall_score': overall_score,
                 'level_info': level_info,
                 'domain_name': DOMAINS[domain_focus]['name'],
                 'domain_info': DOMAINS[domain_focus]
@@ -248,13 +272,14 @@ def results():
     
     assessment_data = session['assessment_data']
     domain_key = assessment_data['domain_focus']
-    prediction = assessment_data['prediction']
+    prediction = assessment_data['prediction']  # 0 or 1 based on 60% threshold
+    overall_score = assessment_data['overall_score']
     
-    # Get project suggestions (as string, not dict)
+    # Get project suggestions based on readiness (0 or 1)
     suggestions_str = PROJECT_SUGGESTIONS.get(str(prediction), {}).get(domain_key, 'No suggestions available')
     suggestions = [s.strip() for s in suggestions_str.split(',')]
     
-    # Get resources (as string, not dict)
+    # Get resources
     resources_str = LEARNING_RESOURCES.get(domain_key, 'No resources available')
     resources = [r.strip() for r in resources_str.split(',')]
     
@@ -266,7 +291,8 @@ def results():
                          resources=resources[:5],
                          domain=domain_info,
                          domain_key=domain_key,
-                         company=COMPANY_INFO)
+                         company=COMPANY_INFO,
+                         overall_score=overall_score)
 
 @app.route('/dashboard')
 def dashboard():
@@ -275,7 +301,7 @@ def dashboard():
         return redirect(url_for('assessment'))
     
     assessment_data = session['assessment_data']
-    prediction = assessment_data['prediction']
+    overall_score = assessment_data['overall_score']
     
     # Define realistic maximums for calculations
     max_values = {
@@ -332,39 +358,31 @@ def dashboard():
         'level': 'Beginner' if git_percentage < 40 else 'Intermediate' if git_percentage < 70 else 'Advanced'
     }
     
-    # Calculate overall score
-    overall_score = (
-        dsa_percentage * 0.3 +
-        prob_percentage * 0.25 +
-        proj_percentage * 0.25 +
-        git_percentage * 0.2
-    )
-    
     # Get improvement tips based on actual scores
     improvement_tips = []
     
-    if assessment_data['dsa_level'] < 5:
-        improvement_tips.append('Improve DSA skills: Target level 7+ for placement readiness')
+    if assessment_data['dsa_level'] < 6:
+        improvement_tips.append(f'Improve DSA skills: Current {assessment_data["dsa_level"]}/10 (Target: 7+)')
     
     if assessment_data['problem_count'] < 100:
-        improvement_tips.append(f'Solve more problems: Current {assessment_data["problem_count"]}/200 target')
+        improvement_tips.append(f'Solve more problems: Current {assessment_data["problem_count"]} (Target: 150+)')
     
     if assessment_data['project_count'] < 3:
-        improvement_tips.append(f'Build more projects: Current {assessment_data["project_count"]}/10 target')
+        improvement_tips.append(f'Build more projects: Current {assessment_data["project_count"]} (Target: 5+)')
     
     if assessment_data['github_quality'] < 6:
-        improvement_tips.append('Improve GitHub profile with better documentation and projects')
+        improvement_tips.append(f'Improve GitHub profile: Current {assessment_data["github_quality"]}/10 (Target: 7+)')
     
     # If no specific tips, add general ones
     if not improvement_tips:
-        if prediction == 0:
-            improvement_tips.append('Focus on building a strong foundation with basic projects')
-            improvement_tips.append('Solve at least 100 coding problems regularly')
-            improvement_tips.append('Complete 3-5 meaningful projects for your portfolio')
-        else:
+        if overall_score >= 60:
             improvement_tips.append('Prepare for technical interviews with mock sessions')
             improvement_tips.append('Contribute to open-source projects')
             improvement_tips.append('Build advanced projects to showcase expertise')
+        else:
+            improvement_tips.append('Focus on building a strong foundation with basic projects')
+            improvement_tips.append('Solve at least 100 coding problems regularly')
+            improvement_tips.append('Complete 3-5 meaningful projects for your portfolio')
     
     return render_template('dashboard.html',
                          assessment_data=assessment_data,
@@ -383,11 +401,11 @@ def projects():
     domain_key = assessment_data['domain_focus']
     prediction = assessment_data['prediction']
     
-    # Get project suggestions (as string, not dict)
+    # Get project suggestions
     suggestions_str = PROJECT_SUGGESTIONS.get(str(prediction), {}).get(domain_key, 'No suggestions available')
     suggestions = [s.strip() for s in suggestions_str.split(',')]
     
-    # Get resources (as string, not dict)
+    # Get resources
     resources_str = LEARNING_RESOURCES.get(domain_key, 'No resources available')
     resources = [r.strip() for r in resources_str.split(',')]
     
@@ -413,7 +431,7 @@ def health_check():
         'status': 'healthy', 
         'service': 'placement-readiness',
         'version': '1.0.0',
-        'model_loaded': True
+        'uses_overall_score': True
     })
 
 @app.route('/api/assessment-data')
