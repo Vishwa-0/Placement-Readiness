@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: #020617;
+}
+
+nav a {
+    color: #94a3b8;
+    margin-left: 1rem;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #38bdf8;
+}
+
+.hero {
+    text-align: center;
+    margin-top: 6rem;
+}
+
+.btn {
+    background: #38bdf8;
+    padding: 0.8rem 1.5rem;
+    color: #020617;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.card {
+    background: #020617;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 1.5rem auto;
+    max-width: 500px;
+}
+
+input, button {
+    width: 100%;
+    padding: 0.7rem;
+    margin-top: 0.7rem;
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    color: white;
+}
+
+button {
+    background: #38bdf8;
+    color: black;
+    cursor: pointer;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
