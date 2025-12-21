@@ -37,7 +37,7 @@ DOMAINS = {
             'advanced': 'Master advanced concepts like WebSockets, PWA, and DevOps'
         },
         'icon': 'fas fa-code',
-        'color': '#8b5cf6'  # Violet
+        'color': '#8b5cf6'
     },
     '2': {
         'name': 'Data Science',
@@ -49,7 +49,7 @@ DOMAINS = {
             'advanced': 'Master deep learning and big data technologies'
         },
         'icon': 'fas fa-chart-line',
-        'color': '#10b981'  # Emerald
+        'color': '#10b981'
     },
     '3': {
         'name': 'Mobile Development',
@@ -61,7 +61,7 @@ DOMAINS = {
             'advanced': 'Master performance optimization and native features'
         },
         'icon': 'fas fa-mobile-alt',
-        'color': '#3b82f6'  # Blue
+        'color': '#3b82f6'
     },
     '4': {
         'name': 'Cybersecurity',
@@ -73,104 +73,32 @@ DOMAINS = {
             'advanced': 'Master advanced exploitation techniques and defense strategies'
         },
         'icon': 'fas fa-shield-alt',
-        'color': '#ef4444'  # Red
+        'color': '#ef4444'
     }
 }
 
-# Project suggestions based on readiness level
+# Project suggestions based on readiness level - SIMPLIFIED
 PROJECT_SUGGESTIONS = {
     '0': {  # Not Ready
-        '1': [
-            'Personal Portfolio Website',
-            'To-Do List App with Local Storage',
-            'Weather App with API Integration',
-            'Simple Calculator',
-            'Responsive Blog Website'
-        ],
-        '2': [
-            'Data Analysis with Titanic Dataset',
-            'House Price Prediction Model',
-            'Iris Flower Classification',
-            'Customer Segmentation Analysis',
-            'Sales Dashboard Visualization'
-        ],
-        '3': [
-            'BMI Calculator App',
-            'Notes Taking App',
-            'Currency Converter',
-            'Flashlight/Torch App',
-            'Simple Quiz App'
-        ],
-        '4': [
-            'Password Strength Checker',
-            'Basic Network Scanner',
-            'File Integrity Checker',
-            'Simple Encryption Tool',
-            'Log Analyzer Tool'
-        ]
+        '1': 'Personal Portfolio Website, To-Do List App, Weather App, Calculator, Blog Website',
+        '2': 'Titanic Data Analysis, House Price Prediction, Iris Classification, Sales Dashboard',
+        '3': 'BMI Calculator, Notes App, Currency Converter, Flashlight App, Quiz App',
+        '4': 'Password Checker, Network Scanner, File Integrity Checker, Encryption Tool'
     },
     '1': {  # Ready
-        '1': [
-            'E-commerce Platform with Payment Gateway',
-            'Real-time Chat Application',
-            'Project Management Dashboard',
-            'Social Media Platform',
-            'Online Booking System'
-        ],
-        '2': [
-            'Sentiment Analysis System',
-            'Recommendation Engine',
-            'Stock Price Prediction Model',
-            'Customer Churn Prediction',
-            'Image Classification System'
-        ],
-        '3': [
-            'Food Delivery Application',
-            'Fitness Tracker with Health Data',
-            'E-commerce Mobile App',
-            'Social Media Mobile App',
-            'Ride-Sharing Application'
-        ],
-        '4': [
-            'Vulnerability Scanner Tool',
-            'Intrusion Detection System',
-            'Security Dashboard',
-            'Password Manager with Encryption',
-            'Network Monitoring System'
-        ]
+        '1': 'E-commerce Platform, Chat App, Project Management Tool, Social Media Dashboard',
+        '2': 'Sentiment Analysis, Recommendation Engine, Stock Prediction, Customer Churn Prediction',
+        '3': 'Food Delivery App, Fitness Tracker, E-commerce Mobile App, Social Media App',
+        '4': 'Vulnerability Scanner, Intrusion Detection System, Security Dashboard, Password Manager'
     }
 }
 
-# Learning resources for each domain
+# Learning resources for each domain - SIMPLIFIED
 LEARNING_RESOURCES = {
-    '1': [
-        {'name': 'MDN Web Docs', 'url': 'https://developer.mozilla.org', 'type': 'Documentation'},
-        {'name': 'freeCodeCamp', 'url': 'https://freecodecamp.org', 'type': 'Tutorials'},
-        {'name': 'Frontend Masters', 'url': 'https://frontendmasters.com', 'type': 'Courses'},
-        {'name': 'Codecademy Web Dev', 'url': 'https://codecademy.com', 'type': 'Interactive'},
-        {'name': 'W3Schools', 'url': 'https://w3schools.com', 'type': 'Reference'}
-    ],
-    '2': [
-        {'name': 'Kaggle Learn', 'url': 'https://kaggle.com/learn', 'type': 'Practice'},
-        {'name': 'Coursera ML Course', 'url': 'https://coursera.org', 'type': 'Course'},
-        {'name': 'Fast.ai', 'url': 'https://fast.ai', 'type': 'Practical AI'},
-        {'name': 'DataCamp', 'url': 'https://datacamp.com', 'type': 'Interactive'},
-        {'name': 'Towards Data Science', 'url': 'https://towardsdatascience.com', 'type': 'Articles'}
-    ],
-    '3': [
-        {'name': 'Android Developers', 'url': 'https://developer.android.com', 'type': 'Documentation'},
-        {'name': 'iOS Dev Center', 'url': 'https://developer.apple.com', 'type': 'Documentation'},
-        {'name': 'Flutter Docs', 'url': 'https://flutter.dev', 'type': 'Framework'},
-        {'name': 'React Native Docs', 'url': 'https://reactnative.dev', 'type': 'Framework'},
-        {'name': 'Raywenderlich', 'url': 'https://raywenderlich.com', 'type': 'Tutorials'}
-    ],
-    '4': [
-        {'name': 'Cybrary', 'url': 'https://cybrary.it', 'type': 'Courses'},
-        {'name': 'HackTheBox', 'url': 'https://hackthebox.com', 'type': 'Practice'},
-        {'name': 'TryHackMe', 'url': 'https://tryhackme.com', 'type': 'Learning'},
-        {'name': 'OWASP', 'url': 'https://owasp.org', 'type': 'Security'},
-        {'name': 'SecurityTube', 'url': 'https://securitytube.net', 'type': 'Videos'}
-    ]
+    '1': 'MDN Web Docs, freeCodeCamp, W3Schools, Frontend Masters, Codecademy',
+    '2': 'Kaggle, Coursera ML Course, Fast.ai, DataCamp, Towards Data Science',
+    '3': 'Android Developers, iOS Dev Center, Flutter Docs, React Native Docs',
+    '4': 'Cybrary, HackTheBox, TryHackMe, OWASP, SecurityTube'
 }
 
 # Company information
@@ -219,25 +147,25 @@ def about():
     team_members = [
         {
             'name': 'Swathi',
-            'role': 'Backend Developer & System Architect',
-            'skills': 'Python, Flask, Database Design, API Development',
-            'bio': 'Specializes in backend systems and database architecture. Ensures system reliability and scalability.',
+            'role': 'Team Lead',
+            'skills': 'Project Management, System Architecture, Leadership',
+            'bio': 'Oversees project execution and team coordination. Ensures seamless integration of all system components.',
             'avatar': 'SW',
             'color': '#8b5cf6'
         },
         {
             'name': 'Santhosh',
-            'role': 'ML Engineer & Data Scientist',
-            'skills': 'Machine Learning, AI Algorithms, Data Analysis, Predictive Modeling',
-            'bio': 'Expert in machine learning algorithms and data analysis. Designs the predictive models powering our assessments.',
+            'role': 'Creative Lead',
+            'skills': 'UI/UX Design, Brand Identity, Visual Design',
+            'bio': 'Designs intuitive user interfaces and creates engaging visual experiences. Focuses on user-centered design.',
             'avatar': 'SA',
             'color': '#10b981'
         },
         {
             'name': 'Vishwa',
-            'role': 'Frontend Developer & UI/UX Designer',
-            'skills': 'HTML/CSS, JavaScript, React, User Experience Design',
-            'bio': 'Creates intuitive user interfaces and seamless experiences. Focuses on making complex data easy to understand.',
+            'role': 'Tech Lead',
+            'skills': 'Full-Stack Development, Technical Strategy, Code Quality',
+            'bio': 'Leads technical development and ensures code quality. Implements best practices and mentors team members.',
             'avatar': 'VI',
             'color': '#3b82f6'
         }
@@ -286,22 +214,6 @@ def assessment():
             # Get level info
             level_info = get_level_description(prediction)
             
-            # Calculate skill scores
-            skill_scores = {
-                'dsa': min(100, (dsa_level / 10) * 100),
-                'problems': min(100, (problem_count / 500) * 100),
-                'projects': min(100, (project_count / 50) * 100),
-                'github': min(100, (github_quality / 10) * 100)
-            }
-            
-            # Calculate overall score
-            overall_score = (
-                skill_scores['dsa'] * 0.3 +
-                skill_scores['problems'] * 0.25 +
-                skill_scores['projects'] * 0.25 +
-                skill_scores['github'] * 0.2
-            )
-            
             # Store in session
             session['assessment_data'] = {
                 'dsa_level': dsa_level,
@@ -312,9 +224,7 @@ def assessment():
                 'prediction': int(prediction),
                 'level_info': level_info,
                 'domain_name': DOMAINS[domain_focus]['name'],
-                'skill_scores': skill_scores,
-                'overall_score': round(overall_score, 1),
-                'timestamp': os.times().elapsed
+                'domain_info': DOMAINS[domain_focus]
             }
             
             return redirect(url_for('results'))
@@ -340,9 +250,14 @@ def results():
     domain_key = assessment_data['domain_focus']
     prediction = assessment_data['prediction']
     
-    # Get project suggestions
-    suggestions = PROJECT_SUGGESTIONS.get(str(prediction), {}).get(domain_key, [])
-    resources = LEARNING_RESOURCES.get(domain_key, [])
+    # Get project suggestions (as string, not dict)
+    suggestions_str = PROJECT_SUGGESTIONS.get(str(prediction), {}).get(domain_key, 'No suggestions available')
+    suggestions = [s.strip() for s in suggestions_str.split(',')]
+    
+    # Get resources (as string, not dict)
+    resources_str = LEARNING_RESOURCES.get(domain_key, 'No resources available')
+    resources = [r.strip() for r in resources_str.split(',')]
+    
     domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
     
     return render_template('results.html',
@@ -360,42 +275,102 @@ def dashboard():
         return redirect(url_for('assessment'))
     
     assessment_data = session['assessment_data']
+    prediction = assessment_data['prediction']
     
-    # Calculate skill percentages
+    # Define realistic maximums for calculations
+    max_values = {
+        'dsa_level': 10,
+        'problem_count': 200,  # Realistic max: 200 problems
+        'project_count': 10,   # Realistic max: 10 projects
+        'github_quality': 10
+    }
+    
+    # Calculate skill percentages with realistic max values
     skill_data = {}
-    skills = [
-        ('dsa_level', 'DSA Proficiency', 10, '#8b5cf6'),
-        ('problem_count', 'Problems Solved', 500, '#10b981'),
-        ('project_count', 'Projects Completed', 50, '#3b82f6'),
-        ('github_quality', 'GitHub Quality', 10, '#ef4444')
-    ]
     
-    for key, label, max_val, color in skills:
-        current = assessment_data[key]
-        percentage = min(100, int((current / max_val) * 100))
-        skill_data[key] = {
-            'value': current,
-            'percentage': percentage,
-            'max': max_val,
-            'label': label,
-            'color': color
-        }
+    # DSA Level
+    dsa_percentage = min(100, int((assessment_data['dsa_level'] / max_values['dsa_level']) * 100))
+    skill_data['dsa_level'] = {
+        'value': assessment_data['dsa_level'],
+        'percentage': dsa_percentage,
+        'max': max_values['dsa_level'],
+        'label': 'DSA Proficiency',
+        'color': '#8b5cf6',
+        'level': 'Beginner' if dsa_percentage < 40 else 'Intermediate' if dsa_percentage < 70 else 'Advanced'
+    }
     
-    # Get improvement tips
+    # Problems Solved
+    prob_percentage = min(100, int((assessment_data['problem_count'] / max_values['problem_count']) * 100))
+    skill_data['problem_count'] = {
+        'value': assessment_data['problem_count'],
+        'percentage': prob_percentage,
+        'max': max_values['problem_count'],
+        'label': 'Problems Solved',
+        'color': '#10b981',
+        'level': 'Beginner' if prob_percentage < 40 else 'Intermediate' if prob_percentage < 70 else 'Advanced'
+    }
+    
+    # Projects Completed
+    proj_percentage = min(100, int((assessment_data['project_count'] / max_values['project_count']) * 100))
+    skill_data['project_count'] = {
+        'value': assessment_data['project_count'],
+        'percentage': proj_percentage,
+        'max': max_values['project_count'],
+        'label': 'Projects Completed',
+        'color': '#3b82f6',
+        'level': 'Beginner' if proj_percentage < 40 else 'Intermediate' if proj_percentage < 70 else 'Advanced'
+    }
+    
+    # GitHub Quality
+    git_percentage = min(100, int((assessment_data['github_quality'] / max_values['github_quality']) * 100))
+    skill_data['github_quality'] = {
+        'value': assessment_data['github_quality'],
+        'percentage': git_percentage,
+        'max': max_values['github_quality'],
+        'label': 'GitHub Quality',
+        'color': '#ef4444',
+        'level': 'Beginner' if git_percentage < 40 else 'Intermediate' if git_percentage < 70 else 'Advanced'
+    }
+    
+    # Calculate overall score
+    overall_score = (
+        dsa_percentage * 0.3 +
+        prob_percentage * 0.25 +
+        proj_percentage * 0.25 +
+        git_percentage * 0.2
+    )
+    
+    # Get improvement tips based on actual scores
     improvement_tips = []
-    if assessment_data['dsa_level'] < 6:
-        improvement_tips.append('Solve more DSA problems (target: 100+ problems)')
+    
+    if assessment_data['dsa_level'] < 5:
+        improvement_tips.append('Improve DSA skills: Target level 7+ for placement readiness')
+    
     if assessment_data['problem_count'] < 100:
-        improvement_tips.append('Increase coding practice on platforms like LeetCode')
-    if assessment_data['project_count'] < 5:
-        improvement_tips.append('Build more complete projects for your portfolio')
+        improvement_tips.append(f'Solve more problems: Current {assessment_data["problem_count"]}/200 target')
+    
+    if assessment_data['project_count'] < 3:
+        improvement_tips.append(f'Build more projects: Current {assessment_data["project_count"]}/10 target')
+    
     if assessment_data['github_quality'] < 6:
-        improvement_tips.append('Improve GitHub profile with better documentation')
+        improvement_tips.append('Improve GitHub profile with better documentation and projects')
+    
+    # If no specific tips, add general ones
+    if not improvement_tips:
+        if prediction == 0:
+            improvement_tips.append('Focus on building a strong foundation with basic projects')
+            improvement_tips.append('Solve at least 100 coding problems regularly')
+            improvement_tips.append('Complete 3-5 meaningful projects for your portfolio')
+        else:
+            improvement_tips.append('Prepare for technical interviews with mock sessions')
+            improvement_tips.append('Contribute to open-source projects')
+            improvement_tips.append('Build advanced projects to showcase expertise')
     
     return render_template('dashboard.html',
                          assessment_data=assessment_data,
                          skill_data=skill_data,
                          improvement_tips=improvement_tips,
+                         overall_score=int(overall_score),
                          company=COMPANY_INFO)
 
 @app.route('/projects')
@@ -408,8 +383,14 @@ def projects():
     domain_key = assessment_data['domain_focus']
     prediction = assessment_data['prediction']
     
-    suggestions = PROJECT_SUGGESTIONS.get(str(prediction), {}).get(domain_key, [])
-    resources = LEARNING_RESOURCES.get(domain_key, [])
+    # Get project suggestions (as string, not dict)
+    suggestions_str = PROJECT_SUGGESTIONS.get(str(prediction), {}).get(domain_key, 'No suggestions available')
+    suggestions = [s.strip() for s in suggestions_str.split(',')]
+    
+    # Get resources (as string, not dict)
+    resources_str = LEARNING_RESOURCES.get(domain_key, 'No resources available')
+    resources = [r.strip() for r in resources_str.split(',')]
+    
     domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
     
     return render_template('projects.html',
