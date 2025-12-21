@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #0f172a;
+    background: #020617;
     color: #e5e7eb;
 }
 
@@ -10,35 +10,42 @@ nav {
     justify-content: space-between;
     padding: 1rem 2rem;
     background: #020617;
+    border-bottom: 1px solid #1e293b;
 }
 
-nav a {
-    color: #94a3b8;
+.nav-links a {
     margin-left: 1rem;
+    color: #94a3b8;
     text-decoration: none;
 }
 
-nav a:hover {
+.nav-links a:hover {
     color: #38bdf8;
 }
 
 .hero {
     text-align: center;
-    margin-top: 6rem;
+    margin-top: 4rem;
+}
+
+.logo-box {
+    height: 120px;
+    margin-bottom: 1rem;
 }
 
 .btn {
     background: #38bdf8;
     padding: 0.8rem 1.5rem;
-    color: #020617;
+    border-radius: 8px;
+    color: black;
     text-decoration: none;
-    border-radius: 6px;
 }
 
 .card {
     background: #020617;
+    border: 1px solid #1e293b;
     padding: 1.5rem;
-    border-radius: 10px;
+    border-radius: 12px;
     margin: 1.5rem auto;
     max-width: 500px;
 }
@@ -47,7 +54,7 @@ input, button {
     width: 100%;
     padding: 0.7rem;
     margin-top: 0.7rem;
-    background: #0f172a;
+    background: #020617;
     border: 1px solid #1e293b;
     color: white;
 }
