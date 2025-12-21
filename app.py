@@ -30,22 +30,42 @@ DOMAINS = {
     '1': {
         'name': 'Web Development',
         'skills': ['HTML/CSS', 'JavaScript', 'React/Vue/Angular', 'Node.js/Django', 'Database Management'],
-        'description': 'Build modern web applications and services'
+        'description': 'Build modern web applications and services',
+        'levels': {
+            'beginner': 'Focus on HTML/CSS and basic JavaScript concepts',
+            'intermediate': 'Learn frameworks like React and build full-stack applications',
+            'advanced': 'Master advanced concepts like WebSockets, PWA, and DevOps'
+        }
     },
     '2': {
         'name': 'Data Science',
         'skills': ['Python', 'Statistics', 'Machine Learning', 'Data Visualization', 'SQL'],
-        'description': 'Analyze data and build predictive models'
+        'description': 'Analyze data and build predictive models',
+        'levels': {
+            'beginner': 'Start with Python programming and basic statistics',
+            'intermediate': 'Learn machine learning algorithms and data preprocessing',
+            'advanced': 'Master deep learning and big data technologies'
+        }
     },
     '3': {
         'name': 'Mobile Development',
         'skills': ['Java/Kotlin', 'Swift', 'React Native/Flutter', 'REST APIs', 'Mobile UI/UX'],
-        'description': 'Create applications for iOS and Android'
+        'description': 'Create applications for iOS and Android',
+        'levels': {
+            'beginner': 'Learn basics of Android/iOS development or cross-platform frameworks',
+            'intermediate': 'Build complete mobile apps with backend integration',
+            'advanced': 'Master performance optimization and native features'
+        }
     },
     '4': {
         'name': 'Cybersecurity',
         'skills': ['Networking', 'Cryptography', 'Penetration Testing', 'Security Tools', 'Ethical Hacking'],
-        'description': 'Protect systems and networks from cyber threats'
+        'description': 'Protect systems and networks from cyber threats',
+        'levels': {
+            'beginner': 'Learn networking basics and Linux fundamentals',
+            'intermediate': 'Study penetration testing methodologies and tools',
+            'advanced': 'Master advanced exploitation techniques and defense strategies'
+        }
     }
 }
 
