@@ -1,18 +1,212 @@
 {% extends "base.html" %}
+{% block title %}About Us - VYNOX{% endblock %}
+
 {% block content %}
-<h2>About VYNOX</h2>
+<div class="about-page">
+    <!-- Hero Section -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">About VYNOX</h1>
+        <p class="lead fs-4">Revolutionizing Placement Preparation through AI-Powered Assessment</p>
+    </div>
 
-<div class="card">
-    <p>
-        VYNOX was built to help students stop guessing and start improving.
-        We believe placement readiness should be measurable and actionable.
-    </p>
+    <!-- Company Story -->
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-6">
+            <div class="card shadow h-100 border-0">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4 text-primary">Our Mission</h3>
+                    <p class="card-text fs-5">
+                        At VYNOX, we bridge the gap between academic learning and industry requirements. 
+                        Our platform uses advanced machine learning algorithms to assess students' technical 
+                        skills and provide personalized roadmaps for placement success.
+                    </p>
+                    <p class="card-text">
+                        We believe every student deserves equal opportunity to showcase their potential 
+                        and prepare effectively for their dream tech careers.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow h-100 border-0">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4 text-primary">Our Vision</h3>
+                    <p class="card-text fs-5">
+                        To become the world's leading placement readiness platform, empowering millions of 
+                        students to achieve their career goals through data-driven insights and personalized 
+                        skill development.
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Accurate skill assessment</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Personalized learning paths</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Industry-relevant project suggestions</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Continuous progress tracking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <h3>Team</h3>
-    <ul>
-        <li>Swathi</li>
-        <li>Santhosh</li>
-        <li>Vishwa</li>
-    </ul>
+    <!-- Meet Our Team -->
+    <div class="mb-5">
+        <h2 class="text-center mb-5">Meet Our Team</h2>
+        <div class="row justify-content-center">
+            {% for member in team %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow border-0 h-100 text-center team-card">
+                    <div class="card-body p-4">
+                        <div class="team-img mb-3">
+                            <div class="initials-circle mx-auto">
+                                {{ member.name[0] }}
+                            </div>
+                        </div>
+                        <h4 class="card-title">{{ member.name }}</h4>
+                        <h6 class="card-subtitle mb-3 text-primary">{{ member.role }}</h6>
+                        <p class="card-text">
+                            {% if member.name == 'Swathi' %}
+                            Specializes in backend development, database design, and API integration. 
+                            Ensures system reliability and performance.
+                            {% elif member.name == 'Santhosh' %}
+                            Expert in machine learning algorithms and data analysis. 
+                            Designs the predictive models that power our assessments.
+                            {% elif member.name == 'Vishwa' %}
+                            Focuses on creating intuitive user interfaces and seamless user experiences. 
+                            Makes complex data easy to understand.
+                            {% endif %}
+                        </p>
+                        <div class="team-skills">
+                            {% if member.name == 'Swathi' %}
+                            <span class="badge bg-secondary m-1">Python</span>
+                            <span class="badge bg-secondary m-1">Flask</span>
+                            <span class="badge bg-secondary m-1">Database</span>
+                            {% elif member.name == 'Santhosh' %}
+                            <span class="badge bg-secondary m-1">Machine Learning</span>
+                            <span class="badge bg-secondary m-1">AI</span>
+                            <span class="badge bg-secondary m-1">Data Science</span>
+                            {% elif member.name == 'Vishwa' %}
+                            <span class="badge bg-secondary m-1">HTML/CSS</span>
+                            <span class="badge bg-secondary m-1">JavaScript</span>
+                            <span class="badge bg-secondary m-1">UI/UX</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <div class="social-links">
+                            <a href="#" class="text-dark mx-2"><i class="fab fa-linkedin fa-lg"></i></a>
+                            <a href="#" class="text-dark mx-2"><i class="fab fa-github fa-lg"></i></a>
+                            <a href="#" class="text-dark mx-2"><i class="fab fa-twitter fa-lg"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Technology Stack -->
+    <div class="mb-5">
+        <h2 class="text-center mb-4">Technology Stack</h2>
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-3">
+                <div class="tech-card p-3">
+                    <i class="fab fa-python fa-3x text-primary mb-2"></i>
+                    <h5>Python/Flask</h5>
+                    <p class="small">Backend Framework</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="tech-card p-3">
+                    <i class="fab fa-js-square fa-3x text-warning mb-2"></i>
+                    <h5>JavaScript</h5>
+                    <p class="small">Frontend Logic</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="tech-card p-3">
+                    <i class="fas fa-brain fa-3x text-success mb-2"></i>
+                    <h5>Machine Learning</h5>
+                    <p class="small">Scikit-learn Models</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="tech-card p-3">
+                    <i class="fab fa-bootstrap fa-3x text-purple mb-2"></i>
+                    <h5>Bootstrap 5</h5>
+                    <p class="small">UI Framework</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="card shadow border-0">
+        <div class="card-body p-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="mb-4">Get In Touch</h3>
+                    <div class="mb-3">
+                        <i class="fas fa-envelope text-primary me-3 fa-lg"></i>
+                        <span>contact@vynox.com</span>
+                    </div>
+                    <div class="mb-3">
+                        <i class="fas fa-phone text-primary me-3 fa-lg"></i>
+                        <span>+1 (123) 456-7890</span>
+                    </div>
+                    <div class="mb-3">
+                        <i class="fas fa-map-marker-alt text-primary me-3 fa-lg"></i>
+                        <span>Tech Park, Innovation District, Bangalore, India</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="mb-4">Follow Us</h3>
+                    <div class="social-links-large">
+                        <a href="#" class="btn btn-outline-primary btn-lg me-3 mb-2">
+                            <i class="fab fa-linkedin me-2"></i>LinkedIn
+                        </a>
+                        <a href="#" class="btn btn-outline-dark btn-lg me-3 mb-2">
+                            <i class="fab fa-github me-2"></i>GitHub
+                        </a>
+                        <a href="#" class="btn btn-outline-info btn-lg mb-2">
+                            <i class="fab fa-twitter me-2"></i>Twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.initials-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+
+.tech-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.tech-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+}
+</style>
 {% endblock %}
