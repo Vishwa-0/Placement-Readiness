@@ -416,3 +416,67 @@ footer .social-icons a:hover {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+/* Results Page Specific Styles */
+.readiness-banner {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    color: white;
+    padding: 3rem 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.readiness-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.domain-badge {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 0.5rem;
+}
+
+.project-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.project-list li {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    transition: var(--transition);
+}
+
+.project-list li:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+/* Skill meters */
+.skill-meter {
+    background: #e9ecef;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.skill-meter .skill-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.skill-meter .skill-name {
+    font-weight: 600;
+}
+
+.skill-meter .skill-value {
+    color: var(--primary-color);
+    font-weight: 700;
+}
