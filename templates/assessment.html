@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Skill Assessment</h2>
+
+<form method="POST" class="card">
+    <input type="number" name="dsa" placeholder="DSA Level (1-5)" required>
+    <input type="number" name="problems" placeholder="Problems Solved" required>
+    <input type="number" name="projects" placeholder="Projects Completed" required>
+    <input type="number" name="github" placeholder="GitHub Quality (1-5)" required>
+    <input type="number" name="domain" placeholder="Domain Focus (1-5)" required>
+
+    <button type="submit">Analyze</button>
+</form>
+{% endblock %}
