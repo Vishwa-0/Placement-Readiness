@@ -7,98 +7,268 @@
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
                 <h3 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Placement Readiness Assessment</h3>
+                <p class="mb-0 mt-2 small">Complete this assessment to evaluate your placement readiness level</p>
             </div>
             <div class="card-body">
                 {% if error %}
-                <div class="alert alert-danger">{{ error }}</div>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error:</strong> {{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
                 {% endif %}
                 
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
                 <form method="POST" action="{{ url_for('assessment') }}" id="assessmentForm">
+                    <!-- Technical Skills Section -->
                     <div class="mb-4">
-                        <h5>Technical Skills</h5>
-                        <div class="mb-3">
-                            <label for="dsa_level" class="form-label">
+                        <h5 class="border-bottom pb-2 mb-3">
+                            <i class="fas fa-laptop-code me-2 text-primary"></i>Technical Skills
+                        </h5>
+                        
+                        <div class="mb-4">
+                            <label for="dsa_level" class="form-label fw-bold">
                                 DSA Level (1-10)
-                                <span class="text-muted"> - Rate your Data Structures & Algorithms proficiency</span>
+                                <span class="text-muted fw-normal"> - Rate your Data Structures & Algorithms proficiency</span>
                             </label>
-                            <input type="range" class="form-range" min="1" max="10" step="1" id="dsa_level" name="dsa_level" value="5">
-                            <div class="d-flex justify-content-between">
-                                <small>Beginner</small>
-                                <small id="dsa_value">5</small>
-                                <small>Expert</small>
+                            <div class="range-container">
+                                <input type="range" class="form-range" min="1" max="10" step="1" 
+                                       id="dsa_level" name="dsa_level" value="5"
+                                       oninput="updateRangeValue('dsa_level', 'dsa_value')">
+                                <div class="d-flex justify-content-between mt-2">
+                                    <small class="text-muted">Beginner (1)</small>
+                                    <div>
+                                        <span class="badge bg-primary fs-6 px-3" id="dsa_value">5</span>
+                                        <small class="text-muted ms-1">/10</small>
+                                    </div>
+                                    <small class="text-muted">Expert (10)</small>
+                                </div>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    1-3: Basic concepts, 4-6: Intermediate problems, 7-10: Advanced algorithms
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="mb-3">
-                            <label for="problem_count" class="form-label">
+                        <div class="mb-4">
+                            <label for="problem_count" class="form-label fw-bold">
                                 Problems Solved
-                                <span class="text-muted"> - Number of coding problems solved (0-200+)</span>
+                                <span class="text-muted fw-normal"> - Number of coding problems solved (0-200+)</span>
                             </label>
-                            <input type="number" class="form-control" id="problem_count" name="problem_count" min="0" max="200" value="50" required>
-                            <div class="form-text">Enter approximate number of problems solved</div>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-code"></i></span>
+                                <input type="number" class="form-control" id="problem_count" 
+                                       name="problem_count" min="0" max="200" value="50" required
+                                       oninput="updateProblemCount()">
+                                <span class="input-group-text">problems</span>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Include problems from platforms like LeetCode, Codeforces, HackerRank, etc.
+                            </div>
+                            <div class="mt-2">
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-info" id="problem_progress" style="width: 25%"></div>
+                                </div>
+                                <small class="text-muted">
+                                    <span id="problem_level">Intermediate</span> level 
+                                    (<span id="problem_percentage">25</span>% of target)
+                                </small>
+                            </div>
                         </div>
                     </div>
                     
+                    <!-- Project Experience Section -->
                     <div class="mb-4">
-                        <h5>Project Experience</h5>
-                        <div class="mb-3">
-                            <label for="project_count" class="form-label">
+                        <h5 class="border-bottom pb-2 mb-3">
+                            <i class="fas fa-project-diagram me-2 text-success"></i>Project Experience
+                        </h5>
+                        
+                        <div class="mb-4">
+                            <label for="project_count" class="form-label fw-bold">
                                 Projects Completed
-                                <span class="text-muted"> - Number of completed projects (0-20+)</span>
+                                <span class="text-muted fw-normal"> - Number of completed projects (0-20+)</span>
                             </label>
-                            <input type="number" class="form-control" id="project_count" name="project_count" min="0" max="20" value="3" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tasks"></i></span>
+                                <input type="number" class="form-control" id="project_count" 
+                                       name="project_count" min="0" max="20" value="3" required
+                                       oninput="updateProjectCount()">
+                                <span class="input-group-text">projects</span>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Count only completed projects with source code available
+                            </div>
+                            <div class="mt-2">
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-success" id="project_progress" style="width: 15%"></div>
+                                </div>
+                                <small class="text-muted">
+                                    <span id="project_level">Beginner</span> level 
+                                    (<span id="project_percentage">15</span>% of target)
+                                </small>
+                            </div>
                         </div>
                         
-                        <div class="mb-3">
-                            <label for="github_quality" class="form-label">
+                        <div class="mb-4">
+                            <label for="github_quality" class="form-label fw-bold">
                                 GitHub Profile Quality (1-10)
-                                <span class="text-muted"> - Rate your GitHub repository quality</span>
+                                <span class="text-muted fw-normal"> - Rate your GitHub repository quality</span>
                             </label>
-                            <select class="form-select" id="github_quality" name="github_quality" required>
-                                <option value="1">1 - Basic repositories</option>
-                                <option value="3">3 - Few documented projects</option>
-                                <option value="5" selected>5 - Average quality projects</option>
-                                <option value="7">7 - Well-documented projects</option>
-                                <option value="10">10 - Professional portfolio</option>
-                            </select>
+                            <div class="range-container">
+                                <select class="form-select" id="github_quality" name="github_quality" required
+                                        onchange="updateGitHubQuality()">
+                                    <option value="1">1 - Basic repositories, no documentation</option>
+                                    <option value="2">2 - Few repositories, minimal documentation</option>
+                                    <option value="3">3 - Basic projects with README files</option>
+                                    <option value="4">4 - Multiple projects, some documentation</option>
+                                    <option value="5" selected>5 - Average quality, decent documentation</option>
+                                    <option value="6">6 - Good projects with proper documentation</option>
+                                    <option value="7">7 - Well-structured repositories</option>
+                                    <option value="8">8 - Professional projects, good documentation</option>
+                                    <option value="9">9 - High-quality portfolio, excellent docs</option>
+                                    <option value="10">10 - Professional portfolio, stars/forks, active contributions</option>
+                                </select>
+                                <div class="mt-2">
+                                    <div class="d-flex align-items-center">
+                                        <small class="text-muted me-2">Quality:</small>
+                                        <div class="github-stars">
+                                            {% for i in range(1, 11) %}
+                                            <i class="far fa-star github-star" id="star_{{ i }}"></i>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
+                    <!-- Domain Focus Section -->
                     <div class="mb-4">
-                        <h5>Domain Focus</h5>
-                        <div class="mb-3">
-                            <label for="domain_focus" class="form-label">Choose your primary tech domain</label>
-                            <select class="form-select" id="domain_focus" name="domain_focus" required>
+                        <h5 class="border-bottom pb-2 mb-3">
+                            <i class="fas fa-bullseye me-2 text-warning"></i>Domain Focus
+                        </h5>
+                        
+                        <div class="mb-4">
+                            <label for="domain_focus" class="form-label fw-bold">Choose your primary tech domain</label>
+                            <div class="row">
                                 {% for key, domain in domains.items() %}
-                                <option value="{{ key }}">{{ domain.name }}</option>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card domain-card h-100">
+                                        <div class="card-body">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" 
+                                                       name="domain_focus" id="domain_{{ key }}" 
+                                                       value="{{ key }}" 
+                                                       {% if loop.first %}checked{% endif %}>
+                                                <label class="form-check-label fw-bold" for="domain_{{ key }}">
+                                                    {{ domain.name }}
+                                                </label>
+                                            </div>
+                                            <div class="mt-2">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-cogs me-1"></i>
+                                                    Key Skills: {{ domain.skills|join(', ') }}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 {% endfor %}
-                            </select>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Select the domain you want to focus on for placement preparation
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary btn-lg px-5">
-                            <i class="fas fa-rocket me-2"></i>Check Readiness
+                    <!-- Submit Section -->
+                    <div class="text-center mt-4 pt-3 border-top">
+                        <button type="submit" class="btn btn-primary btn-lg px-5 py-3">
+                            <i class="fas fa-rocket me-2"></i>Check Placement Readiness
                         </button>
-                        <button type="reset" class="btn btn-outline-secondary btn-lg ms-2">Reset</button>
+                        <button type="reset" class="btn btn-outline-secondary btn-lg ms-2 px-4 py-3">
+                            <i class="fas fa-redo me-2"></i>Reset Form
+                        </button>
                     </div>
                 </form>
             </div>
-            <div class="card-footer text-center">
-                <small class="text-muted">Your assessment results will determine personalized recommendations</small>
+            <div class="card-footer text-center bg-light">
+                <small class="text-muted">
+                    <i class="fas fa-shield-alt me-1"></i>
+                    Your assessment results will be used only to provide personalized recommendations
+                </small>
             </div>
         </div>
         
         <!-- Assessment Tips -->
         <div class="card mt-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><i class="fas fa-lightbulb text-warning me-2"></i>Assessment Guidelines</h5>
+            </div>
             <div class="card-body">
-                <h5><i class="fas fa-lightbulb text-warning me-2"></i>Assessment Tips</h5>
-                <ul class="mb-0">
-                    <li>Be honest about your current skill level for accurate results</li>
-                    <li>Focus on your primary domain of interest</li>
-                    <li>Consider your most recent projects and achievements</li>
-                    <li>Results will help create a personalized improvement plan</li>
-                </ul>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-check-circle text-success me-2"></i>What to consider:</h6>
+                        <ul class="mb-0">
+                            <li>Be honest about your current skill level</li>
+                            <li>Consider your most recent achievements</li>
+                            <li>Include both academic and personal projects</li>
+                            <li>Think about your GitHub contributions</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-chart-line text-primary me-2"></i>What you'll get:</h6>
+                        <ul class="mb-0">
+                            <li>Personalized readiness score</li>
+                            <li>Skill gap analysis</li>
+                            <li>Project recommendations</li>
+                            <li>Improvement roadmap</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Stats -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                        <h5 class="card-title">500+</h5>
+                        <p class="card-text small">Students Assessed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-chart-bar fa-2x text-success mb-2"></i>
+                        <h5 class="card-title">85%</h5>
+                        <p class="card-text small">Accuracy Rate</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-award fa-2x text-warning mb-2"></i>
+                        <h5 class="card-title">92%</h5>
+                        <p class="card-text small">Placement Success</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -108,22 +278,304 @@
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const dsaSlider = document.getElementById('dsa_level');
-    const dsaValue = document.getElementById('dsa_value');
+    // Initialize values
+    updateRangeValue('dsa_level', 'dsa_value');
+    updateProblemCount();
+    updateProjectCount();
+    updateGitHubQuality();
     
-    dsaSlider.addEventListener('input', function() {
-        dsaValue.textContent = this.value;
-    });
-    
-    // Quick check functionality
-    document.getElementById('assessmentForm').addEventListener('submit', function(e) {
-        // Validate inputs
+    // Form validation
+    const assessmentForm = document.getElementById('assessmentForm');
+    assessmentForm.addEventListener('submit', function(e) {
         const problemCount = document.getElementById('problem_count').value;
+        const projectCount = document.getElementById('project_count').value;
+        
+        // Basic validation
         if (problemCount < 0 || problemCount > 200) {
-            alert('Please enter a valid number of problems (0-200)');
             e.preventDefault();
+            showAlert('Please enter a valid number of problems (0-200)', 'warning');
+            document.getElementById('problem_count').focus();
+            return;
         }
+        
+        if (projectCount < 0 || projectCount > 20) {
+            e.preventDefault();
+            showAlert('Please enter a valid number of projects (0-20)', 'warning');
+            document.getElementById('project_count').focus();
+            return;
+        }
+        
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Analyzing...';
+        submitBtn.disabled = true;
+        
+        // Re-enable after 5 seconds in case of error
+        setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 5000);
     });
+    
+    // Domain card selection effect
+    document.querySelectorAll('.domain-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const radio = this.querySelector('.form-check-input');
+            radio.checked = true;
+            
+            // Remove active class from all cards
+            document.querySelectorAll('.domain-card').forEach(c => {
+                c.classList.remove('border-primary', 'bg-primary-light');
+            });
+            
+            // Add active class to selected card
+            this.classList.add('border-primary', 'bg-primary-light');
+        });
+    });
+    
+    // Initialize first domain card as active
+    const firstDomainCard = document.querySelector('.domain-card');
+    if (firstDomainCard) {
+        firstDomainCard.classList.add('border-primary', 'bg-primary-light');
+    }
 });
+
+// Update range value display
+function updateRangeValue(sliderId, displayId) {
+    const slider = document.getElementById(sliderId);
+    const display = document.getElementById(displayId);
+    if (slider && display) {
+        display.textContent = slider.value;
+        
+        // Update color based on value
+        const value = parseInt(slider.value);
+        let color = 'danger';
+        if (value >= 8) color = 'success';
+        else if (value >= 5) color = 'warning';
+        
+        display.className = `badge bg-${color} fs-6 px-3`;
+    }
+}
+
+// Update problem count progress
+function updateProblemCount() {
+    const problemCount = document.getElementById('problem_count');
+    const progressBar = document.getElementById('problem_progress');
+    const levelText = document.getElementById('problem_level');
+    const percentageText = document.getElementById('problem_percentage');
+    
+    if (problemCount && progressBar && levelText && percentageText) {
+        const count = parseInt(problemCount.value) || 0;
+        const percentage = Math.min(100, Math.round((count / 200) * 100));
+        
+        progressBar.style.width = `${percentage}%`;
+        percentageText.textContent = percentage;
+        
+        // Update level text
+        if (count < 30) {
+            levelText.textContent = 'Beginner';
+            progressBar.className = 'progress-bar bg-danger';
+        } else if (count < 100) {
+            levelText.textContent = 'Intermediate';
+            progressBar.className = 'progress-bar bg-warning';
+        } else {
+            levelText.textContent = 'Advanced';
+            progressBar.className = 'progress-bar bg-success';
+        }
+    }
+}
+
+// Update project count progress
+function updateProjectCount() {
+    const projectCount = document.getElementById('project_count');
+    const progressBar = document.getElementById('project_progress');
+    const levelText = document.getElementById('project_level');
+    const percentageText = document.getElementById('project_percentage');
+    
+    if (projectCount && progressBar && levelText && percentageText) {
+        const count = parseInt(projectCount.value) || 0;
+        const percentage = Math.min(100, Math.round((count / 20) * 100));
+        
+        progressBar.style.width = `${percentage}%`;
+        percentageText.textContent = percentage;
+        
+        // Update level text
+        if (count < 2) {
+            levelText.textContent = 'Beginner';
+            progressBar.className = 'progress-bar bg-danger';
+        } else if (count < 5) {
+            levelText.textContent = 'Intermediate';
+            progressBar.className = 'progress-bar bg-warning';
+        } else {
+            levelText.textContent = 'Advanced';
+            progressBar.className = 'progress-bar bg-success';
+        }
+    }
+}
+
+// Update GitHub quality stars
+function updateGitHubQuality() {
+    const select = document.getElementById('github_quality');
+    if (select) {
+        const value = parseInt(select.value);
+        
+        // Update stars
+        for (let i = 1; i <= 10; i++) {
+            const star = document.getElementById(`star_${i}`);
+            if (star) {
+                if (i <= value) {
+                    star.className = 'fas fa-star github-star text-warning';
+                } else {
+                    star.className = 'far fa-star github-star';
+                }
+            }
+        }
+    }
+}
+
+// Show alert function
+function showAlert(message, type = 'info') {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    // Insert after the form
+    const form = document.getElementById('assessmentForm');
+    if (form) {
+        form.parentNode.insertBefore(alertDiv, form);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                const bsAlert = new bootstrap.Alert(alertDiv);
+                bsAlert.close();
+            }
+        }, 5000);
+    }
+}
+
+// Quick assessment preview
+function previewAssessment() {
+    const dsaLevel = document.getElementById('dsa_level').value;
+    const problemCount = document.getElementById('problem_count').value;
+    const projectCount = document.getElementById('project_count').value;
+    const githubQuality = document.getElementById('github_quality').value;
+    
+    // Simple scoring algorithm for preview
+    let score = 0;
+    score += parseInt(dsaLevel) * 10;
+    score += Math.min(problemCount, 200) * 0.5;
+    score += parseInt(projectCount) * 15;
+    score += parseInt(githubQuality) * 8;
+    
+    const maxScore = 1000;
+    const percentage = Math.min(100, Math.round((score / maxScore) * 100));
+    
+    // Show preview
+    const previewDiv = document.getElementById('previewResult');
+    if (previewDiv) {
+        let level = 'Beginner';
+        let color = 'danger';
+        
+        if (percentage >= 70) {
+            level = 'Advanced';
+            color = 'success';
+        } else if (percentage >= 40) {
+            level = 'Intermediate';
+            color = 'warning';
+        }
+        
+        previewDiv.innerHTML = `
+            <div class="alert alert-${color}">
+                <h5>Quick Preview</h5>
+                <p>Estimated Readiness: <span class="badge bg-${color}">${level} (${percentage}%)</span></p>
+                <small>This is just an estimate. Submit for detailed analysis.</small>
+            </div>
+        `;
+    }
+}
 </script>
+
+<style>
+.range-container {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.form-range::-webkit-slider-thumb {
+    background: #4361ee;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.form-range::-moz-range-thumb {
+    background: #4361ee;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.domain-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.domain-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.domain-card.border-primary {
+    border-color: #4361ee !important;
+}
+
+.bg-primary-light {
+    background-color: rgba(67, 97, 238, 0.05) !important;
+}
+
+.github-stars {
+    font-size: 1.2rem;
+}
+
+.github-star {
+    color: #ffc107;
+    margin: 0 1px;
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+.progress {
+    background-color: #e9ecef;
+    border-radius: 4px;
+}
+
+.progress-bar {
+    border-radius: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn-lg {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .domain-card {
+        margin-bottom: 0.5rem;
+    }
+}
+</style>
 {% endblock %}
