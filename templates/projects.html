@@ -2,14 +2,144 @@
 {% block title %}Projects - VYNOX{% endblock %}
 
 {% block content %}
-<div class="projects-page">
+<div class="container py-4">
     <!-- Page Header -->
     <div class="text-center mb-5">
         <h1 class="display-5 mb-3">Project Recommendations</h1>
-        <p class="lead">Personalized project ideas for {{ level_info.level|lower }} level in {{ domain.name }}</p>
-        <div class="badge bg-{{ level_info.color }} fs-6 p-2">{{ level_info.readiness }}</div>
+        <p class="lead">Personalized project ideas for your level in {{ domain.name }}</p>
+        {% if assessment_data.prediction == 1 %}
+        <div class="badge bg-success fs-6 p-2">Placement Ready</div>
+        {% else %}
+        <div class="badge bg-warning fs-6 p-2">Not Placement Ready</div>
+        {% endif %}
     </div>
     
     <!-- Project Suggestions -->
-    <div class="card shadow mb-5">
+    <div class="card shadow mb-5 border-0">
         <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Recommended Projects for {{ domain.name }}</h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text">Here are project ideas tailored to your skill level. Start with simpler projects and gradually move to more complex ones.</p>
+            
+            <div class="row">
+                {% for project in suggestions %}
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 border">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <i class="fas fa-code text-primary me-2"></i>Project {{ loop.index }}
+                            </h6>
+                            <h5 class="card-text">{{ project }}</h5>
+                            <div class="mt-3">
+                                <small class="text-muted">Skills you'll develop:</small>
+                                <div class="mt-1">
+                                    {% for skill in domain.skills[:3] %}
+                                    <span class="badge bg-secondary me-1 mb-1">{{ skill }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-sm btn-outline-primary" onclick="showProjectDetails('{{ project }}')">
+                                <i class="fas fa-info-circle me-1"></i>View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Learning Resources -->
+    <div class="card shadow mb-5 border-0">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Learning Resources</h5>
+        </div>
+        <div class="card-body">
+            <p>Enhance your skills with these recommended resources for {{ domain.name }}:</p>
+            <div class="list-group">
+                {% for resource in resources %}
+                <div class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1">{{ resource }}</h6>
+                        <small class="text-muted">Free Resource</small>
+                    </div>
+                    <p class="mb-1">Learn essential concepts and techniques</p>
+                    <small class="text-muted">Click to explore</small>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Action Plan -->
+    <div class="card shadow border-0">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="fas fa-calendar-check me-2"></i>30-Day Action Plan</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="text-center p-3">
+                        <div class="display-6 text-primary mb-2">Week 1-2</div>
+                        <h5>Foundation Building</h5>
+                        <ul class="text-start">
+                            <li>Complete 2 beginner projects</li>
+                            <li>Solve 50 coding problems</li>
+                            <li>Learn core concepts</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-3">
+                        <div class="display-6 text-success mb-2">Week 3-4</div>
+                        <h5>Skill Enhancement</h5>
+                        <ul class="text-start">
+                            <li>Build 1 intermediate project</li>
+                            <li>Solve 100+ problems</li>
+                            <li>Work on GitHub portfolio</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-3">
+                        <div class="display-6 text-info mb-2">After 30 Days</div>
+                        <h5>Assessment & Growth</h5>
+                        <ul class="text-start">
+                            <li>Retake placement assessment</li>
+                            <li>Update your resume</li>
+                            <li>Apply for internships</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ url_for('assessment') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-redo me-2"></i>Retake Assessment in 30 Days
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showProjectDetails(projectName) {
+    alert(`Project Details: ${projectName}\n\nStart by:\n1. Researching similar projects\n2. Breaking it into smaller tasks\n3. Setting up your development environment\n4. Writing clean, documented code\n5. Testing and deploying your project`);
+}
+
+// Add project tracking
+document.addEventListener('DOMContentLoaded', function() {
+    const projectCards = document.querySelectorAll('.card .btn-outline-primary');
+    projectCards.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const projectTitle = this.closest('.card').querySelector('.card-text').textContent;
+            console.log(`User viewed details for: ${projectTitle}`);
+        });
+    });
+});
+</script>
+{% endblock %}
