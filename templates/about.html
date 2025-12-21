@@ -2,46 +2,90 @@
 {% block title %}About Us - VYNOX{% endblock %}
 
 {% block content %}
-<div class="about-page">
+<div class="container py-5">
     <!-- Hero Section -->
     <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold mb-3">About VYNOX</h1>
-        <p class="lead fs-4">Revolutionizing Placement Preparation through AI-Powered Assessment</p>
-    </div>
-
-    <!-- Company Story -->
-    <div class="row mb-5 align-items-center">
-        <div class="col-md-6">
-            <div class="card shadow h-100 border-0">
-                <div class="card-body p-4">
-                    <h3 class="card-title mb-4 text-primary">Our Mission</h3>
-                    <p class="card-text fs-5">
-                        At VYNOX, we bridge the gap between academic learning and industry requirements. 
-                        Our platform uses advanced machine learning algorithms to assess students' technical 
-                        skills and provide personalized roadmaps for placement success.
-                    </p>
-                    <p class="card-text">
-                        We believe every student deserves equal opportunity to showcase their potential 
-                        and prepare effectively for their dream tech careers.
-                    </p>
+        <h1 class="display-4 fw-bold mb-3 text-gradient">About VYNOX</h1>
+        <p class="lead fs-4 text-muted">Transforming Placement Preparation Through Intelligent Assessment</p>
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-8">
+                <div class="card border-0 glass-effect fade-in">
+                    <div class="card-body p-4">
+                        <p class="mb-0 fs-5">
+                            VYNOX is an AI-powered Placement Readiness System that bridges the gap between 
+                            academic learning and industry requirements. Our platform evaluates technical skills 
+                            and provides personalized roadmaps for career success.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card shadow h-100 border-0">
+    </div>
+
+    <!-- Mission & Vision -->
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 border-0 shadow-lg">
                 <div class="card-body p-4">
-                    <h3 class="card-title mb-4 text-primary">Our Vision</h3>
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="rounded-circle bg-primary p-3 me-3">
+                            <i class="fas fa-bullseye fa-2x text-white"></i>
+                        </div>
+                        <h3 class="card-title mb-0">Our Mission</h3>
+                    </div>
                     <p class="card-text fs-5">
-                        To become the world's leading placement readiness platform, empowering millions of 
-                        students to achieve their career goals through data-driven insights and personalized 
-                        skill development.
+                        To democratize placement preparation by providing every student with personalized, 
+                        data-driven insights into their technical skills and career readiness.
                     </p>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Accurate skill assessment</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Personalized learning paths</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Industry-relevant project suggestions</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Continuous progress tracking</li>
+                    <ul class="list-unstyled mt-4">
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Accurate skill assessment through AI
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Personalized learning paths
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Industry-relevant project guidance
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Continuous progress tracking
+                        </li>
                     </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 border-0 shadow-lg">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="rounded-circle bg-primary p-3 me-3">
+                            <i class="fas fa-eye fa-2x text-white"></i>
+                        </div>
+                        <h3 class="card-title mb-0">Our Vision</h3>
+                    </div>
+                    <p class="card-text fs-5">
+                        To become the world's leading platform for placement readiness, empowering millions 
+                        of students to achieve their dream careers through intelligent assessment and guidance.
+                    </p>
+                    <div class="mt-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary me-3 p-2">500+</span>
+                            <span>Students Assessed</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-success me-3 p-2">85%</span>
+                            <span>Assessment Accuracy</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-warning me-3 p-2">92%</span>
+                            <span>User Satisfaction Rate</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,126 +93,330 @@
 
     <!-- Meet Our Team -->
     <div class="mb-5">
-        <h2 class="text-center mb-5">Meet Our Team</h2>
+        <h2 class="text-center mb-5">
+            <i class="fas fa-users me-3 text-primary"></i>
+            Meet Our Team
+        </h2>
+        
         <div class="row justify-content-center">
-            {% for member in team %}
-            <div class="col-md-4 mb-4">
-                <div class="card shadow border-0 h-100 text-center team-card">
+            <!-- Team Lead - Swathi -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card team-card h-100 border-0 shadow-lg">
                     <div class="card-body p-4">
-                        <div class="team-img mb-3">
-                            <div class="initials-circle mx-auto">
-                                {{ member.name[0] }}
+                        <div class="team-img mb-4 text-center">
+                            <div class="initials-circle mx-auto" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                <span class="text-white fs-1 fw-bold">SW</span>
                             </div>
                         </div>
-                        <h4 class="card-title">{{ member.name }}</h4>
-                        <h6 class="card-subtitle mb-3 text-primary">{{ member.role }}</h6>
-                        <p class="card-text">
-                            {% if member.name == 'Swathi' %}
-                            Specializes in backend development, database design, and API integration. 
-                            Ensures system reliability and performance.
-                            {% elif member.name == 'Santhosh' %}
-                            Expert in machine learning algorithms and data analysis. 
-                            Designs the predictive models that power our assessments.
-                            {% elif member.name == 'Vishwa' %}
-                            Focuses on creating intuitive user interfaces and seamless user experiences. 
-                            Makes complex data easy to understand.
-                            {% endif %}
+                        
+                        <h4 class="card-title text-center mb-2">Swathi</h4>
+                        <h6 class="card-subtitle mb-3 text-center text-primary">
+                            <i class="fas fa-crown me-2"></i>Team Lead
+                        </h6>
+                        
+                        <div class="text-center mb-4">
+                            <span class="badge bg-primary mb-2">Project Management</span>
+                            <span class="badge bg-secondary mb-2">System Architecture</span>
+                            <span class="badge bg-success mb-2">Leadership</span>
+                        </div>
+                        
+                        <p class="card-text text-center">
+                            Oversees project execution and team coordination. Ensures seamless integration 
+                            of all system components and maintains project timelines.
                         </p>
-                        <div class="team-skills">
-                            {% if member.name == 'Swathi' %}
-                            <span class="badge bg-secondary m-1">Python</span>
-                            <span class="badge bg-secondary m-1">Flask</span>
-                            <span class="badge bg-secondary m-1">Database</span>
-                            {% elif member.name == 'Santhosh' %}
-                            <span class="badge bg-secondary m-1">Machine Learning</span>
-                            <span class="badge bg-secondary m-1">AI</span>
-                            <span class="badge bg-secondary m-1">Data Science</span>
-                            {% elif member.name == 'Vishwa' %}
-                            <span class="badge bg-secondary m-1">HTML/CSS</span>
-                            <span class="badge bg-secondary m-1">JavaScript</span>
-                            <span class="badge bg-secondary m-1">UI/UX</span>
-                            {% endif %}
+                        
+                        <div class="team-details mt-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-tasks text-primary me-3"></i>
+                                <span>Coordinates team efforts and project milestones</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-chart-line text-primary me-3"></i>
+                                <span>Manages project timelines and deliverables</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-handshake text-primary me-3"></i>
+                                <span>Ensures team collaboration and communication</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-transparent border-0">
+                    
+                    <div class="card-footer bg-transparent border-0 text-center">
                         <div class="social-links">
-                            <a href="#" class="text-dark mx-2"><i class="fab fa-linkedin fa-lg"></i></a>
-                            <a href="#" class="text-dark mx-2"><i class="fab fa-github fa-lg"></i></a>
-                            <a href="#" class="text-dark mx-2"><i class="fab fa-twitter fa-lg"></i></a>
+                            <a href="#" class="text-decoration-none mx-2">
+                                <i class="fab fa-linkedin fa-lg text-primary"></i>
+                            </a>
+                            <a href="#" class="text-decoration-none mx-2">
+                                <i class="fab fa-github fa-lg text-dark"></i>
+                            </a>
+                            <a href="#" class="text-decoration-none mx-2">
+                                <i class="fab fa-twitter fa-lg text-info"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
+            
+            <!-- Creative Lead - Santhosh -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card team-card h-100 border-0 shadow-lg">
+                    <div class="card-body p-4">
+                        <div class="team-img mb-4 text-center">
+                            <div class="initials-circle mx-auto" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                <span class="text-white fs-1 fw-bold">SA</span>
+                            </div>
+                        </div>
+                        
+                        <h4 class="card-title text-center mb-2">Santhosh</h4>
+                        <h6 class="card-subtitle mb-3 text-center text-success">
+                            <i class="fas fa-palette me-2"></i>Creative Lead
+                        </h6>
+                        
+                        <div class="text-center mb-4">
+                            <span class="badge bg-warning mb-2">UI/UX Design</span>
+                            <span class="badge bg-info mb-2">Brand Identity</span>
+                            <span class="badge bg-danger mb-2">Visual Design</span>
+                        </div>
+                        
+                        <p class="card-text text-center">
+                            Designs intuitive user interfaces and creates engaging visual experiences. 
+                            Focuses on user-centered design principles and brand consistency.
+                        </p>
+                        
+                        <div class="team-details mt-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-paint-brush text-success me-3"></i>
+                                <span>Creates visual designs and user interfaces</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-users text-success me-3"></i>
+                                <span>Focuses on user experience and accessibility</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-bullhorn text-success me-3"></i>
+                                <span>Develops brand identity and visual language</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer bg-transparent border-0 text-center">
+                        <div class="social-links">
+                            <a href="#" class="text-decoration-none mx-2">
+                                <i class="fab fa-behance fa-lg text-warning"></i>
+                            </a>
+                            <a href="#" class="text-decoration-none mx-2">
+                                <i class="fab fa-dribbble fa-lg text-danger"></i>
+                            </a>
+                            <a href="#" class="text-decoration-none mx-2">
+                                <i class="fab fa-instagram fa-lg text-purple"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tech Lead - Vishwa -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card team-card h-100 border-0 shadow-lg">
+                    <div class="card-body p-4">
+                        <div class="team-img mb-4 text-center">
+                            <div class="initials-circle mx-auto" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                                <span class="text-white fs-1 fw-bold">VI</span>
+                            </div>
+                        </div>
+                        
+                        <h4 class="card-title text-center mb-2">Vishwa</h4>
+                        <h6 class="card-subtitle mb-3 text-center text-info">
+                            <i class="fas fa-code me-2"></i>Tech Lead
+                        </h6>
+                        
+                        <div class="text-center mb-4">
+                            <span class="badge bg-dark mb-2">Full-Stack Dev</span>
+                            <span class="badge bg-info mb-2">Technical Strategy</span>
+                            <span class="badge bg-primary mb-2">Code Quality</span>
+                        </div>
+                        
+                        <p class="card-text text-center">
+                            Leads technical development and ensures code quality. Implements best practices 
+                            and mentors team members on technical challenges.
+                        </p>
+                        
+                        <div class="team-details mt-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-laptop-code text-info me-3"></i>
+                                <span>Leads full-stack development and architecture</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-shield-alt text-info me-3"></i>
+                                <span>Ensures code quality and security standards</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-graduation-cap text-info me-3"></i>
+                                <span>Mentors team on technical best practices</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer bg-transparent border-0 text-center">
+                        <div class="social-links">
+                            <a href="#" class="text-decoration-none mx-2">
+                                <i class="fab fa-github fa-lg text-dark"></i>
+                            </a>
+                            <a href="#" class="text-decoration-none mx-2">
+                                <i class="fab fa-stack-overflow fa-lg text-warning"></i>
+                            </a>
+                            <a href="#" class="text-decoration-none mx-2">
+                                <i class="fab fa-dev fa-lg text-info"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Technology Stack -->
     <div class="mb-5">
-        <h2 class="text-center mb-4">Technology Stack</h2>
+        <h2 class="text-center mb-4">
+            <i class="fas fa-cogs me-3 text-primary"></i>
+            Technology Stack
+        </h2>
+        
         <div class="row text-center">
-            <div class="col-md-3 col-6 mb-3">
-                <div class="tech-card p-3">
-                    <i class="fab fa-python fa-3x text-primary mb-2"></i>
-                    <h5>Python/Flask</h5>
-                    <p class="small">Backend Framework</p>
+            <div class="col-md-3 col-6 mb-4">
+                <div class="tech-card p-4 border-0 rounded shadow-sm">
+                    <i class="fab fa-python fa-4x text-primary mb-3"></i>
+                    <h5>Python & Flask</h5>
+                    <p class="small text-muted mb-0">Backend Framework</p>
+                    <div class="mt-2">
+                        <span class="badge bg-secondary">REST APIs</span>
+                        <span class="badge bg-secondary">ML Integration</span>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="tech-card p-3">
-                    <i class="fab fa-js-square fa-3x text-warning mb-2"></i>
+            
+            <div class="col-md-3 col-6 mb-4">
+                <div class="tech-card p-4 border-0 rounded shadow-sm">
+                    <i class="fab fa-js-square fa-4x text-warning mb-3"></i>
                     <h5>JavaScript</h5>
-                    <p class="small">Frontend Logic</p>
+                    <p class="small text-muted mb-0">Frontend Logic</p>
+                    <div class="mt-2">
+                        <span class="badge bg-secondary">DOM Manipulation</span>
+                        <span class="badge bg-secondary">API Calls</span>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="tech-card p-3">
-                    <i class="fas fa-brain fa-3x text-success mb-2"></i>
+            
+            <div class="col-md-3 col-6 mb-4">
+                <div class="tech-card p-4 border-0 rounded shadow-sm">
+                    <i class="fas fa-brain fa-4x text-success mb-3"></i>
                     <h5>Machine Learning</h5>
-                    <p class="small">Scikit-learn Models</p>
+                    <p class="small text-muted mb-0">Scikit-learn Models</p>
+                    <div class="mt-2">
+                        <span class="badge bg-secondary">Predictive Analytics</span>
+                        <span class="badge bg-secondary">Data Processing</span>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3 col-6 mb-3">
-                <div class="tech-card p-3">
-                    <i class="fab fa-bootstrap fa-3x text-purple mb-2"></i>
+            
+            <div class="col-md-3 col-6 mb-4">
+                <div class="tech-card p-4 border-0 rounded shadow-sm">
+                    <i class="fab fa-bootstrap fa-4x text-purple mb-3"></i>
                     <h5>Bootstrap 5</h5>
-                    <p class="small">UI Framework</p>
+                    <p class="small text-muted mb-0">UI Framework</p>
+                    <div class="mt-2">
+                        <span class="badge bg-secondary">Responsive Design</span>
+                        <span class="badge bg-secondary">Components</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Contact Information -->
-    <div class="card shadow border-0">
+    <div class="card border-0 shadow-lg">
         <div class="card-body p-5">
             <div class="row">
-                <div class="col-md-6">
-                    <h3 class="mb-4">Get In Touch</h3>
-                    <div class="mb-3">
-                        <i class="fas fa-envelope text-primary me-3 fa-lg"></i>
-                        <span>contact@vynox.com</span>
-                    </div>
-                    <div class="mb-3">
-                        <i class="fas fa-phone text-primary me-3 fa-lg"></i>
-                        <span>+1 (123) 456-7890</span>
-                    </div>
-                    <div class="mb-3">
-                        <i class="fas fa-map-marker-alt text-primary me-3 fa-lg"></i>
-                        <span>Tech Park, Innovation District, Bangalore, India</span>
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <h3 class="mb-4">
+                        <i class="fas fa-envelope-open-text me-2 text-primary"></i>
+                        Get In Touch
+                    </h3>
+                    
+                    <div class="contact-info">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="contact-icon bg-primary rounded-circle p-3 me-3">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Email Address</h6>
+                                <p class="text-muted mb-0">
+                                    {% if company %}
+                                        {{ company.contact_email }}
+                                    {% else %}
+                                        contact@vynox.com
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="contact-icon bg-success rounded-circle p-3 me-3">
+                                <i class="fas fa-phone text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Phone Number</h6>
+                                <p class="text-muted mb-0">
+                                    {% if company %}
+                                        {{ company.contact_phone }}
+                                    {% else %}
+                                        +1 (234) 567-8900
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center">
+                            <div class="contact-icon bg-warning rounded-circle p-3 me-3">
+                                <i class="fas fa-map-marker-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Office Location</h6>
+                                <p class="text-muted mb-0">
+                                    {% if company %}
+                                        {{ company.address }}
+                                    {% else %}
+                                        Tech Innovation Hub, Bangalore, India
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
                 <div class="col-md-6">
-                    <h3 class="mb-4">Follow Us</h3>
+                    <h3 class="mb-4">
+                        <i class="fas fa-share-alt me-2 text-primary"></i>
+                        Connect With Us
+                    </h3>
+                    
                     <div class="social-links-large">
-                        <a href="#" class="btn btn-outline-primary btn-lg me-3 mb-2">
+                        <a href="#" class="btn btn-outline-primary btn-lg w-100 mb-3">
                             <i class="fab fa-linkedin me-2"></i>LinkedIn
                         </a>
-                        <a href="#" class="btn btn-outline-dark btn-lg me-3 mb-2">
+                        <a href="#" class="btn btn-outline-dark btn-lg w-100 mb-3">
                             <i class="fab fa-github me-2"></i>GitHub
                         </a>
-                        <a href="#" class="btn btn-outline-info btn-lg mb-2">
+                        <a href="#" class="btn btn-outline-info btn-lg w-100">
                             <i class="fab fa-twitter me-2"></i>Twitter
                         </a>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <p class="text-muted">
+                            Have questions or suggestions? We'd love to hear from you. 
+                            Our team typically responds within 24 hours.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -177,36 +425,92 @@
 </div>
 {% endblock %}
 
-{% block scripts %}
+{% block extra_css %}
 <style>
 .initials-circle {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    color: white;
-    font-size: 2.5rem;
-    font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transition: var(--transition);
+}
+
+.team-card:hover .initials-circle {
+    transform: scale(1.1);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+
+.team-card {
+    transition: var(--transition);
 }
 
 .team-card:hover {
-    transform: translateY(-5px);
-    transition: transform 0.3s ease;
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4) !important;
 }
 
 .tech-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    transition: all 0.3s ease;
+    transition: var(--transition);
+    background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+    border: 1px solid var(--border-color);
 }
 
 .tech-card:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(139, 92, 246, 0.2) !important;
+    border-color: var(--primary-color);
+}
+
+.contact-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-links a {
+    transition: var(--transition);
+}
+
+.social-links a:hover {
     transform: translateY(-3px);
+}
+
+.social-links-large .btn {
+    transition: var(--transition);
+    padding: 1rem;
+}
+
+.social-links-large .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.glass-effect {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 </style>
 {% endblock %}
