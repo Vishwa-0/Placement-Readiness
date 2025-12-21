@@ -1,13 +1,129 @@
 {% extends "base.html" %}
-{% block content %}
-<h2>Skill Assessment</h2>
+{% block title %}Assessment - VYNOX{% endblock %}
 
-<form method="POST" class="card">
-    <input type="number" name="dsa" placeholder="DSA Level (1–5)" required>
-    <input type="number" name="problems" placeholder="Problems Solved" required>
-    <input type="number" name="projects" placeholder="Projects Completed" required>
-    <input type="number" name="github" placeholder="GitHub Quality (1–5)" required>
-    <input type="number" name="domain" placeholder="Domain Focus (1–5)" required>
-    <button type="submit">Evaluate</button>
-</form>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Placement Readiness Assessment</h3>
+            </div>
+            <div class="card-body">
+                {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                
+                <form method="POST" action="{{ url_for('assessment') }}" id="assessmentForm">
+                    <div class="mb-4">
+                        <h5>Technical Skills</h5>
+                        <div class="mb-3">
+                            <label for="dsa_level" class="form-label">
+                                DSA Level (1-10)
+                                <span class="text-muted"> - Rate your Data Structures & Algorithms proficiency</span>
+                            </label>
+                            <input type="range" class="form-range" min="1" max="10" step="1" id="dsa_level" name="dsa_level" value="5">
+                            <div class="d-flex justify-content-between">
+                                <small>Beginner</small>
+                                <small id="dsa_value">5</small>
+                                <small>Expert</small>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="problem_count" class="form-label">
+                                Problems Solved
+                                <span class="text-muted"> - Number of coding problems solved (0-200+)</span>
+                            </label>
+                            <input type="number" class="form-control" id="problem_count" name="problem_count" min="0" max="200" value="50" required>
+                            <div class="form-text">Enter approximate number of problems solved</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Project Experience</h5>
+                        <div class="mb-3">
+                            <label for="project_count" class="form-label">
+                                Projects Completed
+                                <span class="text-muted"> - Number of completed projects (0-20+)</span>
+                            </label>
+                            <input type="number" class="form-control" id="project_count" name="project_count" min="0" max="20" value="3" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="github_quality" class="form-label">
+                                GitHub Profile Quality (1-10)
+                                <span class="text-muted"> - Rate your GitHub repository quality</span>
+                            </label>
+                            <select class="form-select" id="github_quality" name="github_quality" required>
+                                <option value="1">1 - Basic repositories</option>
+                                <option value="3">3 - Few documented projects</option>
+                                <option value="5" selected>5 - Average quality projects</option>
+                                <option value="7">7 - Well-documented projects</option>
+                                <option value="10">10 - Professional portfolio</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Domain Focus</h5>
+                        <div class="mb-3">
+                            <label for="domain_focus" class="form-label">Choose your primary tech domain</label>
+                            <select class="form-select" id="domain_focus" name="domain_focus" required>
+                                {% for key, domain in domains.items() %}
+                                <option value="{{ key }}">{{ domain.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg px-5">
+                            <i class="fas fa-rocket me-2"></i>Check Readiness
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary btn-lg ms-2">Reset</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <small class="text-muted">Your assessment results will determine personalized recommendations</small>
+            </div>
+        </div>
+        
+        <!-- Assessment Tips -->
+        <div class="card mt-4 shadow-sm">
+            <div class="card-body">
+                <h5><i class="fas fa-lightbulb text-warning me-2"></i>Assessment Tips</h5>
+                <ul class="mb-0">
+                    <li>Be honest about your current skill level for accurate results</li>
+                    <li>Focus on your primary domain of interest</li>
+                    <li>Consider your most recent projects and achievements</li>
+                    <li>Results will help create a personalized improvement plan</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dsaSlider = document.getElementById('dsa_level');
+    const dsaValue = document.getElementById('dsa_value');
+    
+    dsaSlider.addEventListener('input', function() {
+        dsaValue.textContent = this.value;
+    });
+    
+    // Quick check functionality
+    document.getElementById('assessmentForm').addEventListener('submit', function(e) {
+        // Validate inputs
+        const problemCount = document.getElementById('problem_count').value;
+        if (problemCount < 0 || problemCount > 200) {
+            alert('Please enter a valid number of problems (0-200)');
+            e.preventDefault();
+        }
+    });
+});
+</script>
 {% endblock %}
