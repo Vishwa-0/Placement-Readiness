@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Projects - VYNOX{% endblock %}
+
+{% block content %}
+<div class="projects-page">
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-5 mb-3">Project Recommendations</h1>
+        <p class="lead">Personalized project ideas for {{ level_info.level|lower }} level in {{ domain.name }}</p>
+        <div class="badge bg-{{ level_info.color }} fs-6 p-2">{{ level_info.readiness }}</div>
+    </div>
+    
+    <!-- Project Suggestions -->
+    <div class="card shadow mb-5">
+        <div class="card-header bg-primary text-white">
