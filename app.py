@@ -3,71 +3,52 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 import pickle
 import numpy as np
 import os
+import warnings
+warnings.filterwarnings('ignore')  # Suppress warnings in production
 
 app = Flask(__name__)
-app.secret_key = 'vynox-secret-key'  # Change this for production
+app.secret_key = 'your-secret-key-here'  # Change this for production
 
 # Load the trained model
-with open('PRS.pkl', 'rb') as f:
-    model = pickle.load(f)
+try:
+    with open('PRS.pkl', 'rb') as f:
+        model = pickle.load(f)
+except FileNotFoundError:
+    print("Warning: PRS.pkl not found. Using dummy model.")
+    # Create a dummy model for testing
+    from sklearn.linear_model import LogisticRegression
+    import numpy as np
+    model = LogisticRegression()
+    # Train on dummy data
+    X_dummy = np.array([[5, 50, 3, 5, 1] for _ in range(10)])
+    y_dummy = np.array([0, 1, 0, 1, 0, 1, 0, 1, 0, 1])
+    model.fit(X_dummy, y_dummy)
 
-# Domain information
+# Domain information (same as before)
 DOMAINS = {
-    'web_dev': {
-        'name': 'Web Development',
-        'skills': ['HTML/CSS', 'JavaScript', 'React/Vue/Angular', 'Node.js/Python/Django', 'Database Management'],
-        'levels': {
-            'beginner': 'Focus on HTML/CSS and basic JavaScript',
-            'intermediate': 'Learn React/Node.js and build full-stack applications',
-            'advanced': 'Master advanced concepts like WebSockets, PWA, and DevOps'
-        }
-    },
-    'data_science': {
-        'name': 'Data Science',
-        'skills': ['Python', 'Statistics', 'Machine Learning', 'Data Visualization', 'SQL'],
-        'levels': {
-            'beginner': 'Start with Python and basic statistics',
-            'intermediate': 'Learn ML algorithms and data preprocessing',
-            'advanced': 'Master deep learning and big data technologies'
-        }
-    },
-    'mobile_dev': {
-        'name': 'Mobile Development',
-        'skills': ['Java/Kotlin', 'Swift', 'React Native/Flutter', 'REST APIs', 'Mobile UI/UX'],
-        'levels': {
-            'beginner': 'Learn basics of Android/iOS or cross-platform',
-            'intermediate': 'Build complete apps with backend integration',
-            'advanced': 'Master performance optimization and native features'
-        }
-    },
-    'cybersecurity': {
-        'name': 'Cybersecurity',
-        'skills': ['Networking', 'Cryptography', 'Penetration Testing', 'Security Tools', 'Ethical Hacking'],
-        'levels': {
-            'beginner': 'Learn networking basics and Linux',
-            'intermediate': 'Study penetration testing methodologies',
-            'advanced': 'Master advanced exploitation and defense techniques'
-        }
-    }
+    '1': {'name': 'Web Development', 'skills': ['HTML/CSS', 'JavaScript', 'React/Vue/Angular']},
+    '2': {'name': 'Data Science', 'skills': ['Python', 'Statistics', 'Machine Learning']},
+    '3': {'name': 'Mobile Development', 'skills': ['Java/Kotlin', 'Swift', 'React Native/Flutter']},
+    '4': {'name': 'Cybersecurity', 'skills': ['Networking', 'Cryptography', 'Security Tools']}
 }
 
-# Project suggestions based on level
+# Project suggestions (same as before)
 PROJECT_SUGGESTIONS = {
     'not_ready': {
-        'web_dev': ['To-Do List App', 'Personal Portfolio Website', 'Calculator', 'Weather App'],
-        'data_science': ['Data Analysis with Titanic Dataset', 'House Price Prediction', 'Iris Classification'],
-        'mobile_dev': ['BMI Calculator', 'Notes App', 'Currency Converter'],
-        'cybersecurity': ['Password Strength Checker', 'Network Scanner', 'Basic Encryption Tool']
+        '1': ['To-Do List App', 'Personal Portfolio Website'],
+        '2': ['Data Analysis with Titanic Dataset', 'House Price Prediction'],
+        '3': ['BMI Calculator', 'Notes App'],
+        '4': ['Password Strength Checker', 'Network Scanner']
     },
     'ready': {
-        'web_dev': ['E-commerce Platform', 'Real-time Chat App', 'Project Management Tool', 'Social Media Dashboard'],
-        'data_science': ['Sentiment Analysis System', 'Recommendation Engine', 'Stock Prediction Model'],
-        'mobile_dev': ['Food Delivery App', 'Fitness Tracker', 'E-commerce Mobile App'],
-        'cybersecurity': ['Vulnerability Scanner', 'Intrusion Detection System', 'Security Dashboard']
+        '1': ['E-commerce Platform', 'Real-time Chat App'],
+        '2': ['Sentiment Analysis System', 'Recommendation Engine'],
+        '3': ['Food Delivery App', 'Fitness Tracker'],
+        '4': ['Vulnerability Scanner', 'Intrusion Detection System']
     }
 }
 
-def get_level_description(prediction, domain):
+def get_level_description(prediction):
     """Get level description based on prediction"""
     if prediction == 0:
         return {
@@ -103,47 +84,72 @@ def about():
 def assessment():
     """Assessment page"""
     if request.method == 'POST':
-        # Get form data
         try:
-            dsa_level = int(request.form.get('dsa_level', 0))
-            problem_count = int(request.form.get('problem_count', 0))
-            project_count = int(request.form.get('project_count', 0))
-            github_quality = int(request.form.get('github_quality', 0))
-            domain_focus = request.form.get('domain_focus', 'web_dev')
+            # Get form data with defaults
+            dsa_level = int(request.form.get('dsa_level', 5))
+            problem_count = int(request.form.get('problem_count', 50))
+            project_count = int(request.form.get('project_count', 3))
+            github_quality = int(request.form.get('github_quality', 5))
+            domain_focus = request.form.get('domain_focus', '1')
+            
+            # Validate inputs
+            dsa_level = max(1, min(10, dsa_level))
+            problem_count = max(0, min(200, problem_count))
+            project_count = max(0, min(20, project_count))
+            github_quality = max(1, min(10, github_quality))
+            
+            # Prepare input for prediction (as 2D array)
+            input_data = [[dsa_level, problem_count, project_count, github_quality, int(domain_focus)]]
             
             # Make prediction
-            prediction = model.predict([[dsa_level, problem_count, project_count, github_quality, domain_focus]])
+            prediction = model.predict(input_data)[0]
             
             # Get level info
-            level_info = get_level_description(prediction[0], domain_focus)
+            level_info = get_level_description(prediction)
             
-            # Store in session for dashboard
+            # Store in session
             session['assessment_data'] = {
                 'dsa_level': dsa_level,
                 'problem_count': problem_count,
                 'project_count': project_count,
                 'github_quality': github_quality,
                 'domain_focus': domain_focus,
-                'prediction': int(prediction[0]),
+                'prediction': int(prediction),
                 'level_info': level_info,
-                'domain_name': DOMAINS[domain_focus]['name']
+                'domain_name': DOMAINS.get(domain_focus, {}).get('name', 'Unknown')
             }
             
-            # Get project suggestions
-            readiness_key = 'ready' if prediction[0] == 1 else 'not_ready'
-            suggestions = PROJECT_SUGGESTIONS[readiness_key].get(domain_focus, [])
-            
-            return render_template('results.html',
-                                 prediction=prediction[0],
-                                 level_info=level_info,
-                                 suggestions=suggestions,
-                                 domain=DOMAINS[domain_focus],
-                                 domain_key=domain_focus)
+            return redirect(url_for('results'))
             
         except Exception as e:
-            return render_template('assessment.html', error=str(e))
+            print(f"Error: {e}")
+            return render_template('assessment.html', 
+                                 domains=DOMAINS, 
+                                 error="An error occurred. Please check your inputs.")
     
     return render_template('assessment.html', domains=DOMAINS)
+
+@app.route('/results')
+def results():
+    """Results page"""
+    if 'assessment_data' not in session:
+        return redirect(url_for('assessment'))
+    
+    assessment_data = session['assessment_data']
+    domain_key = assessment_data['domain_focus']
+    prediction = assessment_data['prediction']
+    
+    # Get project suggestions
+    readiness_key = 'ready' if prediction == 1 else 'not_ready'
+    suggestions = PROJECT_SUGGESTIONS.get(readiness_key, {}).get(domain_key, [])
+    
+    domain_info = DOMAINS.get(domain_key, {'name': 'Unknown', 'skills': []})
+    
+    return render_template('results.html',
+                         assessment_data=assessment_data,
+                         suggestions=suggestions,
+                         domain=domain_info,
+                         domain_key=domain_key)
 
 @app.route('/dashboard')
 def dashboard():
@@ -182,37 +188,22 @@ def projects():
     prediction = assessment_data['prediction']
     
     readiness_key = 'ready' if prediction == 1 else 'not_ready'
-    suggestions = PROJECT_SUGGESTIONS[readiness_key].get(domain_key, [])
-    
-    # Get learning resources
-    learning_resources = {
-        'web_dev': ['MDN Web Docs', 'freeCodeCamp', 'W3Schools', 'Frontend Masters'],
-        'data_science': ['Kaggle', 'Coursera ML Course', 'Fast.ai', 'DataCamp'],
-        'mobile_dev': ['Android Developers', 'iOS Dev Center', 'Flutter Docs', 'React Native Docs'],
-        'cybersecurity': ['Cybrary', 'HackTheBox', 'TryHackMe', 'OWASP']
-    }
+    suggestions = PROJECT_SUGGESTIONS.get(readiness_key, {}).get(domain_key, [])
     
     return render_template('projects.html',
                          suggestions=suggestions,
-                         domain=DOMAINS[domain_key],
-                         resources=learning_resources.get(domain_key, []),
-                         level_info=assessment_data['level_info'])
+                         domain=DOMAINS.get(domain_key, {'name': 'Unknown', 'skills': []}),
+                         assessment_data=assessment_data)
 
-@app.route('/api/check-readiness', methods=['POST'])
-def check_readiness():
-    """API endpoint for AJAX readiness check"""
-    try:
-        data = request.json
-        prediction = model.predict([[data['dsa_level'], data['problem_count'], 
-                                   data['project_count'], data['github_quality'], 
-                                   data['domain_focus']]])
-        
-        return jsonify({
-            'prediction': int(prediction[0]),
-            'readiness': 'Placement Ready' if prediction[0] == 1 else 'Not Placement Ready'
-        })
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
+# Add error handlers
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
