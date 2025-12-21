@@ -23,22 +23,52 @@
                             {% endif %}
                         </div>
                         
-                        {% if assessment_data.prediction == 1 %}
-                        <h2 class="mb-3">You are: <span class="text-success">Placement Ready</span></h2>
-                        <div class="badge bg-success fs-5 p-3 mb-3">Advanced Level</div>
-                        <p class="fs-5">You have strong skills for placement. Keep enhancing your expertise and portfolio.</p>
-                        {% else %}
-                        <h2 class="mb-3">You are: <span class="text-warning">Not Placement Ready</span></h2>
-                        <div class="badge bg-warning fs-5 p-3 mb-3">Beginner Level</div>
-                        <p class="fs-5">You need to improve your skills in key areas. Focus on building projects and solving problems.</p>
-                        {% endif %}
+                        <h2 class="mb-3">You are: 
+                            <span class="text-{{ assessment_data.level_info.color }}">
+                                {{ assessment_data.level_info.readiness }}
+                            </span>
+                        </h2>
+                        
+                        <div class="badge bg-{{ assessment_data.level_info.color }} fs-5 p-3 mb-3">
+                            {{ assessment_data.level_info.level }} Level
+                        </div>
+                        
+                        <p class="fs-5">{{ assessment_data.level_info.description }}</p>
+                        
+                        <!-- Overall Score Display -->
+                        <div class="mt-4">
+                            <h4 class="mb-3">Overall Readiness Score</h4>
+                            <div class="display-2 fw-bold text-gradient mb-2">
+                                {{ assessment_data.overall_score }}%
+                            </div>
+                            <div class="progress" style="height: 15px; max-width: 300px; margin: 0 auto;">
+                                <div class="progress-bar 
+                                    {% if assessment_data.overall_score >= 60 %}bg-success
+                                    {% elif assessment_data.overall_score >= 40 %}bg-info
+                                    {% else %}bg-warning
+                                    {% endif %}" 
+                                    style="width: {{ assessment_data.overall_score }}%">
+                                </div>
+                            </div>
+                            <small class="text-muted">
+                                {% if assessment_data.overall_score >= 60 %}
+                                Congratulations! You meet the 60% readiness threshold.
+                                {% elif assessment_data.overall_score >= 40 %}
+                                You're making good progress. Aim for 60% for placement readiness.
+                                {% else %}
+                                Focus on skill development to reach 60% readiness.
+                                {% endif %}
+                            </small>
+                        </div>
                     </div>
                     
                     <div class="row">
                         <div class="col-md-8 mx-auto">
                             <div class="card bg-light border-0">
                                 <div class="card-body">
-                                    <h5 class="card-title"><i class="fas fa-bullseye me-2"></i>Domain Focus</h5>
+                                    <h5 class="card-title">
+                                        <i class="fas fa-bullseye me-2"></i>Domain Focus
+                                    </h5>
                                     <h4 class="text-primary">{{ domain.name }}</h4>
                                     <p class="mb-2"><strong>Key Skills to Master:</strong></p>
                                     <ul class="list-inline mb-3">
@@ -59,10 +89,15 @@
                 <div class="col-md-6 mb-4">
                     <div class="card shadow h-100 border-0">
                         <div class="card-header bg-info text-white">
-                            <h5 class="mb-0"><i class="fas fa-project-diagram me-2"></i>Recommended Projects</h5>
+                            <h5 class="mb-0">
+                                <i class="fas fa-project-diagram me-2"></i>Recommended Projects
+                            </h5>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Based on your level in {{ domain.name }}, here are some projects to boost your skills:</p>
+                            <p class="card-text">
+                                Based on your {{ assessment_data.level_info.level|lower }} level in {{ domain.name }}, 
+                                here are some projects to boost your skills:
+                            </p>
                             <ul class="list-group list-group-flush">
                                 {% for project in suggestions %}
                                 <li class="list-group-item">
@@ -82,7 +117,9 @@
                 <div class="col-md-6 mb-4">
                     <div class="card shadow h-100 border-0">
                         <div class="card-header bg-success text-white">
-                            <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Next Steps</h5>
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-bar me-2"></i>Next Steps
+                            </h5>
                         </div>
                         <div class="card-body">
                             <ul class="list-unstyled">
@@ -96,11 +133,11 @@
                                 </li>
                                 <li class="mb-3">
                                     <i class="fas fa-book text-primary me-2"></i>
-                                    <strong>Skill Development:</strong> Focus on {{ domain.skills[0] }}, {{ domain.skills[1] }}
+                                    <strong>Skill Development:</strong> {{ assessment_data.level_info.advice }}
                                 </li>
                                 <li>
                                     <i class="fas fa-calendar-alt text-info me-2"></i>
-                                    <strong>Assessment Frequency:</strong> Retake in 30 days to track progress
+                                    <strong>Assessment Review:</strong> Retake in 30 days to track progress
                                 </li>
                             </ul>
                         </div>
@@ -121,7 +158,9 @@
             <!-- Learning Resources -->
             <div class="card shadow border-0 mt-4">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Learning Resources</h5>
+                    <h5 class="mb-0">
+                        <i class="fas fa-graduation-cap me-2"></i>Learning Resources
+                    </h5>
                 </div>
                 <div class="card-body">
                     <p>Here are some resources to help you improve in {{ domain.name }}:</p>
