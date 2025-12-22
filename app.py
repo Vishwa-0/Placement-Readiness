@@ -216,8 +216,8 @@ def assessment():
             
             # Validate inputs
             dsa_level = max(1, min(10, dsa_level))
-            problem_count = max(0, min(500, problem_count))
-            project_count = max(0, min(50, project_count))
+            problem_count = max(0, min(200, problem_count))
+            project_count = max(0, min(10, project_count))
             github_quality = max(1, min(10, github_quality))
             
             # Ensure domain is valid
