@@ -15,7 +15,7 @@
             </span>
             {% else %}
             <span class="badge bg-warning fs-6 p-2 px-3">
-                <i class="fas fa-seedling me-2"></i>Not Placement Ready
+                <i class="fas fa-seedling me-2"></i>Needs Improvement
             </span>
             {% endif %}
         </div>
@@ -24,55 +24,63 @@
     <!-- Summary Cards -->
     <div class="row mb-4">
         <div class="col-md-3 mb-3">
-            <div class="card text-white h-100" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+            <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-bullseye fa-2x me-3"></i>
+                        <div class="rounded-circle bg-primary-bg p-3 me-3">
+                            <i class="fas fa-bullseye fa-lg text-primary"></i>
+                        </div>
                         <div>
-                            <h6 class="card-title mb-0">DOMAIN</h6>
-                            <h4 class="card-text mb-0">{{ assessment_data.domain_name }}</h4>
+                            <h6 class="card-title mb-1 text-muted">DOMAIN</h6>
+                            <h4 class="card-text mb-0 text-dark">{{ assessment_data.domain_name }}</h4>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card text-white h-100" style="background: linear-gradient(135deg, #10b981, #059669);">
+            <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-project-diagram fa-2x me-3"></i>
+                        <div class="rounded-circle bg-primary-bg p-3 me-3">
+                            <i class="fas fa-project-diagram fa-lg text-primary"></i>
+                        </div>
                         <div>
-                            <h6 class="card-title mb-0">PROJECTS</h6>
-                            <h4 class="card-text mb-0">{{ assessment_data.project_count }}</h4>
-                            <small class="opacity-75">/ {{ skill_data.project_count.max }} target</small>
+                            <h6 class="card-title mb-1 text-muted">PROJECTS</h6>
+                            <h4 class="card-text mb-0 text-dark">{{ assessment_data.project_count }}</h4>
+                            <small class="text-muted">/ {{ skill_data.project_count.max }} target</small>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card text-white h-100" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+            <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-code fa-2x me-3"></i>
+                        <div class="rounded-circle bg-primary-bg p-3 me-3">
+                            <i class="fas fa-code fa-lg text-primary"></i>
+                        </div>
                         <div>
-                            <h6 class="card-title mb-0">PROBLEMS SOLVED</h6>
-                            <h4 class="card-text mb-0">{{ assessment_data.problem_count }}</h4>
-                            <small class="opacity-75">/ {{ skill_data.problem_count.max }} target</small>
+                            <h6 class="card-title mb-1 text-muted">PROBLEMS SOLVED</h6>
+                            <h4 class="card-text mb-0 text-dark">{{ assessment_data.problem_count }}</h4>
+                            <small class="text-muted">/ {{ skill_data.problem_count.max }} target</small>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card text-white h-100" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+            <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <i class="fab fa-github fa-2x me-3"></i>
+                        <div class="rounded-circle bg-primary-bg p-3 me-3">
+                            <i class="fab fa-github fa-lg text-primary"></i>
+                        </div>
                         <div>
-                            <h6 class="card-title mb-0">SKILL LEVEL</h6>
-                            <h4 class="card-text mb-0">{{ assessment_data.level_info.level }}</h4>
-                            <small class="opacity-75">{{ overall_score }}% Overall</small>
+                            <h6 class="card-title mb-1 text-muted">SKILL LEVEL</h6>
+                            <h4 class="card-text mb-0 text-dark">{{ assessment_data.level_info.level }}</h4>
+                            <small class="text-muted">{{ overall_score }}% Overall</small>
                         </div>
                     </div>
                 </div>
@@ -81,9 +89,9 @@
     </div>
     
     <!-- Skill Progress Section -->
-    <div class="card shadow mb-4 border-0">
-        <div class="card-header bg-transparent border-bottom">
-            <h5 class="mb-0">
+    <div class="card shadow-sm mb-4 border">
+        <div class="card-header bg-white border-bottom">
+            <h5 class="mb-0 text-dark">
                 <i class="fas fa-chart-line me-2 text-primary"></i>Skill Progress Analysis
             </h5>
             <p class="text-muted mb-0 mt-2">Your current skill levels compared to placement-ready targets</p>
@@ -93,18 +101,18 @@
             <div class="mb-4">
                 <div class="d-flex justify-content-between mb-2">
                     <div>
-                        <span class="fw-bold">{{ data.label }}</span>
+                        <span class="fw-bold text-dark">{{ data.label }}</span>
                         <span class="badge ms-2" style="background-color: {{ data.color }}; color: white;">
                             {{ data.level }}
                         </span>
                     </div>
                     <div>
-                        <span class="fw-bold">{{ data.value }}</span>
+                        <span class="fw-bold text-dark">{{ data.value }}</span>
                         <span class="text-muted">/ {{ data.max }}</span>
-                        <span class="ms-2 fw-bold">{{ data.percentage }}%</span>
+                        <span class="ms-2 fw-bold text-primary">{{ data.percentage }}%</span>
                     </div>
                 </div>
-                <div class="progress" style="height: 20px; background-color: var(--bg-input);">
+                <div class="progress" style="height: 20px; background-color: var(--bg-secondary);">
                     <div class="progress-bar" 
                          role="progressbar" 
                          style="width: {{ data.percentage }}%; background-color: {{ data.color }};">
@@ -130,27 +138,27 @@
             <div class="mt-4 pt-3 border-top">
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>Overall Readiness Score</h5>
+                        <h5 class="text-dark">Overall Readiness Score</h5>
                         <div class="display-4 fw-bold text-gradient">{{ overall_score }}%</div>
                         <p class="text-muted">Based on weighted average of all skills</p>
                     </div>
                     <div class="col-md-6">
                         <div class="mt-3">
                             <div class="d-flex justify-content-between mb-1">
-                                <span>DSA Skills (30%)</span>
-                                <span>{{ skill_data.dsa_level.percentage }}%</span>
+                                <span class="text-dark">DSA Skills (35%)</span>
+                                <span class="fw-bold text-primary">{{ skill_data.dsa_level.percentage }}%</span>
                             </div>
                             <div class="d-flex justify-content-between mb-1">
-                                <span>Coding Practice (25%)</span>
-                                <span>{{ skill_data.problem_count.percentage }}%</span>
+                                <span class="text-dark">Coding Practice (25%)</span>
+                                <span class="fw-bold text-primary">{{ skill_data.problem_count.percentage }}%</span>
                             </div>
                             <div class="d-flex justify-content-between mb-1">
-                                <span>Projects (25%)</span>
-                                <span>{{ skill_data.project_count.percentage }}%</span>
+                                <span class="text-dark">Projects (25%)</span>
+                                <span class="fw-bold text-primary">{{ skill_data.project_count.percentage }}%</span>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <span>GitHub Profile (20%)</span>
-                                <span>{{ skill_data.github_quality.percentage }}%</span>
+                                <span class="text-dark">GitHub Profile (15%)</span>
+                                <span class="fw-bold text-primary">{{ skill_data.github_quality.percentage }}%</span>
                             </div>
                         </div>
                     </div>
@@ -162,7 +170,7 @@
     <!-- Improvement Suggestions -->
     <div class="row">
         <div class="col-md-6 mb-4">
-            <div class="card shadow h-100 border-0">
+            <div class="card shadow-sm h-100 border">
                 <div class="card-header bg-warning text-dark">
                     <h5 class="mb-0">
                         <i class="fas fa-exclamation-triangle me-2"></i>Areas Needing Development
@@ -172,7 +180,7 @@
                     {% if improvement_tips %}
                     <ul class="list-group list-group-flush">
                         {% for tip in improvement_tips %}
-                        <li class="list-group-item bg-transparent border-0">
+                        <li class="list-group-item bg-transparent">
                             <i class="fas fa-chevron-right text-warning me-2"></i>
                             {{ tip }}
                         </li>
@@ -181,33 +189,33 @@
                     {% else %}
                     <div class="text-center py-4">
                         <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
-                        <h5>Good Progress!</h5>
+                        <h5 class="text-dark">Good Progress!</h5>
                         <p class="text-muted">All your skills are at satisfactory levels. Keep up the good work!</p>
                     </div>
                     {% endif %}
                     
                     <!-- Specific Recommendations -->
                     <div class="mt-4">
-                        <h6 class="mb-3">Specific Recommendations:</h6>
+                        <h6 class="mb-3 text-dark">Specific Recommendations:</h6>
                         <div class="row">
                             <div class="col-6">
                                 <div class="d-flex align-items-center mb-2">
                                     <i class="fas fa-code text-primary me-2"></i>
-                                    <small>DSA Target: 7+</small>
+                                    <small class="text-dark">DSA Target: 7+</small>
                                 </div>
                                 <div class="d-flex align-items-center mb-2">
                                     <i class="fas fa-laptop-code text-success me-2"></i>
-                                    <small>Problems: 150+</small>
+                                    <small class="text-dark">Problems: 150+</small>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="d-flex align-items-center mb-2">
                                     <i class="fas fa-project-diagram text-info me-2"></i>
-                                    <small>Projects: 5+</small>
+                                    <small class="text-dark">Projects: 5+</small>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <i class="fab fa-github text-dark me-2"></i>
-                                    <small>GitHub: 7+</small>
+                                    <small class="text-dark">GitHub: 7+</small>
                                 </div>
                             </div>
                         </div>
@@ -217,7 +225,7 @@
         </div>
         
         <div class="col-md-6 mb-4">
-            <div class="card shadow h-100 border-0">
+            <div class="card shadow-sm h-100 border">
                 <div class="card-header bg-success text-white">
                     <h5 class="mb-0">
                         <i class="fas fa-rocket me-2"></i>Action Plan
@@ -227,7 +235,7 @@
                     <ol class="list-group list-group-numbered">
                         <li class="list-group-item d-flex justify-content-between align-items-start border-0 bg-transparent">
                             <div class="ms-2 me-auto">
-                                <div class="fw-bold">Daily Practice</div>
+                                <div class="fw-bold text-dark">Daily Practice</div>
                                 Solve at least 3-5 coding problems daily
                                 <div class="progress mt-2" style="height: 5px;">
                                     <div class="progress-bar bg-success" style="width: 60%"></div>
@@ -236,7 +244,7 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start border-0 bg-transparent">
                             <div class="ms-2 me-auto">
-                                <div class="fw-bold">Project Development</div>
+                                <div class="fw-bold text-dark">Project Development</div>
                                 Complete one project every 2-3 weeks
                                 <div class="progress mt-2" style="height: 5px;">
                                     <div class="progress-bar bg-info" style="width: 40%"></div>
@@ -245,7 +253,7 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start border-0 bg-transparent">
                             <div class="ms-2 me-auto">
-                                <div class="fw-bold">Skill Enhancement</div>
+                                <div class="fw-bold text-dark">Skill Enhancement</div>
                                 Learn one new technology monthly
                                 <div class="progress mt-2" style="height: 5px;">
                                     <div class="progress-bar bg-warning" style="width: 30%"></div>
@@ -254,7 +262,7 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-start border-0 bg-transparent">
                             <div class="ms-2 me-auto">
-                                <div class="fw-bold">Assessment Review</div>
+                                <div class="fw-bold text-dark">Assessment Review</div>
                                 Retake assessment in 30 days
                                 <div class="progress mt-2" style="height: 5px;">
                                     <div class="progress-bar bg-primary" style="width: 10%"></div>
@@ -285,7 +293,7 @@
     </div>
     
     <!-- Domain Focus Details -->
-    <div class="card shadow border-0 mt-4">
+    <div class="card shadow-sm border mt-4">
         <div class="card-header bg-primary text-white">
             <h5 class="mb-0">
                 <i class="fas fa-bullseye me-2"></i>Domain Focus: {{ assessment_data.domain_name }}
@@ -294,7 +302,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <h6 class="mb-3">Key Skills Required:</h6>
+                    <h6 class="mb-3 text-dark">Key Skills Required:</h6>
                     <div class="d-flex flex-wrap">
                         {% if assessment_data.domain_info and assessment_data.domain_info.skills %}
                             {% for skill in assessment_data.domain_info.skills[:6] %}
@@ -308,7 +316,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h6 class="mb-3">Placement Readiness Status:</h6>
+                    <h6 class="mb-3 text-dark">Placement Readiness Status:</h6>
                     <div class="d-flex align-items-center mb-3">
                         <div class="me-3">
                             {% if assessment_data.prediction == 1 %}
@@ -318,7 +326,7 @@
                             {% endif %}
                         </div>
                         <div>
-                            <h5 class="mb-0">
+                            <h5 class="mb-0 text-dark">
                                 {% if assessment_data.prediction == 1 %}
                                 Ready for Placement
                                 {% else %}
