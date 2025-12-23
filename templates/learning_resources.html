@@ -44,7 +44,19 @@
                                     </p>
                                 </div>
                             </div>
-                            <p class="card-text small mb-3">{{ resource.description|default('Click to visit this learning resource') }}</p>
+                            <p class="card-text small mb-3">
+                                {% if domain.name == "Web Development" and resource.name == "freeCodeCamp" %}
+                                Learn web development with free interactive coding tutorials.
+                                {% elif domain.name == "Web Development" and resource.name == "The Odin Project" %}
+                                Full-stack web development curriculum with project-based learning.
+                                {% elif domain.name == "Data Science" and resource.name == "Kaggle Learn" %}
+                                Hands-on data science and machine learning courses.
+                                {% elif domain.name == "Mobile Development" and resource.name == "Android Developers" %}
+                                Official Android development documentation and guides.
+                                {% else %}
+                                Click to visit this learning resource.
+                                {% endif %}
+                            </p>
                             <a href="{{ resource.url }}" target="_blank" class="btn btn-primary btn-sm">
                                 <i class="fas fa-external-link-alt me-1"></i>Visit Resource
                             </a>
@@ -72,7 +84,12 @@
                             <i class="fas fa-seedling fa-2x text-primary"></i>
                         </div>
                         <h5>Beginner</h5>
-                        <p>{{ domain.levels.beginner }}</p>
+                        <p class="text-muted">{{ domain.levels.beginner }}</p>
+                        <ul class="text-start small">
+                            <li>Focus on fundamentals</li>
+                            <li>Complete basic tutorials</li>
+                            <li>Build simple projects</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -81,7 +98,12 @@
                             <i class="fas fa-chart-line fa-2x text-warning"></i>
                         </div>
                         <h5>Intermediate</h5>
-                        <p>{{ domain.levels.intermediate }}</p>
+                        <p class="text-muted">{{ domain.levels.intermediate }}</p>
+                        <ul class="text-start small">
+                            <li>Build complex projects</li>
+                            <li>Learn frameworks/tools</li>
+                            <li>Solve real-world problems</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -90,9 +112,71 @@
                             <i class="fas fa-trophy fa-2x text-success"></i>
                         </div>
                         <h5>Advanced</h5>
-                        <p>{{ domain.levels.advanced }}</p>
+                        <p class="text-muted">{{ domain.levels.advanced }}</p>
+                        <ul class="text-start small">
+                            <li>Master advanced concepts</li>
+                            <li>Contribute to open source</li>
+                            <li>Prepare for interviews</li>
+                        </ul>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="card-footer bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6><i class="fas fa-tips me-2"></i>Study Tips:</h6>
+                    <ul class="small mb-0">
+                        <li>Dedicate 1-2 hours daily</li>
+                        <li>Practice consistently</li>
+                        <li>Build projects to apply knowledge</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6><i class="fas fa-check-circle me-2"></i>Success Checklist:</h6>
+                    <ul class="small mb-0">
+                        <li>Complete at least 3 resources</li>
+                        <li>Build 2 practice projects</li>
+                        <li>Participate in communities</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Skill Development -->
+    <div class="card shadow-sm mb-5 border">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-cogs me-2"></i>
+                {{ domain.name }} Skills to Develop
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for skill in domain.skills %}
+                <div class="col-md-4 col-sm-6 mb-3">
+                    <div class="card border h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-check-circle text-success fa-lg mb-2"></i>
+                            <h6 class="card-title mb-2">{{ skill }}</h6>
+                            <div class="progress mb-2" style="height: 8px;">
+                                {% set progress = [30, 40, 50, 60, 70, 80, 90, 100] %}
+                                <div class="progress-bar bg-success" style="width: {{ progress[loop.index0 % 8] }}%;"></div>
+                            </div>
+                            <small class="text-muted">
+                                {% if loop.index0 < 3 %}
+                                Beginner Level
+                                {% elif loop.index0 < 5 %}
+                                Intermediate Level
+                                {% else %}
+                                Advanced Level
+                                {% endif %}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -109,20 +193,140 @@
             <i class="fas fa-redo me-2"></i>Retake Assessment
         </a>
     </div>
+    
+    <!-- Progress Tracker -->
+    <div class="card shadow-sm mt-5 border">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-chart-bar me-2"></i>
+                Your Progress Tracker
+            </h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text">Track your learning progress with these resources:</p>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Resource</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for resource in resources[:5] %}
+                        <tr>
+                            <td>
+                                <strong>{{ resource.name }}</strong>
+                                <br>
+                                <small class="text-muted">{{ resource.type }}</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-warning">Not Started</span>
+                            </td>
+                            <td>
+                                {% if loop.index0 < 2 %}
+                                <span class="badge bg-danger">High</span>
+                                {% elif loop.index0 < 4 %}
+                                <span class="badge bg-warning">Medium</span>
+                                {% else %}
+                                <span class="badge bg-success">Low</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ resource.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    Start Learning
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-// Resource tracking
 document.addEventListener('DOMContentLoaded', function() {
+    // Resource tracking
     const resourceLinks = document.querySelectorAll('a[target="_blank"]');
     resourceLinks.forEach(link => {
         link.addEventListener('click', function() {
-            const resourceName = this.closest('.card').querySelector('.card-title').textContent;
+            const resourceName = this.closest('.card').querySelector('.card-title')?.textContent || 
+                               this.closest('tr').querySelector('strong')?.textContent ||
+                               'Unknown Resource';
+            
+            // Log to console (in production, you would send this to your backend)
             console.log(`User clicked on resource: ${resourceName}`);
+            
+            // You could add analytics here:
+            // fetch('/api/track-resource-click', {
+            //     method: 'POST',
+            //     headers: {'Content-Type': 'application/json'},
+            //     body: JSON.stringify({resource: resourceName})
+            // });
         });
     });
+    
+    // Progress tracker functionality
+    const statusBadges = document.querySelectorAll('.badge.bg-warning');
+    statusBadges.forEach(badge => {
+        badge.addEventListener('click', function() {
+            const currentStatus = this.textContent;
+            const statuses = ['Not Started', 'In Progress', 'Completed'];
+            const currentIndex = statuses.indexOf(currentStatus);
+            const nextIndex = (currentIndex + 1) % statuses.length;
+            
+            // Update badge
+            this.textContent = statuses[nextIndex];
+            
+            // Change badge color
+            if (statuses[nextIndex] === 'Not Started') {
+                this.className = 'badge bg-warning';
+            } else if (statuses[nextIndex] === 'In Progress') {
+                this.className = 'badge bg-info';
+            } else if (statuses[nextIndex] === 'Completed') {
+                this.className = 'badge bg-success';
+            }
+            
+            // Show confirmation
+            const resourceName = this.closest('tr').querySelector('strong').textContent;
+            showToast(`Marked "${resourceName}" as ${statuses[nextIndex]}`);
+        });
+    });
+    
+    // Toast notification function
+    function showToast(message) {
+        // Create toast element
+        const toast = document.createElement('div');
+        toast.className = 'position-fixed bottom-0 end-0 p-3';
+        toast.style.zIndex = '11';
+        
+        const toastInner = document.createElement('div');
+        toastInner.className = 'toast show align-items-center text-white bg-success border-0';
+        toastInner.setAttribute('role', 'alert');
+        
+        toastInner.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="fas fa-check-circle me-2"></i>${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+        
+        toast.appendChild(toastInner);
+        document.body.appendChild(toast);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
 });
 </script>
 {% endblock %}
