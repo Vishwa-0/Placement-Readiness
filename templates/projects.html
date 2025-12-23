@@ -25,7 +25,9 @@
             <div class="row">
                 {% for project in suggestions %}
                 <div class="col-md-6 mb-3">
-                    <div class="card h-100 border">
+                    <div class="card h-100 border project-card" 
+                         onclick="showProjectDetails('{{ project }}', '{{ domain.name }}')"
+                         style="cursor: pointer; transition: transform 0.2s;">
                         <div class="card-body">
                             <h6 class="card-title">
                                 <i class="fas fa-code text-primary me-2"></i>Project {{ loop.index }}
@@ -41,7 +43,7 @@
                             </div>
                         </div>
                         <div class="card-footer bg-transparent">
-                            <button class="btn btn-sm btn-outline-primary" onclick="showProjectDetails('{{ project }}', '{{ domain.name }}')">
+                            <button class="btn btn-sm btn-outline-primary">
                                 <i class="fas fa-info-circle me-1"></i>View Details
                             </button>
                         </div>
@@ -62,12 +64,12 @@
             <div class="row">
                 {% for resource in resources %}
                 <div class="col-md-6 mb-3">
-                    <div class="card border">
+                    <div class="card border h-100">
                         <div class="card-body">
                             <h6 class="card-title">{{ resource.name }}</h6>
                             <p class="card-text small">{{ resource.type }}</p>
                             <a href="{{ resource.url }}" target="_blank" class="btn btn-sm btn-outline-success">
-                                <i class="fas fa-external-link-alt me-1"></i>Visit
+                                <i class="fas fa-external-link-alt me-1"></i>Visit Resource
                             </a>
                         </div>
                     </div>
@@ -131,7 +133,18 @@
 {% block scripts %}
 <script>
 function showProjectDetails(projectName, domainName) {
-    alert(`Project: ${projectName}\nDomain: ${domainName}\n\nSteps to complete:\n1. Research and plan your project structure\n2. Break it into smaller, manageable tasks\n3. Set up development environment and version control\n4. Implement core functionality first\n5. Add features and polish the UI\n6. Test thoroughly and deploy\n7. Document your project on GitHub\n\nTip: Create a timeline and stick to it!`);
-}
-</script>
-{% endblock %}
+    const modalHTML = `
+        <div class="modal fade" id="projectModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">Project: ${projectName}</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Domain: ${domainName}</h6>
+                        <hr>
+                        <h6>Steps to Complete:</h6>
+                        <ol>
+                            <li><strong>Research & Planning:</strong> Study similar projects and plan your approach</li>
+                            <li><strong>Setup:</strong>
