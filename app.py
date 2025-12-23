@@ -4,6 +4,7 @@ import pickle
 import numpy as np
 import os
 import warnings
+import traceback  # Added for better error logging
 warnings.filterwarnings('ignore')  # Suppress warnings in production
 
 app = Flask(__name__)
@@ -367,14 +368,18 @@ def assessment():
                 'domain_info': DOMAINS[domain_focus]
             }
             
+            # Print session data for debugging
+            print(f"Session data stored: {session['assessment_data']}")
+            
             return redirect(url_for('results'))
             
         except Exception as e:
             print(f"Error during assessment: {e}")
+            print(traceback.format_exc())  # Added for detailed error logging
             return render_template('assessment.html', 
                                  domains=DOMAINS, 
                                  company=COMPANY_INFO,
-                                 error="Please check your inputs and try again.")
+                                 error=f"Please check your inputs and try again. Error: {str(e)}")
     
     return render_template('assessment.html', 
                          domains=DOMAINS, 
@@ -383,171 +388,225 @@ def assessment():
 @app.route('/results')
 def results():
     """Results page"""
-    if 'assessment_data' not in session:
-        return redirect(url_for('assessment'))
+    try:
+        if 'assessment_data' not in session:
+            print("No assessment data in session, redirecting to assessment")
+            return redirect(url_for('assessment'))
+        
+        assessment_data = session['assessment_data']
+        domain_key = str(assessment_data['domain_focus'])  # Ensure string type
+        prediction = assessment_data['prediction']
+        overall_score = assessment_data['overall_score']
+        
+        print(f"Results page - Domain Key: {domain_key}, Prediction: {prediction}, Score: {overall_score}")
+        
+        # Get project suggestions - ensure all keys are strings
+        suggestions_key = str(prediction)
+        suggestions_str = PROJECT_SUGGESTIONS.get(suggestions_key, {}).get(domain_key, 'No suggestions available')
+        
+        if suggestions_str == 'No suggestions available':
+            print(f"Warning: No project suggestions found for prediction={suggestions_key}, domain={domain_key}")
+            suggestions_str = PROJECT_SUGGESTIONS.get('0', {}).get(domain_key, 'Personal Portfolio, To-Do List App, Weather App')
+        
+        suggestions = [s.strip() for s in suggestions_str.split(',')]
+        
+        # Get resources
+        resources = LEARNING_RESOURCES.get(domain_key, [])
+        domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
+        
+        print(f"Loaded {len(resources)} resources for domain {domain_key}")
+        
+        return render_template('results.html',
+                             assessment_data=assessment_data,
+                             suggestions=suggestions[:5],
+                             resources=resources[:6],
+                             domain=domain_info,
+                             domain_key=domain_key,
+                             company=COMPANY_INFO,
+                             overall_score=overall_score)
     
-    assessment_data = session['assessment_data']
-    domain_key = assessment_data['domain_focus']
-    prediction = assessment_data['prediction']
-    overall_score = assessment_data['overall_score']
-    
-    # Get project suggestions
-    suggestions_str = PROJECT_SUGGESTIONS.get(str(prediction), {}).get(domain_key, 'No suggestions available')
-    suggestions = [s.strip() for s in suggestions_str.split(',')]
-    
-    # Get resources
-    resources = LEARNING_RESOURCES.get(domain_key, [])
-    domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
-    
-    return render_template('results.html',
-                         assessment_data=assessment_data,
-                         suggestions=suggestions[:5],
-                         resources=resources[:6],
-                         domain=domain_info,
-                         domain_key=domain_key,
-                         company=COMPANY_INFO,
-                         overall_score=overall_score)
+    except Exception as e:
+        print(f"Error in results route: {e}")
+        print(traceback.format_exc())
+        return render_template('500.html', 
+                             error=str(e),
+                             company=COMPANY_INFO), 500
 
 @app.route('/dashboard')
 def dashboard():
     """Dashboard page"""
-    if 'assessment_data' not in session:
-        return redirect(url_for('assessment'))
+    try:
+        if 'assessment_data' not in session:
+            return redirect(url_for('assessment'))
+        
+        assessment_data = session['assessment_data']
+        overall_score = assessment_data['overall_score']
+        
+        # Define realistic maximums for calculations
+        max_values = {
+            'dsa_level': 10,
+            'problem_count': 200,
+            'project_count': 10,
+            'github_quality': 10
+        }
+        
+        # Calculate skill percentages
+        skill_data = {}
+        
+        # DSA Level
+        dsa_percentage = min(100, int((assessment_data['dsa_level'] / max_values['dsa_level']) * 100))
+        skill_data['dsa_level'] = {
+            'value': assessment_data['dsa_level'],
+            'percentage': dsa_percentage,
+            'max': max_values['dsa_level'],
+            'label': 'DSA Proficiency',
+            'color': '#8b5cf6',
+            'level': 'Beginner' if dsa_percentage < 40 else 'Intermediate' if dsa_percentage < 70 else 'Advanced'
+        }
+        
+        # Problems Solved
+        prob_percentage = min(100, int((assessment_data['problem_count'] / max_values['problem_count']) * 100))
+        skill_data['problem_count'] = {
+            'value': assessment_data['problem_count'],
+            'percentage': prob_percentage,
+            'max': max_values['problem_count'],
+            'label': 'Problems Solved',
+            'color': '#10b981',
+            'level': 'Beginner' if prob_percentage < 40 else 'Intermediate' if prob_percentage < 70 else 'Advanced'
+        }
+        
+        # Projects Completed
+        proj_percentage = min(100, int((assessment_data['project_count'] / max_values['project_count']) * 100))
+        skill_data['project_count'] = {
+            'value': assessment_data['project_count'],
+            'percentage': proj_percentage,
+            'max': max_values['project_count'],
+            'label': 'Projects Completed',
+            'color': '#3b82f6',
+            'level': 'Beginner' if proj_percentage < 40 else 'Intermediate' if proj_percentage < 70 else 'Advanced'
+        }
+        
+        # GitHub Quality
+        git_percentage = min(100, int((assessment_data['github_quality'] / max_values['github_quality']) * 100))
+        skill_data['github_quality'] = {
+            'value': assessment_data['github_quality'],
+            'percentage': git_percentage,
+            'max': max_values['github_quality'],
+            'label': 'GitHub Quality',
+            'color': '#ef4444',
+            'level': 'Beginner' if git_percentage < 40 else 'Intermediate' if git_percentage < 70 else 'Advanced'
+        }
+        
+        # Get improvement tips
+        improvement_tips = []
+        
+        if assessment_data['dsa_level'] < 6:
+            improvement_tips.append(f'Improve DSA skills: Current {assessment_data["dsa_level"]}/10 (Target: 7+)')
+        
+        if assessment_data['problem_count'] < 100:
+            improvement_tips.append(f'Solve more problems: Current {assessment_data["problem_count"]} (Target: 150+)')
+        
+        if assessment_data['project_count'] < 3:
+            improvement_tips.append(f'Build more projects: Current {assessment_data["project_count"]} (Target: 5+)')
+        
+        if assessment_data['github_quality'] < 6:
+            improvement_tips.append(f'Improve GitHub profile: Current {assessment_data["github_quality"]}/10 (Target: 7+)')
+        
+        # If no specific tips, add general ones
+        if not improvement_tips:
+            if overall_score >= 60:
+                improvement_tips.append('Prepare for technical interviews with mock sessions')
+                improvement_tips.append('Contribute to open-source projects')
+                improvement_tips.append('Build advanced projects to showcase expertise')
+            else:
+                improvement_tips.append('Focus on building a strong foundation with basic projects')
+                improvement_tips.append('Solve at least 100 coding problems regularly')
+                improvement_tips.append('Complete 3-5 meaningful projects for your portfolio')
+        
+        return render_template('dashboard.html',
+                             assessment_data=assessment_data,
+                             skill_data=skill_data,
+                             improvement_tips=improvement_tips,
+                             overall_score=int(overall_score),
+                             company=COMPANY_INFO)
     
-    assessment_data = session['assessment_data']
-    overall_score = assessment_data['overall_score']
-    
-    # Define realistic maximums for calculations
-    max_values = {
-        'dsa_level': 10,
-        'problem_count': 200,
-        'project_count': 10,
-        'github_quality': 10
-    }
-    
-    # Calculate skill percentages
-    skill_data = {}
-    
-    # DSA Level
-    dsa_percentage = min(100, int((assessment_data['dsa_level'] / max_values['dsa_level']) * 100))
-    skill_data['dsa_level'] = {
-        'value': assessment_data['dsa_level'],
-        'percentage': dsa_percentage,
-        'max': max_values['dsa_level'],
-        'label': 'DSA Proficiency',
-        'color': '#8b5cf6',
-        'level': 'Beginner' if dsa_percentage < 40 else 'Intermediate' if dsa_percentage < 70 else 'Advanced'
-    }
-    
-    # Problems Solved
-    prob_percentage = min(100, int((assessment_data['problem_count'] / max_values['problem_count']) * 100))
-    skill_data['problem_count'] = {
-        'value': assessment_data['problem_count'],
-        'percentage': prob_percentage,
-        'max': max_values['problem_count'],
-        'label': 'Problems Solved',
-        'color': '#10b981',
-        'level': 'Beginner' if prob_percentage < 40 else 'Intermediate' if prob_percentage < 70 else 'Advanced'
-    }
-    
-    # Projects Completed
-    proj_percentage = min(100, int((assessment_data['project_count'] / max_values['project_count']) * 100))
-    skill_data['project_count'] = {
-        'value': assessment_data['project_count'],
-        'percentage': proj_percentage,
-        'max': max_values['project_count'],
-        'label': 'Projects Completed',
-        'color': '#3b82f6',
-        'level': 'Beginner' if proj_percentage < 40 else 'Intermediate' if proj_percentage < 70 else 'Advanced'
-    }
-    
-    # GitHub Quality
-    git_percentage = min(100, int((assessment_data['github_quality'] / max_values['github_quality']) * 100))
-    skill_data['github_quality'] = {
-        'value': assessment_data['github_quality'],
-        'percentage': git_percentage,
-        'max': max_values['github_quality'],
-        'label': 'GitHub Quality',
-        'color': '#ef4444',
-        'level': 'Beginner' if git_percentage < 40 else 'Intermediate' if git_percentage < 70 else 'Advanced'
-    }
-    
-    # Get improvement tips
-    improvement_tips = []
-    
-    if assessment_data['dsa_level'] < 6:
-        improvement_tips.append(f'Improve DSA skills: Current {assessment_data["dsa_level"]}/10 (Target: 7+)')
-    
-    if assessment_data['problem_count'] < 100:
-        improvement_tips.append(f'Solve more problems: Current {assessment_data["problem_count"]} (Target: 150+)')
-    
-    if assessment_data['project_count'] < 3:
-        improvement_tips.append(f'Build more projects: Current {assessment_data["project_count"]} (Target: 5+)')
-    
-    if assessment_data['github_quality'] < 6:
-        improvement_tips.append(f'Improve GitHub profile: Current {assessment_data["github_quality"]}/10 (Target: 7+)')
-    
-    # If no specific tips, add general ones
-    if not improvement_tips:
-        if overall_score >= 60:
-            improvement_tips.append('Prepare for technical interviews with mock sessions')
-            improvement_tips.append('Contribute to open-source projects')
-            improvement_tips.append('Build advanced projects to showcase expertise')
-        else:
-            improvement_tips.append('Focus on building a strong foundation with basic projects')
-            improvement_tips.append('Solve at least 100 coding problems regularly')
-            improvement_tips.append('Complete 3-5 meaningful projects for your portfolio')
-    
-    return render_template('dashboard.html',
-                         assessment_data=assessment_data,
-                         skill_data=skill_data,
-                         improvement_tips=improvement_tips,
-                         overall_score=int(overall_score),
-                         company=COMPANY_INFO)
+    except Exception as e:
+        print(f"Error in dashboard route: {e}")
+        print(traceback.format_exc())
+        return render_template('500.html', 
+                             error=str(e),
+                             company=COMPANY_INFO), 500
 
 @app.route('/projects')
 def projects():
     """Project suggestions page"""
-    if 'assessment_data' not in session:
-        return redirect(url_for('assessment'))
+    try:
+        if 'assessment_data' not in session:
+            return redirect(url_for('assessment'))
+        
+        assessment_data = session['assessment_data']
+        domain_key = str(assessment_data['domain_focus'])
+        prediction = assessment_data['prediction']
+        
+        print(f"Projects page - Domain Key: {domain_key}, Prediction: {prediction}")
+        
+        # Get project suggestions
+        suggestions_key = str(prediction)
+        suggestions_str = PROJECT_SUGGESTIONS.get(suggestions_key, {}).get(domain_key, 'No suggestions available')
+        
+        if suggestions_str == 'No suggestions available':
+            suggestions_str = PROJECT_SUGGESTIONS.get('0', {}).get(domain_key, 'Personal Portfolio, To-Do List App, Weather App')
+        
+        suggestions = [s.strip() for s in suggestions_str.split(',')]
+        
+        # Get resources
+        resources = LEARNING_RESOURCES.get(domain_key, [])
+        domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
+        
+        return render_template('projects.html',
+                             suggestions=suggestions,
+                             resources=resources,
+                             domain=domain_info,
+                             assessment_data=assessment_data,
+                             company=COMPANY_INFO)
     
-    assessment_data = session['assessment_data']
-    domain_key = assessment_data['domain_focus']
-    prediction = assessment_data['prediction']
-    
-    # Get project suggestions
-    suggestions_str = PROJECT_SUGGESTIONS.get(str(prediction), {}).get(domain_key, 'No suggestions available')
-    suggestions = [s.strip() for s in suggestions_str.split(',')]
-    
-    # Get resources
-    resources = LEARNING_RESOURCES.get(domain_key, [])
-    domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
-    
-    return render_template('projects.html',
-                         suggestions=suggestions,
-                         resources=resources,
-                         domain=domain_info,
-                         assessment_data=assessment_data,
-                         company=COMPANY_INFO)
+    except Exception as e:
+        print(f"Error in projects route: {e}")
+        print(traceback.format_exc())
+        return render_template('500.html', 
+                             error=str(e),
+                             company=COMPANY_INFO), 500
 
 @app.route('/learning-resources')
 def learning_resources():
     """Learning resources page"""
-    if 'assessment_data' not in session:
-        return redirect(url_for('assessment'))
+    try:
+        if 'assessment_data' not in session:
+            return redirect(url_for('assessment'))
+        
+        assessment_data = session['assessment_data']
+        domain_key = str(assessment_data['domain_focus'])
+        
+        print(f"Learning Resources page - Domain Key: {domain_key}")
+        
+        # Get resources
+        resources = LEARNING_RESOURCES.get(domain_key, [])
+        domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
+        
+        print(f"Loaded {len(resources)} resources for domain {domain_key}")
+        
+        return render_template('learning_resources.html',
+                             resources=resources,
+                             domain=domain_info,
+                             assessment_data=assessment_data,
+                             company=COMPANY_INFO)
     
-    assessment_data = session['assessment_data']
-    domain_key = assessment_data['domain_focus']
-    
-    # Get resources
-    resources = LEARNING_RESOURCES.get(domain_key, [])
-    domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
-    
-    return render_template('learning_resources.html',
-                         resources=resources,
-                         domain=domain_info,
-                         assessment_data=assessment_data,
-                         company=COMPANY_INFO)
+    except Exception as e:
+        print(f"Error in learning_resources route: {e}")
+        print(traceback.format_exc())
+        return render_template('500.html', 
+                             error=str(e),
+                             company=COMPANY_INFO), 500
 
 @app.route('/reset')
 def reset():
@@ -580,9 +639,14 @@ def page_not_found(e):
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return render_template('500.html', company=COMPANY_INFO), 500
+    print(f"500 Error: {e}")
+    print(traceback.format_exc())
+    return render_template('500.html', 
+                         error=str(e) if app.debug else 'Internal Server Error',
+                         company=COMPANY_INFO), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('FLASK_DEBUG', 'false').lower() == 'true'
+    print(f"Starting Flask app on port {port} with debug={debug}")
     app.run(host='0.0.0.0', port=port, debug=debug)
