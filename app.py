@@ -19,7 +19,7 @@ except Exception as e:
     print("⚠ Using overall score calculation instead")
     model = None
 
-# Domain information - Using numerical keys as your model expects
+# Domain information - Updated with more domains
 DOMAINS = {
     '1': {
         'name': 'Web Development',
@@ -68,31 +68,91 @@ DOMAINS = {
         },
         'icon': 'fas fa-shield-alt',
         'color': '#ef4444'
+    },
+    '5': {
+        'name': 'DevOps',
+        'skills': ['Linux', 'Docker/Kubernetes', 'CI/CD', 'Cloud Platforms', 'Infrastructure as Code', 'Monitoring', 'Automation'],
+        'description': 'Bridge development and operations with automation, CI/CD, and cloud infrastructure',
+        'levels': {
+            'beginner': 'Learn Linux basics and version control systems',
+            'intermediate': 'Master containerization and CI/CD pipelines',
+            'advanced': 'Implement infrastructure as code and cloud architecture'
+        },
+        'icon': 'fas fa-server',
+        'color': '#f59e0b'
+    },
+    '6': {
+        'name': 'Cloud Engineering',
+        'skills': ['AWS/Azure/GCP', 'Microservices', 'Serverless', 'Networking', 'Security', 'Cost Optimization', 'Scalability'],
+        'description': 'Design, deploy, and maintain cloud infrastructure and services',
+        'levels': {
+            'beginner': 'Learn cloud fundamentals and basic services',
+            'intermediate': 'Master cloud services and architecture patterns',
+            'advanced': 'Design enterprise-grade cloud solutions'
+        },
+        'icon': 'fas fa-cloud',
+        'color': '#3b82f6'
+    },
+    '7': {
+        'name': 'Blockchain Development',
+        'skills': ['Solidity', 'Smart Contracts', 'Web3.js', 'Ethereum', 'Cryptography', 'DApps', 'Decentralized Finance'],
+        'description': 'Build decentralized applications and smart contracts on blockchain platforms',
+        'levels': {
+            'beginner': 'Learn blockchain fundamentals and cryptography',
+            'intermediate': 'Develop smart contracts and basic DApps',
+            'advanced': 'Build complex DeFi applications and protocols'
+        },
+        'icon': 'fas fa-link',
+        'color': '#8b5cf6'
+    },
+    '8': {
+        'name': 'Game Development',
+        'skills': ['Unity/Unreal Engine', 'C#/C++', '3D Modeling', 'Physics', 'AI in Games', 'Multiplayer', 'Game Design'],
+        'description': 'Create interactive games and simulations using game engines and programming',
+        'levels': {
+            'beginner': 'Learn basic game development concepts and simple games',
+            'intermediate': 'Build 2D/3D games with physics and basic AI',
+            'advanced': 'Create complex multiplayer games with advanced graphics'
+        },
+        'icon': 'fas fa-gamepad',
+        'color': '#ef4444'
     }
 }
 
-# Project suggestions based on readiness level - SIMPLIFIED
+# Project suggestions based on readiness level
 PROJECT_SUGGESTIONS = {
     '0': {  # Not Ready (Overall Score < 60%)
         '1': 'Personal Portfolio Website, To-Do List App, Weather App, Calculator, Blog Website',
         '2': 'Titanic Data Analysis, House Price Prediction, Iris Classification, Sales Dashboard',
         '3': 'BMI Calculator, Notes App, Currency Converter, Flashlight App, Quiz App',
-        '4': 'Password Checker, Network Scanner, File Integrity Checker, Encryption Tool'
+        '4': 'Password Checker, Network Scanner, File Integrity Checker, Encryption Tool',
+        '5': 'Dockerize a Web App, Basic CI/CD Pipeline, Server Monitoring Script',
+        '6': 'Static Website Hosting, Cloud Storage Service, Basic Cloud VM Setup',
+        '7': 'Simple Smart Contract, Crypto Wallet, Basic DApp Frontend',
+        '8': '2D Platformer Game, Simple Puzzle Game, Character Controller Demo'
     },
     '1': {  # Ready (Overall Score >= 60%)
         '1': 'E-commerce Platform, Chat App, Project Management Tool, Social Media Dashboard',
         '2': 'Sentiment Analysis, Recommendation Engine, Stock Prediction, Customer Churn Prediction',
         '3': 'Food Delivery App, Fitness Tracker, E-commerce Mobile App, Social Media App',
-        '4': 'Vulnerability Scanner, Intrusion Detection System, Security Dashboard, Password Manager'
+        '4': 'Vulnerability Scanner, Intrusion Detection System, Security Dashboard, Password Manager',
+        '5': 'Microservices Architecture, Kubernetes Cluster, Automated Deployment Pipeline',
+        '6': 'Serverless Application, Multi-region Deployment, Auto-scaling System',
+        '7': 'DeFi Application, NFT Marketplace, Decentralized Exchange',
+        '8': 'Multiplayer Game, VR Experience, Advanced 3D Game with AI'
     }
 }
 
-# Learning resources for each domain - SIMPLIFIED
+# Learning resources for each domain
 LEARNING_RESOURCES = {
-    '1': 'MDN Web Docs, freeCodeCamp, W3Schools, Frontend Masters, Codecademy',
-    '2': 'Kaggle, Coursera ML Course, Fast.ai, DataCamp, Towards Data Science',
-    '3': 'Android Developers, iOS Dev Center, Flutter Docs, React Native Docs',
-    '4': 'Cybrary, HackTheBox, TryHackMe, OWASP, SecurityTube'
+    '1': 'MDN Web Docs, freeCodeCamp, W3Schools, Frontend Masters, Codecademy, The Odin Project',
+    '2': 'Kaggle, Coursera ML Course, Fast.ai, DataCamp, Towards Data Science, Google AI',
+    '3': 'Android Developers, iOS Dev Center, Flutter Docs, React Native Docs, Raywenderlich',
+    '4': 'Cybrary, HackTheBox, TryHackMe, OWASP, SecurityTube, PentesterLab',
+    '5': 'Docker Docs, Kubernetes Docs, DevOps Roadmap, AWS DevOps, Google Cloud DevOps',
+    '6': 'AWS Training, Azure Learn, Google Cloud Skills, Cloud Academy, A Cloud Guru',
+    '7': 'Ethereum Docs, Solidity Docs, OpenZeppelin, CryptoZombies, Buildspace',
+    '8': 'Unity Learn, Unreal Engine Docs, GameDev.net, Gamasutra, Brackeys YouTube'
 }
 
 # Company information
@@ -216,8 +276,8 @@ def assessment():
             
             # Validate inputs
             dsa_level = max(1, min(10, dsa_level))
-            problem_count = max(0, min(200, problem_count))
-            project_count = max(0, min(10, project_count))
+            problem_count = max(0, min(500, problem_count))
+            project_count = max(0, min(50, project_count))
             github_quality = max(1, min(10, github_quality))
             
             # Ensure domain is valid
@@ -413,6 +473,27 @@ def projects():
     
     return render_template('projects.html',
                          suggestions=suggestions,
+                         resources=resources,
+                         domain=domain_info,
+                         assessment_data=assessment_data,
+                         company=COMPANY_INFO)
+
+@app.route('/learning-resources')
+def learning_resources():
+    """Learning resources page"""
+    if 'assessment_data' not in session:
+        return redirect(url_for('assessment'))
+    
+    assessment_data = session['assessment_data']
+    domain_key = assessment_data['domain_focus']
+    
+    # Get resources
+    resources_str = LEARNING_RESOURCES.get(domain_key, 'No resources available')
+    resources = [r.strip() for r in resources_str.split(',')]
+    
+    domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
+    
+    return render_template('learning_resources.html',
                          resources=resources,
                          domain=domain_info,
                          assessment_data=assessment_data,
