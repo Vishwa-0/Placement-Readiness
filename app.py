@@ -7,7 +7,7 @@ import warnings
 warnings.filterwarnings('ignore')  # Suppress warnings in production
 
 app = Flask(__name__)
-app.secret_key = 'vynox-placement-system-secret-key-2024'  # Change this for production
+app.secret_key = 'vynox-secret-key'  # Change this for production
 
 # Try to load the trained model, fallback to dummy model if not found
 try:
