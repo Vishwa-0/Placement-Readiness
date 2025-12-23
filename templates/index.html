@@ -1,99 +1,403 @@
-{% extends "base.html" %}
-{% block title %}Home - VYNOX{% endblock %}
-
-{% block content %}
-<!-- Hero Section -->
-<section class="hero-section text-center py-5 mb-5 bg-light rounded">
-    <div class="container">
-        <h1 class="display-4 fw-bold mb-4">Welcome to VYNOX</h1>
-        <p class="lead mb-4">Placement Readiness Assessment System</p>
-        <p class="mb-4">Our AI-powered platform evaluates your technical skills and provides personalized guidance to make you placement-ready for top tech companies.</p>
-        <a href="{{ url_for('assessment') }}" class="btn btn-primary btn-lg">Start Assessment</a>
-        <a href="#domains" class="btn btn-outline-primary btn-lg ms-2">Explore Domains</a>
-    </div>
-</section>
-
-<!-- Features Section -->
-<section class="features-section mb-5">
-    <div class="container">
-        <h2 class="text-center mb-5">How It Works</h2>
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 text-center">
-                    <div class="card-body">
-                        <i class="fas fa-clipboard-check fa-3x text-primary mb-3"></i>
-                        <h4 class="card-title">Skill Assessment</h4>
-                        <p class="card-text">Take our comprehensive assessment to evaluate your DSA skills, project experience, and domain knowledge.</p>
-                    </div>
-                </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VYNOX - Placement Readiness Assessment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">VY<span>NOX</span></div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#assessment">Assessment</a></li>
+                <li><a href="#domains">Domains</a></li>
+                <li><a href="#resources">Learning Resources</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#about">About Us</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button class="btn btn-outline" id="loginBtn">Log In</button>
+                <button class="btn btn-primary" id="signupBtn">Sign Up</button>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 text-center">
-                    <div class="card-body">
-                        <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
-                        <h4 class="card-title">Personalized Dashboard</h4>
-                        <p class="card-text">View detailed analytics of your skills with visual representations of strengths and areas for improvement.</p>
-                    </div>
-                </div>
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 text-center">
-                    <div class="card-body">
-                        <i class="fas fa-lightbulb fa-3x text-primary mb-3"></i>
-                        <h4 class="card-title">Project Recommendations</h4>
-                        <p class="card-text">Get customized project ideas and learning resources based on your skill level and chosen domain.</p>
-                    </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to <span>VYNOX</span></h1>
+            <h2>Placement Readiness Assessment System</h2>
+            <p>Our AI-powered platform evaluates your technical skills and provides personalized guidance to make you placement-ready for top tech companies.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" id="startAssessmentBtn">Start Assessment</button>
+                <button class="btn btn-outline" id="exploreDomainsBtn">Explore Domains</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="AI Assessment Platform">
+        </div>
+    </section>
+
+    <!-- Domains Section -->
+    <section class="domains-section" id="domains">
+        <div class="section-title">
+            <h2>Explore Career Domains</h2>
+            <p>Choose from a wide range of tech domains to assess and improve your skills</p>
+        </div>
+        <div class="domains-grid">
+            <!-- Original domains -->
+            <div class="domain-card" data-domain="software">
+                <div class="domain-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Software Development</h3>
+                <p>Full-stack, Frontend, Backend development with modern frameworks and technologies.</p>
+                <span class="domain-tag">High Demand</span>
+            </div>
+            <div class="domain-card" data-domain="data-science">
+                <div class="domain-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>Data Science & AI</h3>
+                <p>Machine learning, data analysis, artificial intelligence and predictive modeling.</p>
+                <span class="domain-tag">Emerging</span>
+            </div>
+            <div class="domain-card" data-domain="cybersecurity">
+                <div class="domain-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Cybersecurity</h3>
+                <p>Network security, ethical hacking, threat analysis and information protection.</p>
+                <span class="domain-tag">Critical Need</span>
+            </div>
+            
+            <!-- New domains as requested -->
+            <div class="domain-card" data-domain="devops">
+                <div class="domain-icon">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <h3>DevOps</h3>
+                <p>CI/CD pipelines, infrastructure as code, containerization and automation tools.</p>
+                <span class="domain-tag">High Growth</span>
+            </div>
+            <div class="domain-card" data-domain="cloud">
+                <div class="domain-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3>Cloud Engineering</h3>
+                <p>AWS, Azure, GCP cloud architecture, deployment, and management solutions.</p>
+                <span class="domain-tag">High Demand</span>
+            </div>
+            <div class="domain-card" data-domain="blockchain">
+                <div class="domain-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <h3>Blockchain Development</h3>
+                <p>Smart contracts, decentralized applications, cryptocurrency and Web3 technologies.</p>
+                <span class="domain-tag">Emerging</span>
+            </div>
+            <div class="domain-card" data-domain="game">
+                <div class="domain-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h3>Game Developer</h3>
+                <p>Game design, graphics programming, game engines and interactive development.</p>
+                <span class="domain-tag">Creative</span>
+            </div>
+            <div class="domain-card" data-domain="mobile">
+                <div class="domain-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Mobile Development</h3>
+                <p>iOS, Android, cross-platform app development with modern frameworks.</p>
+                <span class="domain-tag">High Demand</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Resources Section -->
+    <section class="resources-section" id="resources">
+        <div class="section-title">
+            <h2>Learning Resources</h2>
+            <p>Curated materials to help you prepare for assessments and improve your skills</p>
+        </div>
+        
+        <div class="resources-tabs">
+            <div class="tab active" data-tab="tutorials">Tutorials</div>
+            <div class="tab" data-tab="practice">Practice Problems</div>
+            <div class="tab" data-tab="courses">Online Courses</div>
+            <div class="tab" data-tab="books">Recommended Books</div>
+        </div>
+        
+        <div class="tab-content active" id="tutorials">
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h4>Data Structures & Algorithms</h4>
+                    <p>Comprehensive guide to essential DSA concepts with visual explanations and code examples.</p>
+                    <a href="https://www.geeksforgeeks.org/data-structures/" target="_blank" class="resource-link">Access Tutorial <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <h4>System Design Fundamentals</h4>
+                    <p>Learn to design scalable systems with real-world examples and case studies.</p>
+                    <a href="https://www.educative.io/courses/grokking-the-system-design-interview" target="_blank" class="resource-link">Access Tutorial <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <h4>Full-Stack Development Roadmap</h4>
+                    <p>Step-by-step guide to becoming a full-stack developer with modern tech stack.</p>
+                    <a href="https://roadmap.sh/full-stack" target="_blank" class="resource-link">Access Tutorial <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+        
+        <div class="tab-content" id="practice">
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h4>Coding Challenges</h4>
+                    <p>500+ coding problems categorized by difficulty and topic with solutions.</p>
+                    <a href="https://leetcode.com/problemset/" target="_blank" class="resource-link">Practice Now <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <h4>Mock Interviews</h4>
+                    <p>Simulate real interview scenarios with AI-powered feedback and evaluation.</p>
+                    <a href="https://www.pramp.com/" target="_blank" class="resource-link">Start Practice <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <h4>Domain-Specific Quizzes</h4>
+                    <p>Test your knowledge in specific domains like Cloud, DevOps, Blockchain, etc.</p>
+                    <a href="#practice" class="resource-link" id="domainQuizBtn">Take Quiz <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
 
-<!-- Domains Section -->
-<section id="domains" class="domains-section mb-5">
-    <div class="container">
-        <h2 class="text-center mb-5">Explore Tech Domains</h2>
-        <div class="row">
-            {% for key, domain in domains.items() %}
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ domain.name }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Key Skills:</h6>
-                        <ul class="list-unstyled">
-                            {% for skill in domain.skills[:3] %}
-                            <li><i class="fas fa-check text-success me-2"></i>{{ skill }}</li>
-                            {% endfor %}
-                        </ul>
-                        <div class="mt-3">
-                            <small class="text-muted">Description:</small>
-                            <p class="small">{{ domain.description[:100] }}...</p>
-                        </div>
+        <div class="tab-content" id="courses">
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h4>Coursera - Specializations</h4>
+                    <p>Professional certificates from top universities and companies.</p>
+                    <a href="https://www.coursera.org/" target="_blank" class="resource-link">Browse Courses <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <h4>Udemy - Tech Skills</h4>
+                    <p>Practical courses on latest technologies with hands-on projects.</p>
+                    <a href="https://www.udemy.com/" target="_blank" class="resource-link">Browse Courses <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <h4>Pluralsight - Skill Paths</h4>
+                    <p>Skill assessments and learning paths for tech professionals.</p>
+                    <a href="https://www.pluralsight.com/" target="_blank" class="resource-link">Browse Courses <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="books">
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h4>Cracking the Coding Interview</h4>
+                    <p>189 programming questions and solutions for interview preparation.</p>
+                    <a href="https://www.amazon.com/Cracking-Coding-Interview-Programming-Questions/dp/0984782850" target="_blank" class="resource-link">View Book <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <h4>Designing Data-Intensive Applications</h4>
+                    <p>The big ideas behind reliable, scalable, and maintainable systems.</p>
+                    <a href="https://www.amazon.com/Designing-Data-Intensive-Applications-Reliable-Maintainable/dp/1449373321" target="_blank" class="resource-link">View Book <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <h4>Clean Code</h4>
+                    <p>A handbook of agile software craftsmanship with practical tips.</p>
+                    <a href="https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882" target="_blank" class="resource-link">View Book <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects-section" id="projects">
+        <div class="section-title">
+            <h2>Project Portfolio</h2>
+            <p>Build real-world projects to showcase your skills to recruiters</p>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3>E-Commerce Platform</h3>
+                <p>Full-stack e-commerce application with user auth, payment integration, and admin dashboard.</p>
+                <div class="project-tech">
+                    <span>React</span>
+                    <span>Node.js</span>
+                    <span>MongoDB</span>
+                </div>
+                <a href="#" class="project-link">View Project</a>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>AI Chatbot</h3>
+                <p>Intelligent chatbot using natural language processing and machine learning algorithms.</p>
+                <div class="project-tech">
+                    <span>Python</span>
+                    <span>TensorFlow</span>
+                    <span>NLP</span>
+                </div>
+                <a href="#" class="project-link">View Project</a>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3>Cloud Deployment</h3>
+                <p>CI/CD pipeline with Docker containers deployed on AWS with auto-scaling.</p>
+                <div class="project-tech">
+                    <span>AWS</span>
+                    <span>Docker</span>
+                    <span>Kubernetes</span>
+                </div>
+                <a href="#" class="project-link">View Project</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about-section" id="about">
+        <div class="section-title">
+            <h2>About VYNOX</h2>
+            <p>Transforming how students prepare for tech careers</p>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Our Mission</h3>
+                <p>VYNOX is an AI-powered placement readiness platform that bridges the gap between academic learning and industry requirements. We provide personalized assessments, learning paths, and project portfolios to make students job-ready.</p>
+                
+                <h3>Why Choose VYNOX?</h3>
+                <ul class="features-list">
+                    <li><i class="fas fa-check-circle"></i> AI-powered skill assessment</li>
+                    <li><i class="fas fa-check-circle"></i> Personalized learning recommendations</li>
+                    <li><i class="fas fa-check-circle"></i> Real-world project portfolio</li>
+                    <li><i class="fas fa-check-circle"></i> Mock interviews with AI feedback</li>
+                    <li><i class="fas fa-check-circle"></i> Direct connections to recruiters</li>
+                </ul>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <h4>10,000+</h4>
+                        <p>Students Trained</p>
                     </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Choose this domain in assessment</small>
+                    <div class="stat-item">
+                        <h4>92%</h4>
+                        <p>Placement Rate</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4>200+</h4>
+                        <p>Partner Companies</p>
                     </div>
                 </div>
             </div>
-            {% endfor %}
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Team Collaboration">
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Quick Assessment -->
-<section class="quick-assessment bg-light py-5 rounded mb-5">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h3>Ready to test your skills?</h3>
-                <p class="lead">Take our 5-minute assessment to know your placement readiness level.</p>
-            </div>
-            <div class="col-md-4 text-end">
-                <a href="{{ url_for('assessment') }}" class="btn btn-primary btn-lg">
-                    Start Assessment <i class="fas fa-arrow-right ms-2"></i>
-                </a>
-            </div>
+    <!-- Assessment Modal -->
+    <div class="modal-overlay" id="assessmentModal">
+        <div class="modal">
+            <div class="close-modal" id="closeModal">&times;</div>
+            <h3>Start Your Assessment</h3>
+            <p>Choose your domain and difficulty level to begin the AI-powered assessment.</p>
+            
+            <form class="modal-form" id="assessmentForm">
+                <div class="form-group">
+                    <label for="domainSelect">Select Domain</label>
+                    <select id="domainSelect" required>
+                        <option value="">Choose a domain</option>
+                        <option value="software">Software Development</option>
+                        <option value="data-science">Data Science & AI</option>
+                        <option value="cybersecurity">Cybersecurity</option>
+                        <option value="devops">DevOps</option>
+                        <option value="cloud">Cloud Engineering</option>
+                        <option value="blockchain">Blockchain Development</option>
+                        <option value="game">Game Development</option>
+                        <option value="mobile">Mobile Development</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="difficulty">Select Difficulty</label>
+                    <select id="difficulty" required>
+                        <option value="">Choose difficulty level</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="duration">Assessment Duration</label>
+                    <div class="duration-options">
+                        <label class="duration-option">
+                            <input type="radio" name="duration" value="30" checked>
+                            <span>30 min (Quick)</span>
+                        </label>
+                        <label class="duration-option">
+                            <input type="radio" name="duration" value="60">
+                            <span>60 min (Standard)</span>
+                        </label>
+                        <label class="duration-option">
+                            <input type="radio" name="duration" value="90">
+                            <span>90 min (Comprehensive)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Start Assessment</button>
+            </form>
         </div>
     </div>
-</section>
-{% endblock %}
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">VYNOX</div>
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#assessment">Assessment</a>
+                <a href="#domains">Domains</a>
+                <a href="#resources">Learning Resources</a>
+                <a href="#projects">Projects</a>
+                <a href="#about">About Us</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>AI-powered placement readiness assessment system for top tech companies</p>
+            <div class="copyright">
+                &copy; 2025 VYNOX. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="script.js"></script>
+</body>
+</html>
