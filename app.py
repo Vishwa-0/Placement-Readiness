@@ -4,13 +4,13 @@ import pickle
 import numpy as np
 import os
 import warnings
-import traceback  # Added for better error logging
-warnings.filterwarnings('ignore')  # Suppress warnings in production
+import traceback
+warnings.filterwarnings('ignore')
 
 app = Flask(__name__)
-app.secret_key = 'vynox-secret-key'  # Change this for production
+app.secret_key = 'vynox-secret-key'
 
-# Try to load the trained model, fallback to dummy model if not found
+# Try to load the trained model
 try:
     with open('PRS.pkl', 'rb') as f:
         model = pickle.load(f)
@@ -20,7 +20,6 @@ except Exception as e:
     print("⚠ Using overall score calculation instead")
     model = None
 
-# Domain information - All 8 domains
 DOMAINS = {
     '1': {
         'name': 'Web Development',
@@ -120,9 +119,8 @@ DOMAINS = {
     }
 }
 
-# Project suggestions based on readiness level
 PROJECT_SUGGESTIONS = {
-    '0': {  # Not Ready (Overall Score < 60%)
+    '0': {
         '1': 'Personal Portfolio Website, To-Do List App, Weather App, Calculator, Blog Website',
         '2': 'Titanic Data Analysis, House Price Prediction, Iris Classification, Sales Dashboard',
         '3': 'BMI Calculator, Notes App, Currency Converter, Flashlight App, Quiz App',
@@ -132,7 +130,7 @@ PROJECT_SUGGESTIONS = {
         '7': 'Simple Smart Contract, Crypto Wallet, Basic DApp Frontend',
         '8': '2D Platformer Game, Simple Puzzle Game, Character Controller Demo'
     },
-    '1': {  # Ready (Overall Score >= 60%)
+    '1': {
         '1': 'E-commerce Platform, Chat App, Project Management Tool, Social Media Dashboard',
         '2': 'Sentiment Analysis, Recommendation Engine, Stock Prediction, Customer Churn Prediction',
         '3': 'Food Delivery App, Fitness Tracker, E-commerce Mobile App, Social Media App',
@@ -144,7 +142,6 @@ PROJECT_SUGGESTIONS = {
     }
 }
 
-# Learning resources for each domain with proper URLs
 LEARNING_RESOURCES = {
     '1': [
         {'name': 'MDN Web Docs', 'url': 'https://developer.mozilla.org', 'type': 'Documentation'},
@@ -212,7 +209,6 @@ LEARNING_RESOURCES = {
     ]
 }
 
-# Company information
 COMPANY_INFO = {
     'name': 'VYNOX',
     'tagline': 'Placement Readiness Assessment System',
@@ -223,7 +219,6 @@ COMPANY_INFO = {
 }
 
 def get_level_description(overall_score):
-    """Get level description based on overall score (0-100%)"""
     if overall_score >= 60:
         return {
             'level': 'Advanced',
@@ -256,39 +251,31 @@ def get_level_description(overall_score):
         }
 
 def calculate_overall_score(dsa_level, problem_count, project_count, github_quality):
-    """Calculate overall readiness score based on all factors"""
-    # Define realistic maximums
     max_dsa = 10
-    max_problems = 200  # Realistic target for placement
-    max_projects = 10   # Realistic target for placement
+    max_problems = 200
+    max_projects = 10
     max_github = 10
     
-    # Calculate percentages
     dsa_percentage = (dsa_level / max_dsa) * 100
     problems_percentage = min(100, (problem_count / max_problems) * 100)
     projects_percentage = min(100, (project_count / max_projects) * 100)
     github_percentage = (github_quality / max_github) * 100
     
-    # Weighted scoring
     overall_score = (
-        dsa_percentage * 0.35 +      # DSA is most important (35%)
-        problems_percentage * 0.25 +  # Problem solving (25%)
-        projects_percentage * 0.25 +  # Project experience (25%)
-        github_percentage * 0.15      # GitHub profile (15%)
+        dsa_percentage * 0.35 +
+        problems_percentage * 0.25 +
+        projects_percentage * 0.25 +
+        github_percentage * 0.15
     )
     
     return min(100, round(overall_score, 1))
 
 @app.route('/')
 def home():
-    """Home page"""
-    return render_template('index.html', 
-                         domains=DOMAINS, 
-                         company=COMPANY_INFO)
+    return render_template('index.html', domains=DOMAINS, company=COMPANY_INFO)
 
 @app.route('/about')
 def about():
-    """About page"""
     team_members = [
         {
             'name': 'Swathi',
@@ -315,46 +302,36 @@ def about():
             'color': '#3b82f6'
         }
     ]
-    return render_template('about.html', 
-                         team=team_members, 
-                         company=COMPANY_INFO)
+    return render_template('about.html', team=team_members, company=COMPANY_INFO)
 
 @app.route('/assessment', methods=['GET', 'POST'])
 def assessment():
-    """Assessment page"""
     if request.method == 'POST':
         try:
-            # Get form data with defaults and validation
             dsa_level = int(request.form.get('dsa_level', 5))
             problem_count = int(request.form.get('problem_count', 50))
             project_count = int(request.form.get('project_count', 3))
             github_quality = int(request.form.get('github_quality', 5))
             domain_focus = request.form.get('domain_focus', '1')
             
-            # Validate inputs
             dsa_level = max(1, min(10, dsa_level))
             problem_count = max(0, min(500, problem_count))
             project_count = max(0, min(50, project_count))
             github_quality = max(1, min(10, github_quality))
             
-            # Ensure domain is valid
             if domain_focus not in DOMAINS:
                 domain_focus = '1'
             
             print(f"Assessment inputs: DSA={dsa_level}, Problems={problem_count}, Projects={project_count}, GitHub={github_quality}, Domain={domain_focus}")
             
-            # Calculate overall readiness score
             overall_score = calculate_overall_score(dsa_level, problem_count, project_count, github_quality)
             print(f"Calculated Overall Score: {overall_score}%")
             
-            # Determine readiness based on overall score (60% threshold)
             is_ready = 1 if overall_score >= 60 else 0
             print(f"Readiness Decision: {'READY' if is_ready == 1 else 'NOT READY'} (Threshold: 60%)")
             
-            # Get level info based on overall score
             level_info = get_level_description(overall_score)
             
-            # Store in session
             session['assessment_data'] = {
                 'dsa_level': dsa_level,
                 'problem_count': problem_count,
@@ -368,39 +345,34 @@ def assessment():
                 'domain_info': DOMAINS[domain_focus]
             }
             
-            # Print session data for debugging
             print(f"Session data stored: {session['assessment_data']}")
             
             return redirect(url_for('results'))
             
         except Exception as e:
             print(f"Error during assessment: {e}")
-            print(traceback.format_exc())  # Added for detailed error logging
+            print(traceback.format_exc())
             return render_template('assessment.html', 
                                  domains=DOMAINS, 
                                  company=COMPANY_INFO,
                                  error=f"Please check your inputs and try again. Error: {str(e)}")
     
-    return render_template('assessment.html', 
-                         domains=DOMAINS, 
-                         company=COMPANY_INFO)
+    return render_template('assessment.html', domains=DOMAINS, company=COMPANY_INFO)
 
 @app.route('/results')
 def results():
-    """Results page"""
     try:
         if 'assessment_data' not in session:
             print("No assessment data in session, redirecting to assessment")
             return redirect(url_for('assessment'))
         
         assessment_data = session['assessment_data']
-        domain_key = str(assessment_data['domain_focus'])  # Ensure string type
+        domain_key = str(assessment_data['domain_focus'])
         prediction = assessment_data['prediction']
         overall_score = assessment_data['overall_score']
         
         print(f"Results page - Domain Key: {domain_key}, Prediction: {prediction}, Score: {overall_score}")
         
-        # Get project suggestions - ensure all keys are strings
         suggestions_key = str(prediction)
         suggestions_str = PROJECT_SUGGESTIONS.get(suggestions_key, {}).get(domain_key, 'No suggestions available')
         
@@ -410,7 +382,6 @@ def results():
         
         suggestions = [s.strip() for s in suggestions_str.split(',')]
         
-        # Get resources
         resources = LEARNING_RESOURCES.get(domain_key, [])
         domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
         
@@ -428,13 +399,10 @@ def results():
     except Exception as e:
         print(f"Error in results route: {e}")
         print(traceback.format_exc())
-        return render_template('500.html', 
-                             error=str(e),
-                             company=COMPANY_INFO), 500
+        return render_template('500.html', error=str(e), company=COMPANY_INFO), 500
 
 @app.route('/dashboard')
 def dashboard():
-    """Dashboard page"""
     try:
         if 'assessment_data' not in session:
             return redirect(url_for('assessment'))
@@ -442,7 +410,6 @@ def dashboard():
         assessment_data = session['assessment_data']
         overall_score = assessment_data['overall_score']
         
-        # Define realistic maximums for calculations
         max_values = {
             'dsa_level': 10,
             'problem_count': 200,
@@ -450,10 +417,8 @@ def dashboard():
             'github_quality': 10
         }
         
-        # Calculate skill percentages
         skill_data = {}
         
-        # DSA Level
         dsa_percentage = min(100, int((assessment_data['dsa_level'] / max_values['dsa_level']) * 100))
         skill_data['dsa_level'] = {
             'value': assessment_data['dsa_level'],
@@ -464,7 +429,6 @@ def dashboard():
             'level': 'Beginner' if dsa_percentage < 40 else 'Intermediate' if dsa_percentage < 70 else 'Advanced'
         }
         
-        # Problems Solved
         prob_percentage = min(100, int((assessment_data['problem_count'] / max_values['problem_count']) * 100))
         skill_data['problem_count'] = {
             'value': assessment_data['problem_count'],
@@ -475,7 +439,6 @@ def dashboard():
             'level': 'Beginner' if prob_percentage < 40 else 'Intermediate' if prob_percentage < 70 else 'Advanced'
         }
         
-        # Projects Completed
         proj_percentage = min(100, int((assessment_data['project_count'] / max_values['project_count']) * 100))
         skill_data['project_count'] = {
             'value': assessment_data['project_count'],
@@ -486,7 +449,6 @@ def dashboard():
             'level': 'Beginner' if proj_percentage < 40 else 'Intermediate' if proj_percentage < 70 else 'Advanced'
         }
         
-        # GitHub Quality
         git_percentage = min(100, int((assessment_data['github_quality'] / max_values['github_quality']) * 100))
         skill_data['github_quality'] = {
             'value': assessment_data['github_quality'],
@@ -497,7 +459,6 @@ def dashboard():
             'level': 'Beginner' if git_percentage < 40 else 'Intermediate' if git_percentage < 70 else 'Advanced'
         }
         
-        # Get improvement tips
         improvement_tips = []
         
         if assessment_data['dsa_level'] < 6:
@@ -512,7 +473,6 @@ def dashboard():
         if assessment_data['github_quality'] < 6:
             improvement_tips.append(f'Improve GitHub profile: Current {assessment_data["github_quality"]}/10 (Target: 7+)')
         
-        # If no specific tips, add general ones
         if not improvement_tips:
             if overall_score >= 60:
                 improvement_tips.append('Prepare for technical interviews with mock sessions')
@@ -533,13 +493,10 @@ def dashboard():
     except Exception as e:
         print(f"Error in dashboard route: {e}")
         print(traceback.format_exc())
-        return render_template('500.html', 
-                             error=str(e),
-                             company=COMPANY_INFO), 500
+        return render_template('500.html', error=str(e), company=COMPANY_INFO), 500
 
 @app.route('/projects')
 def projects():
-    """Project suggestions page"""
     try:
         if 'assessment_data' not in session:
             return redirect(url_for('assessment'))
@@ -550,7 +507,6 @@ def projects():
         
         print(f"Projects page - Domain Key: {domain_key}, Prediction: {prediction}")
         
-        # Get project suggestions
         suggestions_key = str(prediction)
         suggestions_str = PROJECT_SUGGESTIONS.get(suggestions_key, {}).get(domain_key, 'No suggestions available')
         
@@ -559,7 +515,6 @@ def projects():
         
         suggestions = [s.strip() for s in suggestions_str.split(',')]
         
-        # Get resources
         resources = LEARNING_RESOURCES.get(domain_key, [])
         domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
         
@@ -573,50 +528,57 @@ def projects():
     except Exception as e:
         print(f"Error in projects route: {e}")
         print(traceback.format_exc())
-        return render_template('500.html', 
-                             error=str(e),
-                             company=COMPANY_INFO), 500
+        return render_template('500.html', error=str(e), company=COMPANY_INFO), 500
 
 @app.route('/learning-resources')
 def learning_resources():
-    """Learning resources page"""
     try:
-        if 'assessment_data' not in session:
-            return redirect(url_for('assessment'))
+        personalized = False
         
-        assessment_data = session['assessment_data']
-        domain_key = str(assessment_data['domain_focus'])
+        if 'assessment_data' in session:
+            assessment_data = session['assessment_data']
+            domain_key = str(assessment_data['domain_focus'])
+            resources = LEARNING_RESOURCES.get(domain_key, [])
+            domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
+            personalized = True
+        else:
+            assessment_data = None
+            domain_info = DOMAINS['1']
+            
+            all_resources = []
+            for domain_key in LEARNING_RESOURCES:
+                all_resources.extend(LEARNING_RESOURCES[domain_key][:2])
+            
+            seen = set()
+            resources = []
+            for resource in all_resources:
+                if resource['name'] not in seen:
+                    seen.add(resource['name'])
+                    resources.append(resource)
+            
+            personalized = False
         
-        print(f"Learning Resources page - Domain Key: {domain_key}")
-        
-        # Get resources
-        resources = LEARNING_RESOURCES.get(domain_key, [])
-        domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
-        
-        print(f"Loaded {len(resources)} resources for domain {domain_key}")
+        print(f"Learning Resources page - Personalized: {personalized}, Resources: {len(resources)}")
         
         return render_template('learning_resources.html',
                              resources=resources,
                              domain=domain_info,
                              assessment_data=assessment_data,
+                             personalized=personalized,
                              company=COMPANY_INFO)
     
     except Exception as e:
         print(f"Error in learning_resources route: {e}")
         print(traceback.format_exc())
-        return render_template('500.html', 
-                             error=str(e),
-                             company=COMPANY_INFO), 500
+        return render_template('500.html', error=str(e), company=COMPANY_INFO), 500
 
 @app.route('/reset')
 def reset():
-    """Reset session and start over"""
     session.clear()
     return redirect(url_for('assessment'))
 
 @app.route('/api/health')
 def health_check():
-    """Health check endpoint for Render"""
     return jsonify({
         'status': 'healthy', 
         'service': 'placement-readiness',
@@ -626,13 +588,11 @@ def health_check():
 
 @app.route('/api/assessment-data')
 def get_assessment_data():
-    """API endpoint to get current assessment data"""
     if 'assessment_data' not in session:
         return jsonify({'error': 'No assessment data found'}), 404
     
     return jsonify(session['assessment_data'])
 
-# Error handlers
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html', company=COMPANY_INFO), 404
