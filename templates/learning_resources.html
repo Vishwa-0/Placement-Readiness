@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Learning Resources - VYNOX{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-5 mb-3">Learning Resources</h1>
+        <p class="lead">Recommended learning materials for {{ domain.name }}</p>
+        {% if assessment_data.prediction == 1 %}
+        <div class="badge bg-success fs-6 p-2">Placement Ready</div>
+        {% else %}
+        <div class="badge bg-warning fs-6 p-2">Needs Improvement</div>
+        {% endif %}
+    </div>
+    
+    <!-- Learning Resources -->
+    <div class="card shadow-sm mb-5 border">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-graduation-cap me-2"></i>
+                Top Learning Resources for {{ domain.name }}
+            </h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text">Here are the best resources to master {{ domain.name }}. Start with free resources and progress to advanced materials.</p>
+            
+            <div class="row">
+                {% for resource in resources %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="rounded-circle bg-primary-bg p-3 me-3">
+                                    <i class="fas fa-external-link-alt fa-lg text-primary"></i>
+                                </div>
+                                <div>
+                                    <h5 class="card-title mb-1">{{ resource }}</h5>
+                                    <p class="card-text text-muted small">
+                                        {% if 'free' in resource|lower or 'docs' in resource|lower %}
+                                        <span class="badge bg-success me-1">Free</span>
+                                        {% endif %}
+                                        {% if 'course' in resource|lower %}
+                                        <span class="badge bg-info me-1">Course</span>
+                                        {% endif %}
+                                        {% if 'docs' in resource|lower %}
+                                        <span class="badge bg-secondary me-1">Documentation</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary" onclick="showResourceInfo('{{ resource }}')">
+                                <i class="fas fa-info-circle me-1"></i>View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Learning Path -->
+    <div class="card shadow-sm mb-5 border">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-road me-2"></i>
+                {{ domain.name }} Learning Path
+            </h
