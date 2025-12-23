@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="card-footer bg-transparent">
-                            <button class="btn btn-sm btn-outline-primary" onclick="showProjectDetails('{{ project }}')">
+                            <button class="btn btn-sm btn-outline-primary" onclick="showProjectDetails('{{ project }}', '{{ domain.name }}')">
                                 <i class="fas fa-info-circle me-1"></i>View Details
                             </button>
                         </div>
@@ -59,15 +59,18 @@
         </div>
         <div class="card-body">
             <p>Enhance your skills with these recommended resources for {{ domain.name }}:</p>
-            <div class="list-group">
+            <div class="row">
                 {% for resource in resources %}
-                <div class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h6 class="mb-1">{{ resource }}</h6>
-                        <small class="text-muted">Free Resource</small>
+                <div class="col-md-6 mb-3">
+                    <div class="card border">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ resource.name }}</h6>
+                            <p class="card-text small">{{ resource.type }}</p>
+                            <a href="{{ resource.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                <i class="fas fa-external-link-alt me-1"></i>Visit
+                            </a>
+                        </div>
                     </div>
-                    <p class="mb-1">Learn essential concepts and techniques</p>
-                    <small class="text-muted">Click to explore</small>
                 </div>
                 {% endfor %}
             </div>
@@ -127,19 +130,8 @@
 
 {% block scripts %}
 <script>
-function showProjectDetails(projectName) {
-    alert(`Project Details: ${projectName}\n\nStart by:\n1. Researching similar projects\n2. Breaking it into smaller tasks\n3. Setting up your development environment\n4. Writing clean, documented code\n5. Testing and deploying your project`);
+function showProjectDetails(projectName, domainName) {
+    alert(`Project: ${projectName}\nDomain: ${domainName}\n\nSteps to complete:\n1. Research and plan your project structure\n2. Break it into smaller, manageable tasks\n3. Set up development environment and version control\n4. Implement core functionality first\n5. Add features and polish the UI\n6. Test thoroughly and deploy\n7. Document your project on GitHub\n\nTip: Create a timeline and stick to it!`);
 }
-
-// Add project tracking
-document.addEventListener('DOMContentLoaded', function() {
-    const projectCards = document.querySelectorAll('.card .btn-outline-primary');
-    projectCards.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const projectTitle = this.closest('.card').querySelector('.card-text').textContent;
-            console.log(`User viewed details for: ${projectTitle}`);
-        });
-    });
-});
 </script>
 {% endblock %}
