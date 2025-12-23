@@ -51,6 +51,7 @@
             background-color: var(--bg-primary) !important;
             color: var(--text-primary) !important;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding-top: 80px;
         }
         
         /* Navigation */
@@ -58,6 +59,7 @@
             background-color: var(--bg-primary) !important;
             border-bottom: 1px solid var(--border-color) !important;
             box-shadow: 0 2px 4px rgba(139, 92, 246, 0.05);
+            padding: 1rem 0;
         }
         
         .navbar-brand {
@@ -73,16 +75,21 @@
             color: var(--text-secondary) !important;
             font-weight: 500;
             transition: var(--transition);
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            margin: 0 0.25rem;
         }
         
         .nav-link:hover {
             color: var(--primary-color) !important;
+            background-color: var(--primary-bg) !important;
         }
         
         .nav-link.active {
             color: var(--primary-color) !important;
             background-color: var(--primary-bg) !important;
             border-radius: 8px;
+            font-weight: 600;
         }
         
         /* Cards */
@@ -309,6 +316,10 @@
                 width: 100%;
                 margin-bottom: 0.5rem;
             }
+            
+            .nav-link {
+                margin: 0.25rem 0;
+            }
         }
     </style>
     
@@ -337,31 +348,46 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('home') }}">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('home') }}">
                             <i class="fas fa-home me-1"></i> Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('assessment') }}">
+                        <a class="nav-link {% if request.path == '/assessment' %}active{% endif %}" href="{{ url_for('assessment') }}">
                             <i class="fas fa-clipboard-check me-1"></i> Assessment
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('dashboard') }}">
+                        <a class="nav-link {% if request.path == '/dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
                             <i class="fas fa-tachometer-alt me-1"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('projects') }}">
+                        <a class="nav-link {% if request.path == '/projects' %}active{% endif %}" href="{{ url_for('projects') }}">
                             <i class="fas fa-project-diagram me-1"></i> Projects
                         </a>
                     </li>
+                    <!-- ADDED: Learning Resources Link -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('about') }}">
+                        <a class="nav-link {% if request.path == '/learning-resources' %}active{% endif %}" href="{{ url_for('learning_resources') }}">
+                            <i class="fas fa-graduation-cap me-1"></i> Learning Resources
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/about' %}active{% endif %}" href="{{ url_for('about') }}">
                             <i class="fas fa-users me-1"></i> About Us
                         </a>
                     </li>
                 </ul>
+                
+                {% if 'assessment_data' in session %}
+                <div class="ms-3">
+                    <span class="badge bg-primary">
+                        <i class="fas fa-user me-1"></i>
+                        {{ session['assessment_data']['domain_name'] }}
+                    </span>
+                </div>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -429,6 +455,12 @@
                         <li class="mb-2">
                             <a href="{{ url_for('projects') }}" class="text-decoration-none text-muted">
                                 <i class="fas fa-chevron-right me-2"></i> Projects
+                            </a>
+                        </li>
+                        <!-- ADDED: Learning Resources to footer -->
+                        <li class="mb-2">
+                            <a href="{{ url_for('learning_resources') }}" class="text-decoration-none text-muted">
+                                <i class="fas fa-chevron-right me-2"></i> Learning Resources
                             </a>
                         </li>
                         <li>
