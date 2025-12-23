@@ -35,23 +35,19 @@
                                     <i class="fas fa-external-link-alt fa-lg text-primary"></i>
                                 </div>
                                 <div>
-                                    <h5 class="card-title mb-1">{{ resource }}</h5>
+                                    <h5 class="card-title mb-1">{{ resource.name }}</h5>
                                     <p class="card-text text-muted small">
-                                        {% if 'free' in resource|lower or 'docs' in resource|lower %}
+                                        <span class="badge bg-info me-1">{{ resource.type }}</span>
+                                        {% if 'free' in resource.type|lower or 'free' in resource.name|lower %}
                                         <span class="badge bg-success me-1">Free</span>
-                                        {% endif %}
-                                        {% if 'course' in resource|lower %}
-                                        <span class="badge bg-info me-1">Course</span>
-                                        {% endif %}
-                                        {% if 'docs' in resource|lower %}
-                                        <span class="badge bg-secondary me-1">Documentation</span>
                                         {% endif %}
                                     </p>
                                 </div>
                             </div>
-                            <button class="btn btn-sm btn-outline-primary" onclick="showResourceInfo('{{ resource }}')">
-                                <i class="fas fa-info-circle me-1"></i>View Details
-                            </button>
+                            <p class="card-text small mb-3">{{ resource.description|default('Click to visit this learning resource') }}</p>
+                            <a href="{{ resource.url }}" target="_blank" class="btn btn-primary btn-sm">
+                                <i class="fas fa-external-link-alt me-1"></i>Visit Resource
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -66,4 +62,67 @@
             <h5 class="mb-0">
                 <i class="fas fa-road me-2"></i>
                 {{ domain.name }} Learning Path
-            </h
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-seedling fa-2x text-primary"></i>
+                        </div>
+                        <h5>Beginner</h5>
+                        <p>{{ domain.levels.beginner }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="rounded-circle bg-warning bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-chart-line fa-2x text-warning"></i>
+                        </div>
+                        <h5>Intermediate</h5>
+                        <p>{{ domain.levels.intermediate }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-trophy fa-2x text-success"></i>
+                        </div>
+                        <h5>Advanced</h5>
+                        <p>{{ domain.levels.advanced }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="text-center mt-5">
+        <a href="{{ url_for('projects') }}" class="btn btn-outline-primary me-3">
+            <i class="fas fa-project-diagram me-2"></i>View Project Ideas
+        </a>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-success me-3">
+            <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+        </a>
+        <a href="{{ url_for('assessment') }}" class="btn btn-primary">
+            <i class="fas fa-redo me-2"></i>Retake Assessment
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Resource tracking
+document.addEventListener('DOMContentLoaded', function() {
+    const resourceLinks = document.querySelectorAll('a[target="_blank"]');
+    resourceLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            const resourceName = this.closest('.card').querySelector('.card-title').textContent;
+            console.log(`User clicked on resource: ${resourceName}`);
+        });
+    });
+});
+</script>
+{% endblock %}
