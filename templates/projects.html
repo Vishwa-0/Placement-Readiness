@@ -2,70 +2,48 @@
 {% block title %}Projects - VYNOX{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container py-4">
     <!-- Page Header -->
-    <div class="text-center mb-5 fade-in">
-        <h1 class="display-4 text-gradient fw-bold mb-3">Project Recommendations</h1>
-        <p class="lead text-muted">Personalized project ideas for your level in {{ domain.name }}</p>
+    <div class="text-center mb-5">
+        <h1 class="display-5 mb-3">Project Recommendations</h1>
+        <p class="lead">Personalized project ideas for your level in {{ domain.name }}</p>
         {% if assessment_data.prediction == 1 %}
-        <div class="badge bg-success fs-6 p-2 mb-3">
-            <i class="fas fa-trophy me-1"></i>Placement Ready
-        </div>
+        <div class="badge bg-success fs-6 p-2">Placement Ready</div>
         {% else %}
-        <div class="badge bg-warning fs-6 p-2 mb-3">
-            <i class="fas fa-seedling me-1"></i>Not Placement Ready
-        </div>
+        <div class="badge bg-warning fs-6 p-2">Not Placement Ready</div>
         {% endif %}
     </div>
     
     <!-- Project Suggestions -->
-    <div class="card shadow mb-5 border-0 fade-in">
-        <div class="card-header bg-primary text-white border-0">
-            <h4 class="mb-0">
-                <i class="fas fa-lightbulb me-2"></i>
-                Recommended Projects for {{ domain.name }}
-            </h4>
+    <div class="card shadow mb-5 border-0">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Recommended Projects for {{ domain.name }}</h5>
         </div>
         <div class="card-body">
-            <p class="card-text text-muted mb-4">Here are project ideas tailored to your skill level. Start with simpler projects and gradually move to more complex ones.</p>
+            <p class="card-text">Here are project ideas tailored to your skill level. Start with simpler projects and gradually move to more complex ones.</p>
             
             <div class="row">
                 {% for project in suggestions %}
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card border-0 shadow-sm h-100 project-card" 
-                         onclick="showProjectDetails('{{ project|replace(\"'\", \"&#39;\") }}', '{{ domain.name|replace(\"'\", \"&#39;\") }}')"
-                         style="cursor: pointer; transition: var(--transition);">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-start mb-3">
-                                <div class="rounded-circle bg-primary-bg p-3 me-3 flex-shrink-0">
-                                    <i class="fas fa-code fa-lg text-primary"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h5 class="card-title mb-1">Project {{ loop.index }}</h5>
-                                    <h6 class="text-primary mb-3">{{ project }}</h6>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <small class="text-muted d-block mb-2">Skills you'll develop:</small>
-                                <div>
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 border">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <i class="fas fa-code text-primary me-2"></i>Project {{ loop.index }}
+                            </h6>
+                            <h5 class="card-text">{{ project }}</h5>
+                            <div class="mt-3">
+                                <small class="text-muted">Skills you'll develop:</small>
+                                <div class="mt-1">
                                     {% for skill in domain.skills[:3] %}
-                                    <span class="badge bg-secondary bg-opacity-10 text-secondary mb-1 me-1">{{ skill }}</span>
+                                    <span class="badge bg-secondary me-1 mb-1">{{ skill }}</span>
                                     {% endfor %}
-                                    {% if domain.skills|length > 3 %}
-                                    <span class="badge bg-secondary bg-opacity-10 text-secondary mb-1">+{{ domain.skills|length - 3 }} more</span>
-                                    {% endif %}
                                 </div>
                             </div>
-                            
-                            <div class="d-flex justify-content-between align-items-center mt-auto">
-                                <span class="badge bg-primary">
-                                    {% if loop.index0 < 2 %}Beginner{% elif loop.index0 < 4 %}Intermediate{% else %}Advanced{% endif %}
-                                </span>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-info-circle me-1"></i>Details
-                                </button>
-                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <button class="btn btn-sm btn-outline-primary" onclick="showProjectDetails('{{ project }}', '{{ domain.name }}')">
+                                <i class="fas fa-info-circle me-1"></i>View Details
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -75,29 +53,21 @@
     </div>
     
     <!-- Learning Resources -->
-    <div class="card shadow mb-5 border-0 fade-in">
-        <div class="card-header bg-success text-white border-0">
-            <h4 class="mb-0">
-                <i class="fas fa-graduation-cap me-2"></i>
-                Learning Resources for {{ domain.name }}
-            </h4>
+    <div class="card shadow mb-5 border-0">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Learning Resources</h5>
         </div>
         <div class="card-body">
-            <p class="text-muted mb-4">Enhance your skills with these recommended resources:</p>
+            <p>Enhance your skills with these recommended resources for {{ domain.name }}:</p>
             <div class="row">
                 {% for resource in resources %}
-                <div class="col-lg-6 mb-3">
-                    <div class="card border h-100">
+                <div class="col-md-6 mb-3">
+                    <div class="card border">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="card-title mb-0">{{ resource.name }}</h6>
-                                <span class="badge bg-info">{{ resource.type }}</span>
-                            </div>
-                            <p class="card-text small text-muted mb-3">
-                                Click to visit this learning resource for {{ domain.name }}.
-                            </p>
+                            <h6 class="card-title">{{ resource.name }}</h6>
+                            <p class="card-text small">{{ resource.type }}</p>
                             <a href="{{ resource.url }}" target="_blank" class="btn btn-sm btn-outline-success">
-                                <i class="fas fa-external-link-alt me-1"></i>Visit Resource
+                                <i class="fas fa-external-link-alt me-1"></i>Visit
                             </a>
                         </div>
                     </div>
@@ -108,57 +78,48 @@
     </div>
     
     <!-- Action Plan -->
-    <div class="card shadow border-0 fade-in">
-        <div class="card-header bg-warning text-dark border-0">
-            <h4 class="mb-0">
-                <i class="fas fa-calendar-check me-2"></i>
-                30-Day Action Plan
-            </h4>
+    <div class="card shadow border-0">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="fas fa-calendar-check me-2"></i>30-Day Action Plan</h5>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="text-center p-4">
-                        <div class="display-5 text-primary mb-3">
-                            <i class="fas fa-seedling"></i>
-                        </div>
-                        <h5>Week 1-2: Foundation</h5>
-                        <ul class="text-start text-muted">
-                            <li class="mb-2">Complete 2 beginner projects</li>
-                            <li class="mb-2">Solve 50 coding problems</li>
+                    <div class="text-center p-3">
+                        <div class="display-6 text-primary mb-2">Week 1-2</div>
+                        <h5>Foundation Building</h5>
+                        <ul class="text-start">
+                            <li>Complete 2 beginner projects</li>
+                            <li>Solve 50 coding problems</li>
                             <li>Learn core concepts</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="text-center p-4">
-                        <div class="display-5 text-success mb-3">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h5>Week 3-4: Enhancement</h5>
-                        <ul class="text-start text-muted">
-                            <li class="mb-2">Build 1 intermediate project</li>
-                            <li class="mb-2">Solve 100+ problems</li>
+                    <div class="text-center p-3">
+                        <div class="display-6 text-success mb-2">Week 3-4</div>
+                        <h5>Skill Enhancement</h5>
+                        <ul class="text-start">
+                            <li>Build 1 intermediate project</li>
+                            <li>Solve 100+ problems</li>
                             <li>Work on GitHub portfolio</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="text-center p-4">
-                        <div class="display-5 text-info mb-3">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <h5>After 30 Days</h5>
-                        <ul class="text-start text-muted">
-                            <li class="mb-2">Retake placement assessment</li>
-                            <li class="mb-2">Update your resume</li>
+                    <div class="text-center p-3">
+                        <div class="display-6 text-info mb-2">After 30 Days</div>
+                        <h5>Assessment & Growth</h5>
+                        <ul class="text-start">
+                            <li>Retake placement assessment</li>
+                            <li>Update your resume</li>
                             <li>Apply for internships</li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="text-center mt-4">
-                <a href="{{ url_for('assessment') }}" class="btn btn-primary btn-lg px-5">
+                <a href="{{ url_for('assessment') }}" class="btn btn-primary btn-lg">
                     <i class="fas fa-redo me-2"></i>Retake Assessment in 30 Days
                 </a>
             </div>
@@ -170,114 +131,7 @@
 {% block scripts %}
 <script>
 function showProjectDetails(projectName, domainName) {
-    // Decode HTML entities
-    const decodedProjectName = projectName.replace(/&#39;/g, "'");
-    const decodedDomainName = domainName.replace(/&#39;/g, "'");
-    
-    const modalHTML = `
-        <div class="modal fade" id="projectModal" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title">Project: ${decodedProjectName}</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h6 class="text-muted mb-3">Domain: ${decodedDomainName}</h6>
-                        <hr>
-                        
-                        <h6 class="mb-3">🚀 Project Overview</h6>
-                        <p class="mb-4">This project will help you develop practical skills in ${decodedDomainName}. Follow the steps below to complete it successfully.</p>
-                        
-                        <h6 class="mb-3">📝 Steps to Complete:</h6>
-                        <ol class="mb-4">
-                            <li class="mb-2"><strong>Research & Planning:</strong> Study similar projects and plan your approach</li>
-                            <li class="mb-2"><strong>Setup:</strong> Create repository and set up development environment</li>
-                            <li class="mb-2"><strong>Core Features:</strong> Implement main functionality first</li>
-                            <li class="mb-2"><strong>UI/UX:</strong> Design user interface and experience</li>
-                            <li class="mb-2"><strong>Testing:</strong> Test thoroughly and fix bugs</li>
-                            <li class="mb-2"><strong>Deployment:</strong> Deploy your project (GitHub Pages, Heroku, etc.)</li>
-                            <li><strong>Documentation:</strong> Write README and document your code</li>
-                        </ol>
-                        
-                        <h6 class="mb-3">🛠️ Resources Needed:</h6>
-                        <ul class="mb-4">
-                            <li class="mb-1">Code Editor (VS Code, PyCharm, etc.)</li>
-                            <li class="mb-1">Version Control (Git & GitHub)</li>
-                            <li class="mb-1">Relevant frameworks/libraries</li>
-                            <li>Documentation references</li>
-                        </ul>
-                        
-                        <h6 class="mb-3">⏰ Expected Timeline:</h6>
-                        <div class="progress mb-3" style="height: 25px;">
-                            <div class="progress-bar" role="progressbar" style="width: 25%">
-                                <span class="d-none d-md-inline">Planning (2-3 days)</span>
-                                <span class="d-inline d-md-none">Plan</span>
-                            </div>
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 35%">
-                                <span class="d-none d-md-inline">Development (4-7 days)</span>
-                                <span class="d-inline d-md-none">Dev</span>
-                            </div>
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 25%">
-                                <span class="d-none d-md-inline">Testing (2-3 days)</span>
-                                <span class="d-inline d-md-none">Test</span>
-                            </div>
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 15%">
-                                <span class="d-none d-md-inline">Deployment (1-2 days)</span>
-                                <span class="d-inline d-md-none">Deploy</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="startProject('${decodedProjectName}')">
-                            <i class="fas fa-play me-1"></i>Start This Project
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Add modal to body
-    const modalDiv = document.createElement('div');
-    modalDiv.innerHTML = modalHTML;
-    document.body.appendChild(modalDiv);
-    
-    // Show modal
-    const projectModal = new bootstrap.Modal(document.getElementById('projectModal'));
-    projectModal.show();
-    
-    // Remove modal from DOM after it's hidden
-    document.getElementById('projectModal').addEventListener('hidden.bs.modal', function () {
-        this.remove();
-    });
+    alert(`Project: ${projectName}\nDomain: ${domainName}\n\nSteps to complete:\n1. Research and plan your project structure\n2. Break it into smaller, manageable tasks\n3. Set up development environment and version control\n4. Implement core functionality first\n5. Add features and polish the UI\n6. Test thoroughly and deploy\n7. Document your project on GitHub\n\nTip: Create a timeline and stick to it!`);
 }
-
-function startProject(projectName) {
-    alert(`🎉 Great choice! Starting project: "${projectName}"\n\nNext steps:\n1. Create a new GitHub repository\n2. Set up your development environment\n3. Break down the project into smaller tasks\n4. Start coding!\n\nTip: Commit your code regularly with descriptive messages.`);
-    
-    // Close the modal
-    const modal = bootstrap.Modal.getInstance(document.getElementById('projectModal'));
-    if (modal) {
-        modal.hide();
-    }
-}
-
-// Add hover effects to project cards
-document.addEventListener('DOMContentLoaded', function() {
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-8px)';
-            this.style.boxShadow = '0 15px 30px rgba(139, 92, 246, 0.15)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-            this.style.boxShadow = 'var(--box-shadow)';
-        });
-    });
-});
 </script>
 {% endblock %}
