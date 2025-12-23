@@ -7,7 +7,7 @@ import warnings
 warnings.filterwarnings('ignore')  # Suppress warnings in production
 
 app = Flask(__name__)
-app.secret_key = 'vynox-secret-key'  # Change this for production
+app.secret_key = 'vynox-placement-system-secret-key-2024'  # Change this for production
 
 # Try to load the trained model, fallback to dummy model if not found
 try:
@@ -19,7 +19,7 @@ except Exception as e:
     print("⚠ Using overall score calculation instead")
     model = None
 
-# Domain information - Updated with more domains
+# Domain information - All 8 domains
 DOMAINS = {
     '1': {
         'name': 'Web Development',
@@ -143,16 +143,72 @@ PROJECT_SUGGESTIONS = {
     }
 }
 
-# Learning resources for each domain
+# Learning resources for each domain with proper URLs
 LEARNING_RESOURCES = {
-    '1': 'MDN Web Docs, freeCodeCamp, W3Schools, Frontend Masters, Codecademy, The Odin Project',
-    '2': 'Kaggle, Coursera ML Course, Fast.ai, DataCamp, Towards Data Science, Google AI',
-    '3': 'Android Developers, iOS Dev Center, Flutter Docs, React Native Docs, Raywenderlich',
-    '4': 'Cybrary, HackTheBox, TryHackMe, OWASP, SecurityTube, PentesterLab',
-    '5': 'Docker Docs, Kubernetes Docs, DevOps Roadmap, AWS DevOps, Google Cloud DevOps',
-    '6': 'AWS Training, Azure Learn, Google Cloud Skills, Cloud Academy, A Cloud Guru',
-    '7': 'Ethereum Docs, Solidity Docs, OpenZeppelin, CryptoZombies, Buildspace',
-    '8': 'Unity Learn, Unreal Engine Docs, GameDev.net, Gamasutra, Brackeys YouTube'
+    '1': [
+        {'name': 'MDN Web Docs', 'url': 'https://developer.mozilla.org', 'type': 'Documentation'},
+        {'name': 'freeCodeCamp', 'url': 'https://freecodecamp.org', 'type': 'Free Courses'},
+        {'name': 'W3Schools', 'url': 'https://w3schools.com', 'type': 'Tutorials'},
+        {'name': 'Frontend Masters', 'url': 'https://frontendmasters.com', 'type': 'Paid Courses'},
+        {'name': 'Codecademy', 'url': 'https://codecademy.com', 'type': 'Interactive'},
+        {'name': 'The Odin Project', 'url': 'https://theodinproject.com', 'type': 'Full Curriculum'}
+    ],
+    '2': [
+        {'name': 'Kaggle Learn', 'url': 'https://kaggle.com/learn', 'type': 'Practice'},
+        {'name': 'Coursera ML Course', 'url': 'https://coursera.org/learn/machine-learning', 'type': 'Course'},
+        {'name': 'Fast.ai', 'url': 'https://fast.ai', 'type': 'Practical AI'},
+        {'name': 'DataCamp', 'url': 'https://datacamp.com', 'type': 'Interactive'},
+        {'name': 'Towards Data Science', 'url': 'https://towardsdatascience.com', 'type': 'Articles'},
+        {'name': 'Google AI', 'url': 'https://ai.google/education', 'type': 'Resources'}
+    ],
+    '3': [
+        {'name': 'Android Developers', 'url': 'https://developer.android.com', 'type': 'Documentation'},
+        {'name': 'iOS Dev Center', 'url': 'https://developer.apple.com', 'type': 'Documentation'},
+        {'name': 'Flutter Docs', 'url': 'https://flutter.dev/docs', 'type': 'Framework'},
+        {'name': 'React Native Docs', 'url': 'https://reactnative.dev/docs', 'type': 'Framework'},
+        {'name': 'Raywenderlich', 'url': 'https://raywenderlich.com', 'type': 'Tutorials'},
+        {'name': 'Expo Docs', 'url': 'https://docs.expo.dev', 'type': 'Tools'}
+    ],
+    '4': [
+        {'name': 'Cybrary', 'url': 'https://cybrary.it', 'type': 'Courses'},
+        {'name': 'HackTheBox', 'url': 'https://hackthebox.com', 'type': 'Practice'},
+        {'name': 'TryHackMe', 'url': 'https://tryhackme.com', 'type': 'Learning'},
+        {'name': 'OWASP', 'url': 'https://owasp.org', 'type': 'Security'},
+        {'name': 'SecurityTube', 'url': 'https://securitytube.net', 'type': 'Videos'},
+        {'name': 'PentesterLab', 'url': 'https://pentesterlab.com', 'type': 'Exercises'}
+    ],
+    '5': [
+        {'name': 'Docker Docs', 'url': 'https://docs.docker.com', 'type': 'Documentation'},
+        {'name': 'Kubernetes Docs', 'url': 'https://kubernetes.io/docs', 'type': 'Documentation'},
+        {'name': 'DevOps Roadmap', 'url': 'https://roadmap.sh/devops', 'type': 'Learning Path'},
+        {'name': 'AWS DevOps', 'url': 'https://aws.amazon.com/devops', 'type': 'Cloud'},
+        {'name': 'Google Cloud DevOps', 'url': 'https://cloud.google.com/devops', 'type': 'Cloud'},
+        {'name': 'Jenkins', 'url': 'https://jenkins.io/doc', 'type': 'CI/CD'}
+    ],
+    '6': [
+        {'name': 'AWS Training', 'url': 'https://aws.amazon.com/training', 'type': 'Training'},
+        {'name': 'Azure Learn', 'url': 'https://learn.microsoft.com/azure', 'type': 'Learning'},
+        {'name': 'Google Cloud Skills', 'url': 'https://cloud.google.com/training', 'type': 'Training'},
+        {'name': 'Cloud Academy', 'url': 'https://cloudacademy.com', 'type': 'Courses'},
+        {'name': 'A Cloud Guru', 'url': 'https://acloudguru.com', 'type': 'Learning'},
+        {'name': 'Linux Academy', 'url': 'https://linuxacademy.com', 'type': 'Training'}
+    ],
+    '7': [
+        {'name': 'Ethereum Docs', 'url': 'https://ethereum.org/developers', 'type': 'Documentation'},
+        {'name': 'Solidity Docs', 'url': 'https://docs.soliditylang.org', 'type': 'Language'},
+        {'name': 'OpenZeppelin', 'url': 'https://openzeppelin.com', 'type': 'Security'},
+        {'name': 'CryptoZombies', 'url': 'https://cryptozombies.io', 'type': 'Interactive'},
+        {'name': 'Buildspace', 'url': 'https://buildspace.so', 'type': 'Projects'},
+        {'name': 'Web3 University', 'url': 'https://web3.university', 'type': 'Learning'}
+    ],
+    '8': [
+        {'name': 'Unity Learn', 'url': 'https://learn.unity.com', 'type': 'Official'},
+        {'name': 'Unreal Engine Docs', 'url': 'https://docs.unrealengine.com', 'type': 'Documentation'},
+        {'name': 'GameDev.net', 'url': 'https://gamedev.net', 'type': 'Community'},
+        {'name': 'Gamasutra', 'url': 'https://gamasutra.com', 'type': 'Articles'},
+        {'name': 'Brackeys YouTube', 'url': 'https://youtube.com/c/Brackeys', 'type': 'Tutorials'},
+        {'name': 'r/gamedev', 'url': 'https://reddit.com/r/gamedev', 'type': 'Community'}
+    ]
 }
 
 # Company information
@@ -212,7 +268,7 @@ def calculate_overall_score(dsa_level, problem_count, project_count, github_qual
     projects_percentage = min(100, (project_count / max_projects) * 100)
     github_percentage = (github_quality / max_github) * 100
     
-    # Weighted scoring (more weight to DSA and Projects)
+    # Weighted scoring
     overall_score = (
         dsa_percentage * 0.35 +      # DSA is most important (35%)
         problems_percentage * 0.25 +  # Problem solving (25%)
@@ -286,7 +342,7 @@ def assessment():
             
             print(f"Assessment inputs: DSA={dsa_level}, Problems={problem_count}, Projects={project_count}, GitHub={github_quality}, Domain={domain_focus}")
             
-            # Calculate overall readiness score (our primary metric)
+            # Calculate overall readiness score
             overall_score = calculate_overall_score(dsa_level, problem_count, project_count, github_quality)
             print(f"Calculated Overall Score: {overall_score}%")
             
@@ -304,7 +360,7 @@ def assessment():
                 'project_count': project_count,
                 'github_quality': github_quality,
                 'domain_focus': domain_focus,
-                'prediction': is_ready,  # 1 if ready, 0 if not ready
+                'prediction': is_ready,
                 'overall_score': overall_score,
                 'level_info': level_info,
                 'domain_name': DOMAINS[domain_focus]['name'],
@@ -332,23 +388,21 @@ def results():
     
     assessment_data = session['assessment_data']
     domain_key = assessment_data['domain_focus']
-    prediction = assessment_data['prediction']  # 0 or 1 based on 60% threshold
+    prediction = assessment_data['prediction']
     overall_score = assessment_data['overall_score']
     
-    # Get project suggestions based on readiness (0 or 1)
+    # Get project suggestions
     suggestions_str = PROJECT_SUGGESTIONS.get(str(prediction), {}).get(domain_key, 'No suggestions available')
     suggestions = [s.strip() for s in suggestions_str.split(',')]
     
     # Get resources
-    resources_str = LEARNING_RESOURCES.get(domain_key, 'No resources available')
-    resources = [r.strip() for r in resources_str.split(',')]
-    
+    resources = LEARNING_RESOURCES.get(domain_key, [])
     domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
     
     return render_template('results.html',
                          assessment_data=assessment_data,
                          suggestions=suggestions[:5],
-                         resources=resources[:5],
+                         resources=resources[:6],
                          domain=domain_info,
                          domain_key=domain_key,
                          company=COMPANY_INFO,
@@ -366,12 +420,12 @@ def dashboard():
     # Define realistic maximums for calculations
     max_values = {
         'dsa_level': 10,
-        'problem_count': 200,  # Realistic max: 200 problems
-        'project_count': 10,   # Realistic max: 10 projects
+        'problem_count': 200,
+        'project_count': 10,
         'github_quality': 10
     }
     
-    # Calculate skill percentages with realistic max values
+    # Calculate skill percentages
     skill_data = {}
     
     # DSA Level
@@ -418,7 +472,7 @@ def dashboard():
         'level': 'Beginner' if git_percentage < 40 else 'Intermediate' if git_percentage < 70 else 'Advanced'
     }
     
-    # Get improvement tips based on actual scores
+    # Get improvement tips
     improvement_tips = []
     
     if assessment_data['dsa_level'] < 6:
@@ -466,9 +520,7 @@ def projects():
     suggestions = [s.strip() for s in suggestions_str.split(',')]
     
     # Get resources
-    resources_str = LEARNING_RESOURCES.get(domain_key, 'No resources available')
-    resources = [r.strip() for r in resources_str.split(',')]
-    
+    resources = LEARNING_RESOURCES.get(domain_key, [])
     domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
     
     return render_template('projects.html',
@@ -488,9 +540,7 @@ def learning_resources():
     domain_key = assessment_data['domain_focus']
     
     # Get resources
-    resources_str = LEARNING_RESOURCES.get(domain_key, 'No resources available')
-    resources = [r.strip() for r in resources_str.split(',')]
-    
+    resources = LEARNING_RESOURCES.get(domain_key, [])
     domain_info = DOMAINS.get(domain_key, DOMAINS['1'])
     
     return render_template('learning_resources.html',
