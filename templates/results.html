@@ -33,4 +33,190 @@
                             {{ assessment_data.level_info.level }} Level
                         </div>
                         
-                        <p class="fs-5">{{ assessment_data.level
+                        <p class="fs-5">{{ assessment_data.level_info.description }}</p>
+                    </div>
+                    
+                    <!-- Overall Score -->
+                    <div class="mb-4">
+                        <h4>Overall Score: {{ overall_score }}%</h4>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar bg-{{ assessment_data.level_info.color }}" 
+                                 role="progressbar" 
+                                 style="width: {{ overall_score }}%"
+                                 aria-valuenow="{{ overall_score }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                                {{ overall_score }}%
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Advice -->
+                    <div class="alert alert-{{ assessment_data.level_info.color }}">
+                        <h5><i class="{{ assessment_data.level_info.icon }} me-2"></i>Expert Advice</h5>
+                        <p class="mb-0">{{ assessment_data.level_info.advice }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Domain Information -->
+            <div class="card shadow mb-4 border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="{{ domain.icon }} me-2"></i>
+                        Your Focus Domain: {{ domain.name }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ domain.description }}</p>
+                    
+                    <h6 class="mt-4 mb-3">Key Skills in {{ domain.name }}:</h6>
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        {% for skill in domain.skills %}
+                        <span class="badge bg-secondary">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="card border h-100">
+                                <div class="card-body text-center">
+                                    <div class="text-primary mb-2">
+                                        <i class="fas fa-seedling fa-2x"></i>
+                                    </div>
+                                    <h6>Beginner Path</h6>
+                                    <p class="small text-muted">{{ domain.levels.beginner }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border h-100">
+                                <div class="card-body text-center">
+                                    <div class="text-warning mb-2">
+                                        <i class="fas fa-chart-line fa-2x"></i>
+                                    </div>
+                                    <h6>Intermediate Path</h6>
+                                    <p class="small text-muted">{{ domain.levels.intermediate }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border h-100">
+                                <div class="card-body text-center">
+                                    <div class="text-success mb-2">
+                                        <i class="fas fa-trophy fa-2x"></i>
+                                    </div>
+                                    <h6>Advanced Path</h6>
+                                    <p class="small text-muted">{{ domain.levels.advanced }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recommended Projects -->
+            <div class="card shadow mb-4 border-0">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-project-diagram me-2"></i>
+                        Recommended Projects
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for project in suggestions %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card border h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">
+                                        <i class="fas fa-code text-success me-2"></i>
+                                        Project {{ loop.index }}
+                                    </h6>
+                                    <p class="card-text">{{ project }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Learning Resources -->
+            <div class="card shadow mb-4 border-0">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-graduation-cap me-2"></i>
+                        Learning Resources
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for resource in resources %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card border h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ resource.name }}</h6>
+                                    <p class="card-text small text-muted">{{ resource.type }}</p>
+                                    <a href="{{ resource.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-external-link-alt me-1"></i>Visit Resource
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="text-center mb-5">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                </a>
+                <a href="{{ url_for('projects') }}" class="btn btn-success btn-lg me-3">
+                    <i class="fas fa-project-diagram me-2"></i>View Detailed Projects
+                </a>
+                <a href="{{ url_for('learning_resources') }}" class="btn btn-info btn-lg">
+                    <i class="fas fa-graduation-cap me-2"></i>Explore Learning Resources
+                </a>
+            </div>
+            
+            <!-- Retake Assessment -->
+            <div class="card shadow border-0">
+                <div class="card-body text-center">
+                    <h5 class="mb-3">Want to improve your score?</h5>
+                    <p class="text-muted mb-4">Focus on the recommended areas and retake the assessment in 30 days.</p>
+                    <a href="{{ url_for('assessment') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-redo me-2"></i>Retake Assessment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Add smooth scrolling
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click tracking for resources
+    const resourceLinks = document.querySelectorAll('a[target="_blank"]');
+    resourceLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            const resourceName = this.closest('.card').querySelector('.card-title').textContent;
+            console.log(`User clicked on learning resource: ${resourceName}`);
+        });
+    });
+    
+    // Display success message
+    const prediction = {{ assessment_data.prediction }};
+    if (prediction === 1) {
+        console.log("Congratulations! User is placement ready.");
+    } else {
+        console.log("User needs improvement - showing recommendations.");
+    }
+});
+</script>
+{% endblock %}
