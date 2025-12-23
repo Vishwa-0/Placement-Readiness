@@ -1,80 +1,333 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}VYNOX - Placement Ready{% endblock %}</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>VYNOX - {% block title %}Placement Readiness System{% endblock %}</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Light Violet Theme CSS -->
     <style>
         :root {
-            --primary-color: #4f46e5;
-            --secondary-color: #10b981;
+            --primary-color: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #a78bfa;
+            --primary-bg: #f3f0ff;
+            
+            --secondary-color: #6c757d;
+            --secondary-dark: #495057;
+            --secondary-light: #adb5bd;
+            
+            --accent-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            
+            --border-color: #e2e8f0;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 6px rgba(139, 92, 246, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        /* Light Theme Overrides */
+        body {
+            background-color: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: var(--bg-primary) !important;
+            border-bottom: 1px solid var(--border-color) !important;
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.05);
+        }
+        
         .navbar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
+            font-weight: 800;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+        
         .nav-link {
+            color: var(--text-secondary) !important;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: var(--transition);
         }
+        
         .nav-link:hover {
             color: var(--primary-color) !important;
         }
+        
         .nav-link.active {
             color: var(--primary-color) !important;
+            background-color: var(--primary-bg) !important;
+            border-radius: 8px;
+        }
+        
+        /* Cards */
+        .card {
+            background-color: var(--bg-card) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: var(--border-radius) !important;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.15);
+            border-color: var(--primary-color) !important;
+        }
+        
+        .card-header {
+            background-color: var(--primary-bg) !important;
+            border-bottom: 1px solid var(--border-color) !important;
+            color: var(--text-primary);
             font-weight: 600;
-            border-bottom: 2px solid var(--primary-color);
         }
+        
+        /* Buttons */
         .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            transition: all 0.3s;
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: white !important;
         }
+        
         .btn-primary:hover {
-            background-color: #4338ca;
-            border-color: #4338ca;
+            background-color: var(--primary-dark) !important;
+            border-color: var(--primary-dark) !important;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
         }
-        .footer {
-            background-color: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-            margin-top: auto;
+        
+        .btn-outline-primary {
+            color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            background-color: transparent !important;
         }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+        }
+        
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+        
+        .border-primary {
+            border-color: var(--primary-color) !important;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+        
+        /* Forms */
+        .form-control, .form-select {
+            background-color: var(--bg-input) !important;
+            border: 2px solid var(--border-color) !important;
+            color: var(--text-primary) !important;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background-color: var(--bg-input) !important;
+            border-color: var(--primary-color) !important;
+            color: var(--text-primary) !important;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15) !important;
+        }
+        
+        .form-range::-webkit-slider-thumb {
+            background-color: var(--primary-color) !important;
+        }
+        
+        .form-range::-moz-range-thumb {
+            background-color: var(--primary-color) !important;
+        }
+        
+        /* Progress Bars */
+        .progress {
+            background-color: var(--bg-secondary) !important;
+            border-radius: 10px;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary-color) !important;
+            border-radius: 10px;
+        }
+        
+        /* Badges */
+        .badge.bg-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
+            color: white !important;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-bg) 0%, #ffffff 100%);
+            color: var(--text-primary);
+            padding: 4rem 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary) !important;
+            border-top: 1px solid var(--border-color) !important;
+            color: var(--text-secondary);
+        }
+        
+        footer h5 {
+            color: var(--text-primary);
+        }
+        
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Glass Effect */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+        }
+        
+        /* Skill Meters */
+        .skill-meter {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .skill-meter .skill-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        
+        .skill-meter .skill-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .skill-meter .skill-value {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        /* Domain Cards */
         .domain-card {
-            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 4px solid var(--primary-color);
+            transition: var(--transition);
         }
+        
         .domain-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.15);
         }
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        main {
-            flex: 1;
-        }
-        .badge-domain {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
+            .hero-section {
+                padding: 2rem 1rem;
+            }
+            
+            .btn-lg {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
         }
     </style>
-    {% block styles %}{% endblock %}
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
+    
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3 sticky-top">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
-            <a class="navbar-brand text-primary" href="{{ url_for('home') }}">
-                <i class="fas fa-rocket me-2"></i>VYNOX
-                <small class="fs-6 text-muted d-block d-lg-inline">Placement Ready</small>
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+                {% if company %}
+                <span class="me-2">{{ company.name }}</span>
+                {% else %}
+                <span class="me-2">VYNOX</span>
+                {% endif %}
+                <small class="badge bg-primary ms-2">PRS</small>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -82,88 +335,136 @@
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('home') }}">
-                            <i class="fas fa-home me-1"></i>Home
+                        <a class="nav-link" href="{{ url_for('home') }}">
+                            <i class="fas fa-home me-1"></i> Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/about' %}active{% endif %}" href="{{ url_for('about') }}">
-                            <i class="fas fa-info-circle me-1"></i>About
+                        <a class="nav-link" href="{{ url_for('assessment') }}">
+                            <i class="fas fa-clipboard-check me-1"></i> Assessment
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/assessment' %}active{% endif %}" href="{{ url_for('assessment') }}">
-                            <i class="fas fa-clipboard-check me-1"></i>Assessment
-                        </a>
-                    </li>
-                    
-                    <!-- LEARNING RESOURCES - ALWAYS VISIBLE -->
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/learning-resources' %}active{% endif %}" href="{{ url_for('learning_resources') }}">
-                            <i class="fas fa-graduation-cap me-1"></i>Learning Resources
-                        </a>
-                    </li>
-                    
-                    <!-- Conditionally visible after assessment -->
-                    {% if 'assessment_data' in session %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/projects' %}active{% endif %}" href="{{ url_for('projects') }}">
-                            <i class="fas fa-project-diagram me-1"></i>Projects
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-1"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
-                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        <a class="nav-link" href="{{ url_for('projects') }}">
+                            <i class="fas fa-project-diagram me-1"></i> Projects
                         </a>
                     </li>
-                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">
+                            <i class="fas fa-users me-1"></i> About Us
+                        </a>
+                    </li>
                 </ul>
-                
-                <div class="d-flex align-items-center">
-                    {% if 'assessment_data' in session %}
-                    <div class="me-3">
-                        <span class="badge badge-domain">
-                            <i class="fas fa-bullseye me-1"></i>
-                            {{ session['assessment_data']['domain_name'] }}
-                        </span>
-                    </div>
-                    <a href="{{ url_for('reset') }}" class="btn btn-outline-secondary btn-sm me-2">
-                        <i class="fas fa-redo me-1"></i>Reset
-                    </a>
-                    {% endif %}
-                    
-                    {% if 'assessment_data' not in session %}
-                    <a href="{{ url_for('assessment') }}" class="btn btn-primary">
-                        <i class="fas fa-play me-1"></i>Start Assessment
-                    </a>
-                    {% else %}
-                    <a href="{{ url_for('results') }}" class="btn btn-outline-primary">
-                        <i class="fas fa-chart-bar me-1"></i>View Results
-                    </a>
-                    {% endif %}
-                </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main>
+    <main class="container-fluid px-0">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container mt-4 pt-5">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
         {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="footer py-5 mt-5">
+    <footer class="py-5 mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4">
-                    <h5 class="mb-3">
-                        <i class="fas fa-rocket me-2 text-primary"></i>VYNOX
-                    </h5>
-                    <p class="text-muted">{{ company.tagline }}</p>
-                    <p class="text-muted">{{ company.description }}</p>
-                    <div class="mt-3">
+                    <h4 class="text-gradient fw-bold mb-3">
+                        {% if company %}
+                            {{ company.name }}
+                        {% else %}
+                            VYNOX
+                        {% endif %}
+                    </h4>
+                    <p class="text-muted">
+                        {% if company %}
+                            {{ company.tagline }}
+                        {% else %}
+                            Placement Readiness Assessment System
+                        {% endif %}
+                    </p>
+                    <p class="small text-muted">
+                        Empowering students with AI-driven skill assessment and personalized career guidance.
+                    </p>
+                </div>
+                
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="{{ url_for('home') }}" class="text-decoration-none text-muted">
+                                <i class="fas fa-chevron-right me-2"></i> Home
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ url_for('assessment') }}" class="text-decoration-none text-muted">
+                                <i class="fas fa-chevron-right me-2"></i> Assessment
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ url_for('dashboard') }}" class="text-decoration-none text-muted">
+                                <i class="fas fa-chevron-right me-2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ url_for('projects') }}" class="text-decoration-none text-muted">
+                                <i class="fas fa-chevron-right me-2"></i> Projects
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('about') }}" class="text-decoration-none text-muted">
+                                <i class="fas fa-chevron-right me-2"></i> About Us
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">Contact Info</h5>
+                    <ul class="list-unstyled text-muted">
+                        {% if company %}
+                        <li class="mb-2">
+                            <i class="fas fa-envelope me-2"></i> {{ company.contact_email }}
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-phone me-2"></i> {{ company.contact_phone }}
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt me-2"></i> {{ company.address }}
+                        </li>
+                        {% else %}
+                        <li class="mb-2">
+                            <i class="fas fa-envelope me-2"></i> contact@vynox.com
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-phone me-2"></i> +1 (234) 567-8900
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt me-2"></i> Tech Innovation Hub, Bangalore
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <div class="social-links mt-3">
                         <a href="#" class="text-decoration-none text-muted me-3">
                             <i class="fab fa-twitter fa-lg"></i>
                         </a>
@@ -173,85 +474,77 @@
                         <a href="#" class="text-decoration-none text-muted me-3">
                             <i class="fab fa-github fa-lg"></i>
                         </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 mb-4">
-                    <h5 class="mb-3">Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <a href="{{ url_for('home') }}" class="text-decoration-none text-muted">
-                                <i class="fas fa-chevron-right me-1"></i>Home
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="{{ url_for('about') }}" class="text-decoration-none text-muted">
-                                <i class="fas fa-chevron-right me-1"></i>About
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="{{ url_for('assessment') }}" class="text-decoration-none text-muted">
-                                <i class="fas fa-chevron-right me-1"></i>Assessment
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="{{ url_for('learning_resources') }}" class="text-decoration-none text-muted">
-                                <i class="fas fa-chevron-right me-1"></i>Learning Resources
-                            </a>
-                        </li>
-                        {% if 'assessment_data' in session %}
-                        <li class="mb-2">
-                            <a href="{{ url_for('projects') }}" class="text-decoration-none text-muted">
-                                <i class="fas fa-chevron-right me-1"></i>Projects
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="{{ url_for('dashboard') }}" class="text-decoration-none text-muted">
-                                <i class="fas fa-chevron-right me-1"></i>Dashboard
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
-                <div class="col-lg-4 mb-4">
-                    <h5 class="mb-3">Contact Us</h5>
-                    <ul class="list-unstyled text-muted">
-                        <li class="mb-2">
-                            <i class="fas fa-envelope me-2"></i>{{ company.contact_email }}
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-phone me-2"></i>{{ company.contact_phone }}
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-map-marker-alt me-2"></i>{{ company.address }}
-                        </li>
-                    </ul>
-                    <div class="mt-4">
-                        <h6>Newsletter</h6>
-                        <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Your email">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
+                        <a href="#" class="text-decoration-none text-muted">
+                            <i class="fab fa-instagram fa-lg"></i>
+                        </a>
                     </div>
                 </div>
             </div>
+            
             <hr class="my-4">
-            <div class="text-center text-muted">
-                <p class="mb-0">
-                    &copy; {{ company.name }} 2024. All rights reserved.
-                    <span class="mx-2">|</span>
-                    <a href="#" class="text-decoration-none text-muted">Privacy Policy</a>
-                    <span class="mx-2">|</span>
-                    <a href="#" class="text-decoration-none text-muted">Terms of Service</a>
-                </p>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0 text-muted small">
+                        &copy; 2024 VYNOX. All rights reserved.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0 text-muted small">
+                        Powered by AI & Machine Learning
+                    </p>
+                </div>
             </div>
         </div>
     </footer>
 
     <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     
     {% block scripts %}{% endblock %}
+    
+    <script>
+        // Initialize tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Initialize popovers
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl);
+            });
+            
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Add active class to current page in navbar
+            const currentPage = window.location.pathname;
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
