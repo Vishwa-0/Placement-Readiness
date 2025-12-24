@@ -2,167 +2,166 @@
 {% block title %}Learning Resources - VYNOX{% endblock %}
 
 {% block content %}
-<div class="container py-4">
+<div class="container py-5">
     <!-- Page Header -->
-    <div class="text-center mb-5">
-        <h1 class="display-5 mb-3">Learning Resources</h1>
-        <p class="lead">Recommended learning materials for {{ domain.name }}</p>
+    <div class="text-center mb-5 fade-in">
+        <h1 class="display-4 text-gradient fw-bold mb-3">Learning Resources</h1>
+        {% if personalized %}
+        <p class="lead text-muted mb-4">Personalized learning materials for <span class="text-primary fw-bold">{{ domain.name }}</span></p>
         {% if assessment_data.prediction == 1 %}
-        <div class="badge bg-success fs-6 p-2">Placement Ready</div>
+        <div class="badge bg-success fs-6 p-2 mb-3">
+            <i class="fas fa-trophy me-1"></i>Placement Ready
+        </div>
         {% else %}
-        <div class="badge bg-warning fs-6 p-2">Needs Improvement</div>
+        <div class="badge bg-warning fs-6 p-2 mb-3">
+            <i class="fas fa-seedling me-1"></i>Needs Improvement
+        </div>
+        {% endif %}
+        {% else %}
+        <p class="lead text-muted mb-4">Top learning resources across all tech domains</p>
+        <div class="badge bg-info fs-6 p-2 mb-3">
+            <i class="fas fa-graduation-cap me-1"></i>General Resources
+        </div>
         {% endif %}
     </div>
     
-    <!-- Learning Resources -->
-    <div class="card shadow-sm mb-5 border">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">
-                <i class="fas fa-graduation-cap me-2"></i>
-                Top Learning Resources for {{ domain.name }}
-            </h5>
-        </div>
-        <div class="card-body">
-            <p class="card-text">Here are the best resources to master {{ domain.name }}. Start with free resources and progress to advanced materials.</p>
-            
-            <div class="row">
-                {% for resource in resources %}
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 border">
-                        <div class="card-body">
-                            <div class="d-flex align-items-start mb-3">
-                                <div class="rounded-circle bg-primary-bg p-3 me-3">
-                                    <i class="fas fa-external-link-alt fa-lg text-primary"></i>
-                                </div>
-                                <div>
-                                    <h5 class="card-title mb-1">{{ resource.name }}</h5>
-                                    <p class="card-text text-muted small">
-                                        <span class="badge bg-info me-1">{{ resource.type }}</span>
-                                        {% if 'free' in resource.type|lower or 'free' in resource.name|lower %}
-                                        <span class="badge bg-success me-1">Free</span>
-                                        {% endif %}
-                                    </p>
-                                </div>
-                            </div>
-                            <p class="card-text small mb-3">
-                                {% if domain.name == "Web Development" and resource.name == "freeCodeCamp" %}
-                                Learn web development with free interactive coding tutorials.
-                                {% elif domain.name == "Web Development" and resource.name == "The Odin Project" %}
-                                Full-stack web development curriculum with project-based learning.
-                                {% elif domain.name == "Data Science" and resource.name == "Kaggle Learn" %}
-                                Hands-on data science and machine learning courses.
-                                {% elif domain.name == "Mobile Development" and resource.name == "Android Developers" %}
-                                Official Android development documentation and guides.
-                                {% else %}
-                                Click to visit this learning resource.
+    <!-- Learning Resources Grid -->
+    <div class="row">
+        {% for resource in resources %}
+        <div class="col-lg-4 col-md-6 mb-4 fade-in" style="animation-delay: {{ loop.index0 * 0.1 }}s;">
+            <div class="card h-100 border-0 shadow-sm hover-lift">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="rounded-circle bg-primary-bg p-3 me-3 flex-shrink-0">
+                            <i class="fas fa-external-link-alt fa-lg text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h5 class="card-title mb-1">{{ resource.name }}</h5>
+                            <p class="card-text text-muted small mb-2">
+                                <span class="badge bg-primary-subtle text-primary">{{ resource.type }}</span>
+                                {% if 'free' in resource.type|lower or 'free' in resource.name|lower %}
+                                <span class="badge bg-success-subtle text-success ms-1">Free</span>
                                 {% endif %}
                             </p>
-                            <a href="{{ resource.url }}" target="_blank" class="btn btn-primary btn-sm">
-                                <i class="fas fa-external-link-alt me-1"></i>Visit Resource
-                            </a>
                         </div>
                     </div>
+                    
+                    <p class="card-text small text-muted mb-3">
+                        {% if domain.name == "Web Development" and resource.name == "freeCodeCamp" %}
+                        Learn web development with free interactive coding tutorials and projects.
+                        {% elif domain.name == "Web Development" and resource.name == "The Odin Project" %}
+                        Full-stack web development curriculum with project-based learning approach.
+                        {% elif domain.name == "Data Science" and resource.name == "Kaggle Learn" %}
+                        Hands-on data science and machine learning courses with real datasets.
+                        {% elif domain.name == "Mobile Development" and resource.name == "Android Developers" %}
+                        Official Android development documentation, tutorials, and API guides.
+                        {% else %}
+                        Essential resource for mastering skills in this domain.
+                        {% endif %}
+                    </p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <a href="{{ resource.url }}" target="_blank" class="btn btn-primary btn-sm">
+                            <i class="fas fa-external-link-alt me-1"></i>Visit Resource
+                        </a>
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>Recommended
+                        </small>
+                    </div>
                 </div>
-                {% endfor %}
+                <div class="card-footer bg-transparent border-top-0 pt-0">
+                    <div class="d-flex justify-content-between small">
+                        <span class="text-muted">
+                            <i class="fas fa-globe me-1"></i>Online
+                        </span>
+                        <span class="text-primary">
+                            <i class="fas fa-star me-1"></i>Top Rated
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
+        {% endfor %}
     </div>
     
-    <!-- Learning Path -->
-    <div class="card shadow-sm mb-5 border">
-        <div class="card-header bg-success text-white">
-            <h5 class="mb-0">
+    {% if personalized %}
+    <!-- Personalized Learning Path -->
+    <div class="card shadow-sm border-0 mt-5 fade-in">
+        <div class="card-header bg-primary text-white border-0">
+            <h4 class="mb-0">
                 <i class="fas fa-road me-2"></i>
                 {{ domain.name }} Learning Path
-            </h5>
+            </h4>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
                     <div class="text-center p-4">
-                        <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <div class="rounded-circle bg-primary-bg d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
                             <i class="fas fa-seedling fa-2x text-primary"></i>
                         </div>
-                        <h5>Beginner</h5>
+                        <h5 class="mb-3">Beginner Level</h5>
                         <p class="text-muted">{{ domain.levels.beginner }}</p>
-                        <ul class="text-start small">
-                            <li>Focus on fundamentals</li>
-                            <li>Complete basic tutorials</li>
-                            <li>Build simple projects</li>
+                        <ul class="text-start small text-muted">
+                            <li class="mb-2">Complete basic tutorials</li>
+                            <li class="mb-2">Build simple projects</li>
+                            <li>Learn core concepts</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="text-center p-4">
-                        <div class="rounded-circle bg-warning bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <div class="rounded-circle bg-warning-bg d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
                             <i class="fas fa-chart-line fa-2x text-warning"></i>
                         </div>
-                        <h5>Intermediate</h5>
+                        <h5 class="mb-3">Intermediate Level</h5>
                         <p class="text-muted">{{ domain.levels.intermediate }}</p>
-                        <ul class="text-start small">
-                            <li>Build complex projects</li>
-                            <li>Learn frameworks/tools</li>
+                        <ul class="text-start small text-muted">
+                            <li class="mb-2">Build complex projects</li>
+                            <li class="mb-2">Learn frameworks/tools</li>
                             <li>Solve real-world problems</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="text-center p-4">
-                        <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <div class="rounded-circle bg-success-bg d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
                             <i class="fas fa-trophy fa-2x text-success"></i>
                         </div>
-                        <h5>Advanced</h5>
+                        <h5 class="mb-3">Advanced Level</h5>
                         <p class="text-muted">{{ domain.levels.advanced }}</p>
-                        <ul class="text-start small">
-                            <li>Master advanced concepts</li>
-                            <li>Contribute to open source</li>
-                            <li>Prepare for interviews</li>
+                        <ul class="text-start small text-muted">
+                            <li class="mb-2">Master advanced concepts</li>
+                            <li class="mb-2">Contribute to open source</li>
+                            <li>Prepare for technical interviews</li>
                         </ul>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-footer bg-light">
-            <div class="row">
-                <div class="col-md-6">
-                    <h6><i class="fas fa-tips me-2"></i>Study Tips:</h6>
-                    <ul class="small mb-0">
-                        <li>Dedicate 1-2 hours daily</li>
-                        <li>Practice consistently</li>
-                        <li>Build projects to apply knowledge</li>
-                    </ul>
-                </div>
-                <div class="col-md-6">
-                    <h6><i class="fas fa-check-circle me-2"></i>Success Checklist:</h6>
-                    <ul class="small mb-0">
-                        <li>Complete at least 3 resources</li>
-                        <li>Build 2 practice projects</li>
-                        <li>Participate in communities</li>
-                    </ul>
                 </div>
             </div>
         </div>
     </div>
     
     <!-- Skill Development -->
-    <div class="card shadow-sm mb-5 border">
-        <div class="card-header bg-info text-white">
-            <h5 class="mb-0">
+    <div class="card shadow-sm border-0 mt-4 fade-in">
+        <div class="card-header bg-info text-white border-0">
+            <h4 class="mb-0">
                 <i class="fas fa-cogs me-2"></i>
-                {{ domain.name }} Skills to Develop
-            </h5>
+                Key Skills to Master
+            </h4>
         </div>
         <div class="card-body">
             <div class="row">
                 {% for skill in domain.skills %}
-                <div class="col-md-4 col-sm-6 mb-3">
+                <div class="col-md-3 col-sm-6 mb-3">
                     <div class="card border h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-check-circle text-success fa-lg mb-2"></i>
+                        <div class="card-body text-center p-3">
+                            <div class="text-primary mb-2">
+                                <i class="fas fa-check-circle fa-lg"></i>
+                            </div>
                             <h6 class="card-title mb-2">{{ skill }}</h6>
-                            <div class="progress mb-2" style="height: 8px;">
+                            <div class="progress mb-2" style="height: 6px;">
                                 {% set progress = [30, 40, 50, 60, 70, 80, 90, 100] %}
-                                <div class="progress-bar bg-success" style="width: {{ progress[loop.index0 % 8] }}%;"></div>
+                                <div class="progress-bar bg-primary" style="width: {{ progress[loop.index0 % 8] }}%;"></div>
                             </div>
                             <small class="text-muted">
                                 {% if loop.index0 < 3 %}
@@ -180,30 +179,48 @@
             </div>
         </div>
     </div>
-    
-    <!-- Quick Actions -->
-    <div class="text-center mt-5">
-        <a href="{{ url_for('projects') }}" class="btn btn-outline-primary me-3">
-            <i class="fas fa-project-diagram me-2"></i>View Project Ideas
-        </a>
-        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-success me-3">
-            <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
-        </a>
-        <a href="{{ url_for('assessment') }}" class="btn btn-primary">
-            <i class="fas fa-redo me-2"></i>Retake Assessment
-        </a>
-    </div>
-    
-    <!-- Progress Tracker -->
-    <div class="card shadow-sm mt-5 border">
-        <div class="card-header bg-secondary text-white">
-            <h5 class="mb-0">
-                <i class="fas fa-chart-bar me-2"></i>
-                Your Progress Tracker
-            </h5>
+    {% else %}
+    <!-- All Domains Overview -->
+    <div class="card shadow-sm border-0 mt-5 fade-in">
+        <div class="card-header bg-secondary text-white border-0">
+            <h4 class="mb-0">
+                <i class="fas fa-th-large me-2"></i>
+                Explore All Tech Domains
+            </h4>
         </div>
         <div class="card-body">
-            <p class="card-text">Track your learning progress with these resources:</p>
+            <p class="text-muted mb-4">Browse learning resources across different technology domains:</p>
+            <div class="row">
+                {% for domain_id, domain_info in DOMAINS.items()|slice(0, 4) %}
+                <div class="col-md-3 mb-3">
+                    <div class="card border h-100 text-center">
+                        <div class="card-body">
+                            <div class="mb-3" style="color: {{ domain_info.color }}">
+                                <i class="{{ domain_info.icon }} fa-2x"></i>
+                            </div>
+                            <h6 class="card-title">{{ domain_info.name }}</h6>
+                            <a href="{{ url_for('assessment') }}" class="btn btn-sm btn-outline-primary mt-2">
+                                Take Assessment
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Progress Tracker -->
+    {% if personalized and assessment_data %}
+    <div class="card shadow-sm border-0 mt-4 fade-in">
+        <div class="card-header bg-success text-white border-0">
+            <h4 class="mb-0">
+                <i class="fas fa-chart-bar me-2"></i>
+                Your Learning Progress
+            </h4>
+        </div>
+        <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -211,11 +228,12 @@
                             <th>Resource</th>
                             <th>Status</th>
                             <th>Priority</th>
+                            <th>Estimated Time</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for resource in resources[:5] %}
+                        {% for resource in resources[:6] %}
                         <tr>
                             <td>
                                 <strong>{{ resource.name }}</strong>
@@ -235,6 +253,17 @@
                                 {% endif %}
                             </td>
                             <td>
+                                <small class="text-muted">
+                                    {% if loop.index0 < 2 %}
+                                    10-15 hours
+                                    {% elif loop.index0 < 4 %}
+                                    5-10 hours
+                                    {% else %}
+                                    2-5 hours
+                                    {% endif %}
+                                </small>
+                            </td>
+                            <td>
                                 <a href="{{ resource.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                     Start Learning
                                 </a>
@@ -243,6 +272,32 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Call to Action -->
+    <div class="text-center mt-5 fade-in">
+        <div class="card bg-primary-bg border-0 py-4">
+            <div class="card-body">
+                <h4 class="mb-3">Ready to boost your skills?</h4>
+                <p class="text-muted mb-4">Start learning today and track your progress towards placement readiness.</p>
+                {% if personalized %}
+                <a href="{{ url_for('projects') }}" class="btn btn-primary me-3">
+                    <i class="fas fa-project-diagram me-1"></i>View Recommended Projects
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-tachometer-alt me-1"></i>Go to Dashboard
+                </a>
+                {% else %}
+                <a href="{{ url_for('assessment') }}" class="btn btn-primary me-3">
+                    <i class="fas fa-clipboard-check me-1"></i>Take Assessment
+                </a>
+                <a href="{{ url_for('home') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-home me-1"></i>Back to Home
+                </a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -260,10 +315,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                this.closest('tr').querySelector('strong')?.textContent ||
                                'Unknown Resource';
             
-            // Log to console (in production, you would send this to your backend)
             console.log(`User clicked on resource: ${resourceName}`);
             
-            // You could add analytics here:
+            // Optional: Send analytics data
             // fetch('/api/track-resource-click', {
             //     method: 'POST',
             //     headers: {'Content-Type': 'application/json'},
@@ -275,58 +329,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Progress tracker functionality
     const statusBadges = document.querySelectorAll('.badge.bg-warning');
     statusBadges.forEach(badge => {
-        badge.addEventListener('click', function() {
-            const currentStatus = this.textContent;
-            const statuses = ['Not Started', 'In Progress', 'Completed'];
-            const currentIndex = statuses.indexOf(currentStatus);
-            const nextIndex = (currentIndex + 1) % statuses.length;
-            
-            // Update badge
-            this.textContent = statuses[nextIndex];
-            
-            // Change badge color
-            if (statuses[nextIndex] === 'Not Started') {
-                this.className = 'badge bg-warning';
-            } else if (statuses[nextIndex] === 'In Progress') {
-                this.className = 'badge bg-info';
-            } else if (statuses[nextIndex] === 'Completed') {
-                this.className = 'badge bg-success';
-            }
-            
-            // Show confirmation
-            const resourceName = this.closest('tr').querySelector('strong').textContent;
-            showToast(`Marked "${resourceName}" as ${statuses[nextIndex]}`);
-        });
-    });
-    
-    // Toast notification function
-    function showToast(message) {
-        // Create toast element
-        const toast = document.createElement('div');
-        toast.className = 'position-fixed bottom-0 end-0 p-3';
-        toast.style.zIndex = '11';
-        
-        const toastInner = document.createElement('div');
-        toastInner.className = 'toast show align-items-center text-white bg-success border-0';
-        toastInner.setAttribute('role', 'alert');
-        
-        toastInner.innerHTML = `
-            <div class="d-flex">
-                <div class="toast-body">
-                    <i class="fas fa-check-circle me-2"></i>${message}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-            </div>
-        `;
-        
-        toast.appendChild(toastInner);
-        document.body.appendChild(toast);
-        
-        // Auto remove after 3 seconds
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
-    }
-});
-</script>
-{% endblock %}
+        if (badge.textContent === 'Not Started') {
+            badge.addEventListener('click', function() {
+                const statuses = ['Not Started', 'In Progress', 'Completed'];
+                const currentStatus = this.textContent;
+                const currentIndex = statuses.indexOf(currentStatus);
+                const nextIndex = (currentIndex + 1) % statuses.length;
+                
+                // Update badge
+                this.textContent = statuses[nextIndex];
+                
+                // Change badge color
+                if (statuses[nextIndex] === 'Not Started') {
+                    this.className = 'badge bg-warning';
+                } else if (statuses[nextIndex] === 'In Progress') {
+                    this.className = 'badge bg-info';
+                } else if (statuses[nextIndex] === 'Completed') {
+                    this.className = 'badge bg-success';
+                }
+                
+                // Show toast notification
