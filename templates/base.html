@@ -14,12 +14,12 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     
-    <!-- Light Violet Theme CSS -->
+    <!-- Darker Violet Theme CSS -->
     <style>
         :root {
-            --primary-color: #8b5cf6;
-            --primary-dark: #7c3aed;
-            --primary-light: #a78bfa;
+            --primary-color: #7c3aed;  /* Darker violet */
+            --primary-dark: #6d28d9;   /* Even darker violet */
+            --primary-light: #8b5cf6;  /* Original as light */
             --primary-bg: #f3f0ff;
             
             --secondary-color: #6c757d;
@@ -42,7 +42,7 @@
             
             --border-color: #e2e8f0;
             --border-radius: 12px;
-            --box-shadow: 0 4px 6px rgba(139, 92, 246, 0.1);
+            --box-shadow: 0 4px 6px rgba(124, 58, 237, 0.1); /* Updated with darker violet */
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -57,13 +57,13 @@
         .navbar {
             background-color: var(--bg-primary) !important;
             border-bottom: 1px solid var(--border-color) !important;
-            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.05);
+            box-shadow: 0 2px 4px rgba(124, 58, 237, 0.05); /* Updated */
         }
         
         .navbar-brand {
             font-weight: 800;
             font-size: 1.8rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); /* Updated */
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -76,11 +76,11 @@
         }
         
         .nav-link:hover {
-            color: var(--primary-color) !important;
+            color: var(--primary-color) !important; /* Updated */
         }
         
         .nav-link.active {
-            color: var(--primary-color) !important;
+            color: var(--primary-color) !important; /* Updated */
             background-color: var(--primary-bg) !important;
             border-radius: 8px;
         }
@@ -96,8 +96,8 @@
         
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.15);
-            border-color: var(--primary-color) !important;
+            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.15); /* Updated */
+            border-color: var(--primary-color) !important; /* Updated */
         }
         
         .card-header {
@@ -109,39 +109,39 @@
         
         /* Buttons */
         .btn-primary {
-            background-color: var(--primary-color) !important;
-            border-color: var(--primary-color) !important;
+            background-color: var(--primary-color) !important; /* Updated */
+            border-color: var(--primary-color) !important; /* Updated */
             color: white !important;
         }
         
         .btn-primary:hover {
-            background-color: var(--primary-dark) !important;
-            border-color: var(--primary-dark) !important;
+            background-color: var(--primary-dark) !important; /* Updated */
+            border-color: var(--primary-dark) !important; /* Updated */
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3); /* Updated */
         }
         
         .btn-outline-primary {
-            color: var(--primary-color) !important;
-            border-color: var(--primary-color) !important;
+            color: var(--primary-color) !important; /* Updated */
+            border-color: var(--primary-color) !important; /* Updated */
             background-color: transparent !important;
         }
         
         .btn-outline-primary:hover {
-            background-color: var(--primary-color) !important;
+            background-color: var(--primary-color) !important; /* Updated */
             color: white !important;
         }
         
         .text-primary {
-            color: var(--primary-color) !important;
+            color: var(--primary-color) !important; /* Updated */
         }
         
         .border-primary {
-            border-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important; /* Updated */
         }
         
         .bg-primary {
-            background-color: var(--primary-color) !important;
+            background-color: var(--primary-color) !important; /* Updated */
         }
         
         /* Forms */
@@ -155,17 +155,17 @@
         
         .form-control:focus, .form-select:focus {
             background-color: var(--bg-input) !important;
-            border-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important; /* Updated */
             color: var(--text-primary) !important;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15) !important;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important; /* Updated */
         }
         
         .form-range::-webkit-slider-thumb {
-            background-color: var(--primary-color) !important;
+            background-color: var(--primary-color) !important; /* Updated */
         }
         
         .form-range::-moz-range-thumb {
-            background-color: var(--primary-color) !important;
+            background-color: var(--primary-color) !important; /* Updated */
         }
         
         /* Progress Bars */
@@ -175,24 +175,25 @@
         }
         
         .progress-bar {
-            background-color: var(--primary-color) !important;
+            background-color: var(--primary-color) !important; /* Updated */
             border-radius: 10px;
         }
         
         /* Badges */
         .badge.bg-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important; /* Updated */
             color: white !important;
         }
         
-        /* Hero Section */
+        /* Hero Section - VIOLET BACKGROUND */
         .hero-section {
-            background: linear-gradient(135deg, var(--primary-bg) 0%, #ffffff 100%);
-            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important; /* VIOLET GRADIENT */
+            color: white !important;
             padding: 4rem 2rem;
             border-radius: var(--border-radius);
             margin-bottom: 3rem;
             border: 1px solid var(--border-color);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         /* Footer */
@@ -208,7 +209,7 @@
         
         /* Text Gradient */
         .text-gradient {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); /* Updated */
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -218,7 +219,7 @@
         .glass-effect {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.1); /* Updated */
         }
         
         /* Animations */
@@ -251,12 +252,12 @@
         }
         
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); /* Updated */
             border-radius: 4px;
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color)); /* Updated */
         }
         
         /* Skill Meters */
@@ -280,19 +281,19 @@
         }
         
         .skill-meter .skill-value {
-            color: var(--primary-color);
+            color: var(--primary-color) !important; /* Updated */
             font-weight: 700;
         }
         
         /* Domain Cards */
         .domain-card {
-            border-left: 4px solid var(--primary-color);
+            border-left: 4px solid var(--primary-color) !important; /* Updated */
             transition: var(--transition);
         }
         
         .domain-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.15);
+            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.15); /* Updated */
         }
         
         /* Responsive */
