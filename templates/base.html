@@ -134,30 +134,36 @@
         
         /* HERO SECTION BUTTONS - SPECIAL STYLES */
         .hero-section .btn-primary {
-            background-color: white !important;
-            border-color: white !important;
+            background-color: #ffffff !important;
+            border-color: #ffffff !important;
             color: var(--primary-dark) !important;
             font-weight: 600;
+            padding: 12px 30px;
+            font-size: 1.1rem;
         }
         
         .hero-section .btn-primary:hover {
-            background-color: #f8f9fa !important;
-            border-color: #f8f9fa !important;
+            background-color: #f0f0f0 !important;
+            border-color: #f0f0f0 !important;
             color: var(--primary-color) !important;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
         
         .hero-section .btn-outline-primary {
-            color: white !important;
-            border-color: white !important;
+            color: #ffffff !important;
+            border-color: #ffffff !important;
             background-color: transparent !important;
+            padding: 12px 30px;
+            font-size: 1.1rem;
         }
         
         .hero-section .btn-outline-primary:hover {
-            background-color: white !important;
+            background-color: #ffffff !important;
             color: var(--primary-dark) !important;
-            border-color: white !important;
+            border-color: #ffffff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
         
         .text-primary {
@@ -216,7 +222,7 @@
         /* Hero Section - VIOLET BACKGROUND WITH WHITE TEXT */
         .hero-section {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
-            color: white !important; /* WHITE TEXT */
+            color: white !important;
             padding: 4rem 2rem;
             border-radius: var(--border-radius);
             margin-bottom: 3rem;
@@ -353,15 +359,21 @@
                 padding: 2rem 1rem;
             }
             
-            .btn-lg {
+            .hero-section .btn-lg {
                 width: 100%;
                 margin-bottom: 0.5rem;
+                display: block;
+            }
+            
+            .hero-section .btn-lg.ms-2 {
+                margin-left: 0 !important;
+                margin-top: 10px;
             }
         }
     </style>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22></text></svg>">
     
     {% block extra_css %}{% endblock %}
 </head>
@@ -570,22 +582,51 @@
                 return new bootstrap.Popover(popoverTriggerEl);
             });
             
-            // Smooth scrolling
+            // FIX: Smooth scrolling for anchor links in hero section
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href');
                     if (targetId === '#') return;
                     
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
+                    // If it's "#domains", scroll to domains section
+                    if (targetId === '#domains') {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 100,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                    // Otherwise, it should be a regular link (like Start Assessment)
+                    // Let it follow the normal link behavior
+                });
+            });
+            
+            // FIX: Explicit function for Explore Domains button
+            const exploreDomainsBtn = document.querySelector('a[href="#domains"]');
+            if (exploreDomainsBtn) {
+                exploreDomainsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const domainsSection = document.getElementById('domains');
+                    if (domainsSection) {
                         window.scrollTo({
-                            top: targetElement.offsetTop - 70,
+                            top: domainsSection.offsetTop - 100,
                             behavior: 'smooth'
                         });
                     }
                 });
-            });
+            }
+            
+            // FIX: Make sure Start Assessment button works
+            const startAssessmentBtn = document.querySelector('.hero-section a[href="{{ url_for("assessment") }}"]');
+            if (startAssessmentBtn) {
+                startAssessmentBtn.addEventListener('click', function(e) {
+                    // This should work normally since it's a regular link
+                    console.log('Start Assessment clicked');
+                });
+            }
             
             // Add active class to current page in navbar
             const currentPage = window.location.pathname;
@@ -594,6 +635,20 @@
                     link.classList.add('active');
                 }
             });
+            
+            // Add animation to domain cards on scroll
+            const domainCards = document.querySelectorAll('.domain-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('fade-in');
+                        }, index * 100);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            domainCards.forEach(card => observer.observe(card));
         });
     </script>
 </body>
