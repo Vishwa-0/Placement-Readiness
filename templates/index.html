@@ -8,8 +8,14 @@
         <h1 class="display-4 fw-bold mb-4">Welcome to VYNOX</h1>
         <p class="lead mb-4">Placement Readiness Assessment System</p>
         <p class="mb-4">Our AI-powered platform evaluates your technical skills and provides personalized guidance to make you placement-ready for top tech companies.</p>
-        <a href="{{ url_for('assessment') }}" class="btn btn-primary btn-lg">Start Assessment</a>
-        <a href="#domains" class="btn btn-outline-primary btn-lg ms-2" onclick="document.getElementById('domains').scrollIntoView({behavior: 'smooth'})">Explore Domains</a>
+        
+        <!-- FIXED BUTTONS: Proper URLs and onclick removed -->
+        <a href="{{ url_for('assessment') }}" class="btn btn-primary btn-lg">
+            <i class="fas fa-rocket me-2"></i>Start Assessment
+        </a>
+        <a href="#domains" class="btn btn-outline-primary btn-lg ms-2">
+            <i class="fas fa-compass me-2"></i>Explore Domains
+        </a>
     </div>
 </section>
 
@@ -146,36 +152,21 @@
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 100,
-                    behavior: 'smooth'
-                });
-            }
+    // Smooth scrolling for anchor links - already handled in base.html
+    
+    // Add animation to domain cards on scroll - already handled in base.html
+    
+    // Additional hero section button styling on hover
+    const heroButtons = document.querySelectorAll('.hero-section .btn');
+    heroButtons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
         });
     });
-    
-    // Add animation to domain cards on scroll
-    const domainCards = document.querySelectorAll('.domain-card');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('fade-in');
-                }, index * 100);
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    domainCards.forEach(card => observer.observe(card));
 });
 </script>
 
@@ -205,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .stat-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.15);
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.15);
 }
 
 .quick-assessment {
