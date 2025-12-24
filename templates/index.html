@@ -9,7 +9,7 @@
         <p class="lead mb-4">Placement Readiness Assessment System</p>
         <p class="mb-4">Our AI-powered platform evaluates your technical skills and provides personalized guidance to make you placement-ready for top tech companies.</p>
         
-        <!-- FIXED BUTTONS: Proper URLs and onclick removed -->
+        <!-- FIXED BUTTONS -->
         <a href="{{ url_for('assessment') }}" class="btn btn-primary btn-lg">
             <i class="fas fa-rocket me-2"></i>Start Assessment
         </a>
@@ -100,7 +100,7 @@
 </section>
 
 <!-- Quick Assessment -->
-<section class="quick-assessment py-5 rounded mb-5" style="background-color: var(--primary-bg);">
+<section class="quick-assessment py-5 rounded mb-5" style="background-color: #f3f0ff;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-8">
@@ -152,55 +152,35 @@
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Smooth scrolling for anchor links - already handled in base.html
+    // Log for debugging
+    console.log('Home page loaded');
     
-    // Add animation to domain cards on scroll - already handled in base.html
+    // Check if buttons exist and are clickable
+    const startBtn = document.querySelector('.hero-section a[href*="assessment"]');
+    const exploreBtn = document.querySelector('.hero-section a[href="#domains"]');
     
-    // Additional hero section button styling on hover
-    const heroButtons = document.querySelectorAll('.hero-section .btn');
-    heroButtons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px)';
+    if (startBtn) {
+        console.log('Start Assessment button found:', startBtn);
+        startBtn.addEventListener('click', function() {
+            console.log('Start Assessment clicked - will redirect to', this.href);
         });
-        
-        button.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
+    }
+    
+    if (exploreBtn) {
+        console.log('Explore Domains button found:', exploreBtn);
+        exploreBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Explore Domains clicked');
+            const domainsSection = document.getElementById('domains');
+            if (domainsSection) {
+                console.log('Found domains section, scrolling...');
+                window.scrollTo({
+                    top: domainsSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
         });
-    });
+    }
 });
 </script>
-
-<style>
-.hero-section {
-    margin-top: 2rem;
-}
-
-.domain-card {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.domain-card.fade-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.stat-item {
-    padding: 1.5rem;
-    background: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    transition: var(--transition);
-}
-
-.stat-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.15);
-}
-
-.quick-assessment {
-    border: 1px solid var(--border-color);
-}
-</style>
 {% endblock %}
