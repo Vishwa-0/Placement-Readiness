@@ -180,15 +180,21 @@
             color: white !important;
         }
         
-     .hero-section .btn-outline-primary {
-    color: var(--primary-dark) !important; /* Violet text */
-    border: 2px solid var(--primary-dark) !important; /* Violet border */
+.hero-section .btn-outline-primary {
+    color: #1e293b !important; /* Darker text for better contrast */
+    border: 2px solid var(--primary-dark) !important;
     background-color: transparent !important;
+    font-weight: 600;
+    padding: 12px 30px;
+    font-size: 1.1rem;
 }
 
 .hero-section .btn-outline-primary:hover {
-    background-color: var(--primary-dark) !important; /* Turns violet on hover */
-    color: white !important; /* White text on hover */
+    background-color: var(--primary-dark) !important;
+    color: white !important;
+    border-color: var(--primary-dark) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
 }
         .text-primary {
             color: var(--primary-color) !important;
