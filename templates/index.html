@@ -9,13 +9,15 @@
         <p class="lead mb-4">Placement Readiness Assessment System</p>
         <p class="mb-4">Our AI-powered platform evaluates your technical skills and provides personalized guidance to make you placement-ready for top tech companies.</p>
         
-        <!-- FIXED BUTTONS: Proper URLs and onclick removed -->
-        <a href="{{ url_for('assessment') }}" class="btn btn-primary btn-lg">
-            <i class="fas fa-rocket me-2"></i>Start Assessment
-        </a>
-        <a href="#domains" class="btn btn-outline-primary btn-lg ms-2">
-            <i class="fas fa-compass me-2"></i>Explore Domains
-        </a>
+        <!-- Fixed Buttons with proper styling -->
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a href="{{ url_for('assessment') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-rocket me-2"></i>Start Assessment
+            </a>
+            <a href="#domains" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-compass me-2"></i>Explore Domains
+            </a>
+        </div>
     </div>
 </section>
 
@@ -152,27 +154,104 @@
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Smooth scrolling for anchor links - already handled in base.html
-    
-    // Add animation to domain cards on scroll - already handled in base.html
-    
-    // Additional hero section button styling on hover
-    const heroButtons = document.querySelectorAll('.hero-section .btn');
-    heroButtons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px)';
+    // Smooth scrolling for "Explore Domains" button
+    const exploreDomainsBtn = document.querySelector('a[href="#domains"]');
+    if (exploreDomainsBtn) {
+        exploreDomainsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const domainsSection = document.getElementById('domains');
+            if (domainsSection) {
+                // Scroll to domains section with offset for navbar
+                const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                const targetPosition = domainsSection.offsetTop - navbarHeight - 20;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Optional: Add active class to highlight the section
+                domainsSection.classList.add('highlight-section');
+                setTimeout(() => {
+                    domainsSection.classList.remove('highlight-section');
+                }, 2000);
+            }
         });
+    }
+    
+    // Highlight animation for domains section
+    const style = document.createElement('style');
+    style.textContent = `
+        .highlight-section {
+            animation: pulse-highlight 2s ease-in-out;
+        }
         
-        button.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
+        @keyframes pulse-highlight {
+            0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(124, 58, 237, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Add animation to domain cards on scroll
+    const domainCards = document.querySelectorAll('.domain-card');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('fade-in');
+                }, index * 100);
+            }
         });
-    });
+    }, { threshold: 0.1 });
+    
+    domainCards.forEach(card => observer.observe(card));
 });
 </script>
 
 <style>
 .hero-section {
     margin-top: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+    z-index: -1;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    z-index: -1;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-section h1,
+.hero-section p,
+.hero-section .lead {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hero-section .btn {
+    position: relative;
+    z-index: 2;
 }
 
 .domain-card {
@@ -201,6 +280,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .quick-assessment {
     border: 1px solid var(--border-color);
+}
+
+/* Responsive button adjustments */
+@media (max-width: 768px) {
+    .hero-section .d-flex {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-section .btn-lg {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 1rem;
+    }
 }
 </style>
 {% endblock %}
