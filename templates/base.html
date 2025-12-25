@@ -132,42 +132,69 @@
             color: white !important;
         }
         
-           /* HERO SECTION BUTTONS - SPECIAL STYLES */
+           /* HERO SECTION - LIGHT BACKGROUND WITH DARK TEXT (as shown in screenshot) */
+        .hero-section {
+            background: linear-gradient(135deg, #f3f0ff 0%, #e9e6ff 100%) !important; /* Light violet background */
+            color: var(--text-primary) !important;
+            padding: 4rem 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Hero Text Colors */
+        .hero-section h1,
+        .hero-section .display-4,
+        .hero-section .display-5,
+        .hero-section .display-6 {
+            color: var(--text-primary) !important;
+        }
+        
+        .hero-section .lead,
+        .hero-section p,
+        .hero-section .text-muted {
+            color: var(--text-secondary) !important;
+        }
+        
+        .hero-section .lead {
+            font-weight: 400;
+        }
+        
+        /* HERO SECTION BUTTONS - PROMINENT COLORS (as shown in screenshot) */
         .hero-section .btn-primary {
-            background-color: #ffffff !important;
-            border-color: #ffffff !important;
-            color: var(--primary-dark) !important;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+            border: none !important;
+            color: white !important;
             font-weight: 600;
             padding: 12px 30px;
             font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
         }
         
         .hero-section .btn-primary:hover {
-            background-color: #f8f9fa !important;
-            border-color: #f8f9fa !important;
-            color: var(--primary-color) !important;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color)) !important;
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+            color: white !important;
         }
         
         .hero-section .btn-outline-primary {
-            color: #ffffff !important;
-            border-color: #ffffff !important;
+            color: var(--primary-dark) !important;
+            border: 2px solid var(--primary-dark) !important;
             background-color: transparent !important;
             padding: 12px 30px;
             font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
         }
         
         .hero-section .btn-outline-primary:hover {
-            background-color: #ffffff !important;
-            color: var(--primary-dark) !important;
-            border-color: #ffffff !important;
+            background-color: var(--primary-dark) !important;
+            color: white !important;
+            border-color: var(--primary-dark) !important;
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
         }
-        
         .text-primary {
             color: var(--primary-color) !important;
         }
